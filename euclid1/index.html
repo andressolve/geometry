@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Language and Logic of Geometry</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', 'Times New Roman', serif;
+            background: #fafaf8;
+            color: #1a1a1a;
+            line-height: 1.8;
+            overflow-x: hidden;
+            font-size: 18px;
+        }
+
+        /* Scroll Container */
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        /* Each Page */
+        .page {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Content Card */
+        .card {
+            background: #fff;
+            padding: 50px 60px;
+            max-width: 800px;
+            width: 100%;
+            border: 1px solid #d0d0d0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Cover Page */
+        .cover {
+            background: #fafaf8;
+            text-align: center;
+        }
+
+        .cover .card {
+            background: #fff;
+            border: 1px solid #c0c0c0;
+            padding: 60px 70px;
+        }
+
+        .cover h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+            font-style: italic;
+        }
+
+        .cover .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 35px;
+            font-variant: small-caps;
+            letter-spacing: 0.1em;
+        }
+
+        .cover .intro {
+            font-size: 1.1em;
+            line-height: 1.9;
+            color: #333;
+            max-width: 550px;
+            margin: 0 auto;
+            text-align: justify;
+        }
+
+        .scroll-hint {
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .scroll-hint span {
+            display: block;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        /* Headings */
+        h2 {
+            color: #1a1a1a;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-style: italic;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 1.3em;
+            margin: 25px 0 12px;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        /* Text Content */
+        .content p {
+            font-size: 1.05em;
+            margin-bottom: 18px;
+            color: #1a1a1a;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .content ul {
+            margin: 18px 0 18px 25px;
+            list-style-type: none;
+        }
+
+        .content li {
+            font-size: 1.05em;
+            margin-bottom: 14px;
+            color: #1a1a1a;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .content li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #888;
+        }
+
+        .content strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .content em {
+            font-style: italic;
+            color: #1a1a1a;
+        }
+
+        /* Canvas Container */
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 35px 0;
+            position: relative;
+        }
+
+        canvas {
+            border: 1px solid #999;
+            background: #fff;
+        }
+
+        .figure-caption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+            margin-top: 12px;
+        }
+
+        /* Definition Boxes */
+        .definition {
+            background: #fafaf8;
+            border-left: 2px solid #333;
+            padding: 18px 25px;
+            margin: 20px 0;
+        }
+
+        .definition-term {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 1.1em;
+            font-variant: small-caps;
+            letter-spacing: 0.05em;
+        }
+
+        .definition-text {
+            color: #333;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: #f5f5f0;
+            border: 1px solid #ccc;
+            padding: 20px 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .highlight-box .formula {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #1a1a1a;
+            font-family: 'Crimson Pro', serif;
+        }
+
+        /* Postulate Box */
+        .postulate-box {
+            background: #fff;
+            border: 2px solid #1a1a1a;
+            padding: 25px 30px;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .postulate-label {
+            font-size: 0.85em;
+            color: #1a1a1a;
+            font-variant: small-caps;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .postulate-text {
+            font-size: 1.15em;
+            font-style: italic;
+            color: #1a1a1a;
+            line-height: 1.7;
+        }
+
+        /* Example Box */
+        .example-box {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 22px 25px;
+            margin: 20px 0;
+        }
+
+        .example-label {
+            font-size: 0.9em;
+            color: #666;
+            font-variant: small-caps;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        /* Quiz Styles */
+        .quiz-question {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 25px 28px;
+            margin: 22px 0;
+            transition: all 0.3s;
+        }
+
+        .quiz-question.correct {
+            border-color: #2e7d32;
+            background: #f5faf5;
+        }
+
+        .quiz-question.incorrect {
+            border-color: #c62828;
+            background: #fef5f5;
+        }
+
+        .question-number {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 8px;
+            font-variant: small-caps;
+            letter-spacing: 0.05em;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            color: #1a1a1a;
+            margin-bottom: 18px;
+        }
+
+        .quiz-input {
+            padding: 10px 15px;
+            font-size: 1em;
+            font-family: 'Crimson Pro', serif;
+            border: 1px solid #999;
+            width: 180px;
+            transition: border-color 0.3s;
+        }
+
+        .quiz-input:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .quiz-option {
+            padding: 10px 22px;
+            font-size: 1em;
+            font-family: 'Crimson Pro', serif;
+            border: 1px solid #999;
+            background: white;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            border-color: #333;
+            background: #f5f5f0;
+        }
+
+        .quiz-option.selected {
+            border-color: #1a1a1a;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .feedback {
+            margin-top: 12px;
+            font-size: 0.95em;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            color: #2e7d32;
+        }
+
+        .feedback.incorrect {
+            color: #c62828;
+        }
+
+        /* Buttons */
+        button {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1em;
+            font-family: 'Crimson Pro', serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        button:active {
+            background: #000;
+        }
+
+        .quiz-submit {
+            display: block;
+            margin: 35px auto 0;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-top: 35px;
+            padding: 25px;
+            background: #f5f5f0;
+            border: 1px solid #ccc;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+        }
+
+        .score-number {
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .score-message {
+            font-size: 1.1em;
+            color: #333;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .nav-dot:hover {
+            background: #888;
+        }
+
+        .nav-dot.active {
+            background: #1a1a1a;
+            transform: scale(1.3);
+        }
+
+        /* Visual Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 25px 0;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #999;
+        }
+
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 800px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Angle Display */
+        .angle-display {
+            font-size: 1.6em;
+            font-weight: 500;
+            color: #1a1a1a;
+            text-align: center;
+            margin: 18px 0;
+        }
+
+        /* Numbered paragraphs for structured arguments */
+        .numbered-point {
+            margin: 20px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+
+        .numbered-point::before {
+            content: attr(data-num) ".";
+            position: absolute;
+            left: 0;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .numbered-point p {
+            margin: 0;
+        }
+
+        /* Section numbers */
+        .section-num {
+            font-size: 0.85em;
+            color: #888;
+            font-variant: small-caps;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" data-page="0"></div>
+        <div class="nav-dot" data-page="1"></div>
+        <div class="nav-dot" data-page="2"></div>
+        <div class="nav-dot" data-page="3"></div>
+        <div class="nav-dot" data-page="4"></div>
+        <div class="nav-dot" data-page="5"></div>
+        <div class="nav-dot" data-page="6"></div>
+        <div class="nav-dot" data-page="7"></div>
+        <div class="nav-dot" data-page="8"></div>
+    </div>
+
+    <div class="scroll-container" id="scrollContainer">
+        
+        <!-- Page 0: Cover -->
+        <div class="page cover" id="page0">
+            <div class="card">
+                <h1>The Language and Logic of Geometry</h1>
+                <div class="subtitle">Lesson I</div>
+                <p class="intro">
+                    Geometry is among the oldest branches of mathematics, and perhaps the most elegant. 
+                    Beginning with a small set of self-evident truths, geometers have constructed 
+                    an edifice of knowledge through pure logical reasoning. This lesson introduces 
+                    the primitive objects—points, lines, rays, and angles—and demonstrates how 
+                    mathematical proof transforms assumptions into certainty.
+                </p>
+                <div class="scroll-hint">
+                    Scroll to continue
+                    <span>↓</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 1: What Is Geometry? -->
+        <div class="page" id="page1">
+            <div class="card">
+                <div class="section-num">Section 1</div>
+                <h2>The Nature of Geometry</h2>
+                <div class="content">
+                    <p>
+                        Geometry is an <em>axiomatic system</em>: we begin with a small number of statements 
+                        accepted without proof, called <strong>axioms</strong> or <strong>postulates</strong>, 
+                        and derive all other truths through logical deduction.
+                    </p>
+                    <p>
+                        This method was perfected around 300 BCE by the Greek mathematician Euclid, 
+                        whose treatise <em>The Elements</em> remained the standard text on geometry 
+                        for over two thousand years. The figure below shows Proposition 1 from Book I: 
+                        the construction of an equilateral triangle using only a compass and straightedge.
+                    </p>
+                    <p>
+                        Every theorem we prove rests upon earlier theorems, which rest upon still earlier ones, 
+                        all the way back to the axioms. This is the power of deductive reasoning: 
+                        once we accept the axioms, the rest follows with certainty.
+                    </p>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="euclidCanvas" width="500" height="380"></canvas>
+                </div>
+                <p class="figure-caption">
+                    Figure 1.1 — Euclid's Proposition I.1: Construction of an equilateral triangle
+                </p>
+            </div>
+        </div>
+
+        <!-- Page 2: Points, Lines, Rays, Segments -->
+        <div class="page" id="page2">
+            <div class="card">
+                <div class="section-num">Section 2</div>
+                <h2>Primitive Objects</h2>
+                <div class="two-col">
+                    <div class="content">
+                        <div class="definition">
+                            <div class="definition-term">Point</div>
+                            <div class="definition-text">That which has position but no magnitude. Denoted by capital letters: <em>A</em>, <em>B</em>, <em>P</em>.</div>
+                        </div>
+                        <div class="definition">
+                            <div class="definition-term">Line</div>
+                            <div class="definition-text">Extends infinitely in both directions. A line through points <em>A</em> and <em>B</em> is written <em>AB</em> with a line symbol above, or simply "line <em>AB</em>."</div>
+                        </div>
+                        <div class="definition">
+                            <div class="definition-term">Ray</div>
+                            <div class="definition-text">A half-line: begins at a point (its <em>endpoint</em>) and extends infinitely in one direction. Ray <em>AB</em> starts at <em>A</em> and passes through <em>B</em>.</div>
+                        </div>
+                        <div class="definition">
+                            <div class="definition-term">Segment</div>
+                            <div class="definition-text">The set of all points between two endpoints, including the endpoints themselves. Segment <em>AB</em> has finite length.</div>
+                        </div>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="buildingBlocksCanvas" width="320" height="380"></canvas>
+                    </div>
+                </div>
+                <p class="figure-caption" style="margin-top: 15px;">
+                    Figure 2.1 — The four primitive objects, distinguished by their extent
+                </p>
+            </div>
+        </div>
+
+        <!-- Page 3: What Is an Angle? -->
+        <div class="page" id="page3">
+            <div class="card">
+                <div class="section-num">Section 3</div>
+                <h2>The Angle</h2>
+                <div class="two-col">
+                    <div class="content">
+                        <p>
+                            An <strong>angle</strong> is the figure formed by two rays sharing a common endpoint. 
+                            This shared point is called the <em>vertex</em>; the two rays are called the <em>sides</em> of the angle.
+                        </p>
+                        
+                        <div class="definition">
+                            <div class="definition-term">Vertex</div>
+                            <div class="definition-text">The common endpoint of the two rays forming the angle.</div>
+                        </div>
+                        
+                        <div class="definition">
+                            <div class="definition-term">Sides</div>
+                            <div class="definition-text">The two rays emanating from the vertex.</div>
+                        </div>
+                        
+                        <p>
+                            The <em>measure</em> of an angle quantifies the rotation required to bring one side 
+                            into coincidence with the other. We shall see that this measure is expressed in <em>degrees</em>.
+                        </p>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="anglePartsCanvas" width="320" height="320"></canvas>
+                    </div>
+                </div>
+                <p class="figure-caption">Figure 3.1 — Anatomy of an angle</p>
+            </div>
+        </div>
+
+        <!-- Page 4: Measuring in Degrees -->
+        <div class="page" id="page4">
+            <div class="card">
+                <div class="section-num">Section 4</div>
+                <h2>Degree Measure</h2>
+                <div class="content">
+                    <p>
+                        The <strong>degree</strong> (°) is the standard unit of angular measure. 
+                        A full rotation comprises 360°, a convention dating to ancient Babylonian astronomy.
+                    </p>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="degreesCanvas" width="680" height="340"></canvas>
+                </div>
+                <p class="figure-caption">Figure 4.1 — Classification of angles by measure</p>
+                <div class="content" style="margin-top: 25px;">
+                    <div class="definition">
+                        <div class="definition-term">Acute Angle</div>
+                        <div class="definition-text">An angle measuring less than 90°.</div>
+                    </div>
+                    <div class="definition">
+                        <div class="definition-term">Right Angle</div>
+                        <div class="definition-text">An angle measuring exactly 90°. Denoted by a small square at the vertex.</div>
+                    </div>
+                    <div class="definition">
+                        <div class="definition-term">Obtuse Angle</div>
+                        <div class="definition-text">An angle measuring greater than 90° but less than 180°.</div>
+                    </div>
+                    <div class="definition">
+                        <div class="definition-term">Straight Angle</div>
+                        <div class="definition-text">An angle measuring exactly 180°. The sides form a line.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Naming Angles -->
+        <div class="page" id="page5">
+            <div class="card">
+                <div class="section-num">Section 5</div>
+                <h2>Notation for Angles</h2>
+                <div class="two-col">
+                    <div class="content">
+                        <p>
+                            An angle is named using three points: one on each side and one at the vertex. 
+                            The symbol ∠ denotes "angle."
+                        </p>
+                        
+                        <div class="postulate-box" style="border-width: 1px;">
+                            <div class="postulate-label">Convention</div>
+                            <div class="postulate-text">The middle letter always denotes the vertex.</div>
+                        </div>
+                        
+                        <p>
+                            Thus <strong>∠ABC</strong> refers to the angle at vertex <em>B</em>, 
+                            with one side passing through <em>A</em> and the other through <em>C</em>.
+                        </p>
+                        
+                        <div class="example-box">
+                            <div class="example-label">Remark</div>
+                            <p style="margin: 0;">
+                                The notation ∠CBA describes the same angle as ∠ABC, 
+                                since both have vertex at <em>B</em>. The order of the outer letters is immaterial.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="namingCanvas" width="320" height="320"></canvas>
+                    </div>
+                </div>
+                <p class="figure-caption">Figure 5.1 — The angle ∠ABC</p>
+            </div>
+        </div>
+
+        <!-- Page 6: Our First Accepted Truth -->
+        <div class="page" id="page6">
+            <div class="card">
+                <div class="section-num">Section 6</div>
+                <h2>The Linear Pair Postulate</h2>
+                <div class="content">
+                    <p>
+                        As discussed, geometry proceeds from axioms—statements accepted without proof. 
+                        We now introduce our first postulate concerning angles.
+                    </p>
+                    
+                    <div class="postulate-box">
+                        <div class="postulate-label">Postulate (Linear Pair)</div>
+                        <div class="postulate-text">
+                            If two angles form a linear pair (that is, their non-common sides form a straight line), 
+                            then the sum of their measures is 180°.
+                        </div>
+                    </div>
+                    
+                    <div class="canvas-container">
+                        <canvas id="supplementaryCanvas" width="520" height="250"></canvas>
+                    </div>
+                    <p class="figure-caption">Figure 6.1 — Angles ∠ABD and ∠DBC form a linear pair</p>
+                    
+                    <div class="definition" style="margin-top: 25px;">
+                        <div class="definition-term">Supplementary Angles</div>
+                        <div class="definition-text">
+                            Two angles are said to be <strong>supplementary</strong> if the sum of their measures equals 180°.
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top: 18px;">
+                        <em>Corollary.</em> Any two angles forming a linear pair are supplementary.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Quick Examples -->
+        <div class="page" id="page7">
+            <div class="card">
+                <div class="section-num">Section 7</div>
+                <h2>Worked Examples</h2>
+                <div class="two-col">
+                    <div>
+                        <div class="example-box">
+                            <div class="example-label">Example 1</div>
+                            <p style="margin-bottom: 12px;"><em>Problem.</em> Two angles form a linear pair. One measures 70°. Find the other.</p>
+                            <div class="canvas-container" style="margin: 15px 0;">
+                                <canvas id="example1Canvas" width="260" height="160"></canvas>
+                            </div>
+                            <p><em>Solution.</em> By the Linear Pair Postulate, the angles sum to 180°. Thus:</p>
+                            <p style="text-align: center; font-size: 1.15em; margin: 12px 0;">
+                                180° − 70° = <strong>110°</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="example-box">
+                            <div class="example-label">Example 2</div>
+                            <p style="margin-bottom: 12px;"><em>Problem.</em> Two right angles form a linear pair. Verify the postulate.</p>
+                            <div class="canvas-container" style="margin: 15px 0;">
+                                <canvas id="example2Canvas" width="260" height="160"></canvas>
+                            </div>
+                            <p><em>Solution.</em> Each angle measures 90°. Their sum:</p>
+                            <p style="text-align: center; font-size: 1.15em; margin: 12px 0;">
+                                90° + 90° = <strong>180°</strong> &nbsp;✓
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight-box" style="margin-top: 35px;">
+                    <p style="font-size: 1em; margin-bottom: 12px;"><strong>Summary of Angle Classification</strong></p>
+                    <p style="margin: 0; font-size: 1.05em;">
+                        <em>Acute:</em> 0° &lt; θ &lt; 90° &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <em>Right:</em> θ = 90° &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <em>Obtuse:</em> 90° &lt; θ &lt; 180° &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <em>Straight:</em> θ = 180°
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 8: Quiz -->
+        <div class="page" id="page8">
+            <div class="card">
+                <div class="section-num">Exercises</div>
+                <h2>Problems</h2>
+                
+                <div class="quiz-question" id="q1">
+                    <div class="question-number">Problem 1</div>
+                    <div class="question-text">What is the name for the point at which the two sides of an angle meet?</div>
+                    <div class="quiz-options" id="o1">
+                        <button class="quiz-option" data-value="vertex">Vertex</button>
+                        <button class="quiz-option" data-value="endpoint">Endpoint</button>
+                        <button class="quiz-option" data-value="origin">Origin</button>
+                        <button class="quiz-option" data-value="midpoint">Midpoint</button>
+                    </div>
+                    <div class="feedback" id="f1"></div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <div class="question-number">Problem 2</div>
+                    <div class="question-text">What is the measure, in degrees, of a straight angle?</div>
+                    <div class="quiz-options" id="o2">
+                        <button class="quiz-option" data-value="90">90°</button>
+                        <button class="quiz-option" data-value="180">180°</button>
+                        <button class="quiz-option" data-value="360">360°</button>
+                    </div>
+                    <div class="feedback" id="f2"></div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <div class="question-number">Problem 3</div>
+                    <div class="question-text">An angle measures 35°. Classify it as acute, right, or obtuse.</div>
+                    <div class="quiz-options" id="o3">
+                        <button class="quiz-option" data-value="acute">Acute</button>
+                        <button class="quiz-option" data-value="right">Right</button>
+                        <button class="quiz-option" data-value="obtuse">Obtuse</button>
+                    </div>
+                    <div class="feedback" id="f3"></div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <div class="question-number">Problem 4</div>
+                    <div class="question-text">In the notation ∠PQR, which letter denotes the vertex?</div>
+                    <div class="quiz-options" id="o4">
+                        <button class="quiz-option" data-value="P">P</button>
+                        <button class="quiz-option" data-value="Q">Q</button>
+                        <button class="quiz-option" data-value="R">R</button>
+                    </div>
+                    <div class="feedback" id="f4"></div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <div class="question-number">Problem 5</div>
+                    <div class="question-text">Two angles form a linear pair. If one angle measures 115°, find the measure of the other.</div>
+                    <div class="quiz-options" id="o5">
+                        <button class="quiz-option" data-value="55">55°</button>
+                        <button class="quiz-option" data-value="65">65°</button>
+                        <button class="quiz-option" data-value="75">75°</button>
+                        <button class="quiz-option" data-value="245">245°</button>
+                    </div>
+                    <div class="feedback" id="f5"></div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <div class="question-number">Problem 6</div>
+                    <div class="question-text">Two angles whose measures sum to 180° are called _____ angles.</div>
+                    <div class="quiz-options" id="o6">
+                        <button class="quiz-option" data-value="complementary">Complementary</button>
+                        <button class="quiz-option" data-value="supplementary">Supplementary</button>
+                        <button class="quiz-option" data-value="congruent">Congruent</button>
+                        <button class="quiz-option" data-value="adjacent">Adjacent</button>
+                    </div>
+                    <div class="feedback" id="f6"></div>
+                </div>
+
+                <button class="quiz-submit" id="checkAnswers">Verify Answers</button>
+
+                <div class="score-display" id="scoreDisplay">
+                    <div class="score-number" id="scoreNumber">0/6</div>
+                    <div class="score-message" id="scoreMessage"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ==================== UTILITY FUNCTIONS ====================
+        
+        function drawPoint(ctx, x, y, label, labelOffset = {x: 10, y: -10}) {
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fill();
+            
+            if (label) {
+                ctx.font = 'italic 18px "Crimson Pro", serif';
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillText(label, x + labelOffset.x, y + labelOffset.y);
+            }
+        }
+
+        function drawArrow(ctx, fromX, fromY, toX, toY, color = '#1a1a1a', lineWidth = 1.5) {
+            const headLength = 10;
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headLength * Math.cos(angle - Math.PI / 6), toY - headLength * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(toX - headLength * Math.cos(angle + Math.PI / 6), toY - headLength * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        function drawLine(ctx, x1, y1, x2, y2, color = '#1a1a1a', lineWidth = 1.5) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+        }
+
+        function drawArc(ctx, cx, cy, radius, startAngle, endAngle, fillColor, strokeColor = '#1a1a1a') {
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, radius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fillStyle = fillColor;
+            ctx.fill();
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        function drawRightAngleSquare(ctx, cx, cy, angle1, angle2, size = 12, color = 'rgba(100, 100, 100, 0.15)') {
+            const midAngle = (angle1 + angle2) / 2;
+            const corner1X = cx + size * Math.cos(angle1);
+            const corner1Y = cy + size * Math.sin(angle1);
+            const corner2X = cx + size * Math.cos(angle2);
+            const corner2Y = cy + size * Math.sin(angle2);
+            const cornerMidX = cx + size * Math.sqrt(2) * Math.cos(midAngle);
+            const cornerMidY = cy + size * Math.sqrt(2) * Math.sin(midAngle);
+            
+            ctx.beginPath();
+            ctx.moveTo(corner1X, corner1Y);
+            ctx.lineTo(cornerMidX, cornerMidY);
+            ctx.lineTo(corner2X, corner2Y);
+            ctx.lineTo(cx, cy);
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        function drawAngleLabel(ctx, cx, cy, angle, radius, text, color = '#1a1a1a') {
+            const x = cx + radius * Math.cos(angle);
+            const y = cy + radius * Math.sin(angle);
+            ctx.font = '18px "Crimson Pro", serif';
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, x, y);
+        }
+
+        // ==================== PAGE 1: EUCLID'S PROPOSITION 1 ====================
+        
+        function drawEuclidProposition() {
+            const canvas = document.getElementById('euclidCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            const cx = 250, cy = 210;
+            const radius = 110;
+            
+            // Points A and B
+            const ax = cx - radius/2, ay = cy + 50;
+            const bx = cx + radius/2, by = cy + 50;
+            
+            // Point C (intersection above)
+            const h = Math.sqrt(radius * radius - (radius/2) * (radius/2));
+            const cxPoint = cx, cyPoint = ay - h;
+            
+            // Draw circles (construction lines - dashed, light)
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.arc(ax, ay, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = '#999';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(bx, by, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = '#999';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Draw triangle (solid)
+            ctx.beginPath();
+            ctx.moveTo(ax, ay);
+            ctx.lineTo(bx, by);
+            ctx.lineTo(cxPoint, cyPoint);
+            ctx.closePath();
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            
+            // Draw points
+            drawPoint(ctx, ax, ay, 'A', {x: -20, y: 15});
+            drawPoint(ctx, bx, by, 'B', {x: 8, y: 15});
+            drawPoint(ctx, cxPoint, cyPoint, 'C', {x: 8, y: -8});
+        }
+
+        // ==================== PAGE 2: BUILDING BLOCKS ====================
+        
+        function drawBuildingBlocks() {
+            const canvas = document.getElementById('buildingBlocksCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Draw a unified figure showing all concepts
+            ctx.font = 'italic 14px "Crimson Pro", serif';
+            
+            // Line - horizontal with arrows both ends
+            // Points A and B are in the middle, not at arrow tips
+            const lineY = 70;
+            drawArrow(ctx, 25, lineY, 295, lineY, '#1a1a1a', 1.5);
+            drawArrow(ctx, 295, lineY, 25, lineY, '#1a1a1a', 1.5);
+            drawPoint(ctx, 110, lineY, 'A', {x: -5, y: -12});
+            drawPoint(ctx, 200, lineY, 'B', {x: -5, y: -12});
+            ctx.fillStyle = '#666';
+            ctx.fillText('Line', 155, lineY + 28);
+            
+            // Ray - starts at point C, passes through D, arrow extends beyond
+            const rayStartX = 50, rayStartY = 160;
+            const rayEndX = 290, rayEndY = 160;
+            drawArrow(ctx, rayStartX, rayStartY, rayEndX, rayEndY, '#1a1a1a', 1.5);
+            drawPoint(ctx, rayStartX, rayStartY, 'C', {x: -20, y: 5});
+            drawPoint(ctx, 160, rayStartY, 'D', {x: -5, y: -12});  // D is in the middle, not at tip
+            ctx.fillStyle = '#666';
+            ctx.fillText('Ray', 155, rayStartY + 28);
+            
+            // Segment - two endpoints, no arrows
+            const segStartX = 60, segStartY = 250;
+            const segEndX = 250, segEndY = 250;
+            drawLine(ctx, segStartX, segStartY, segEndX, segEndY, '#1a1a1a', 1.5);
+            drawPoint(ctx, segStartX, segStartY, 'E', {x: -20, y: 5});
+            drawPoint(ctx, segEndX, segEndY, 'F', {x: 10, y: 5});
+            ctx.fillStyle = '#666';
+            ctx.fillText('Segment', 155, segStartY + 28);
+            
+            // Isolated point
+            drawPoint(ctx, 155, 330, 'P', {x: 10, y: 5});
+            ctx.fillStyle = '#666';
+            ctx.fillText('Point', 155, 355);
+        }
+
+        // ==================== PAGE 3: ANGLE PARTS ====================
+        
+        function drawAngleParts() {
+            const canvas = document.getElementById('anglePartsCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            const cx = 100, cy = 200;
+            const rayLength = 160;
+            const angle1 = -Math.PI / 6;  // -30 degrees
+            const angle2 = -Math.PI / 2.5;  // about -72 degrees
+            
+            // Draw angle arc
+            drawArc(ctx, cx, cy, 40, angle2, angle1, 'rgba(100, 100, 100, 0.12)', '#1a1a1a');
+            
+            // Draw rays (extend beyond where we label)
+            const ray1EndX = cx + rayLength * Math.cos(angle1);
+            const ray1EndY = cy + rayLength * Math.sin(angle1);
+            const ray2EndX = cx + rayLength * Math.cos(angle2);
+            const ray2EndY = cy + rayLength * Math.sin(angle2);
+            
+            drawArrow(ctx, cx, cy, ray1EndX, ray1EndY, '#1a1a1a', 1.5);
+            drawArrow(ctx, cx, cy, ray2EndX, ray2EndY, '#1a1a1a', 1.5);
+            
+            // Draw vertex point (slightly emphasized)
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fill();
+            
+            // Labels
+            ctx.font = 'italic 15px "Crimson Pro", serif';
+            
+            // Vertex label
+            ctx.fillStyle = '#666';
+            ctx.fillText('vertex', cx - 15, cy + 35);
+            
+            // Side labels - positioned along the ray, not at tips
+            const sideLabelDist = 90;
+            const side1LabelX = cx + sideLabelDist * Math.cos(angle1);
+            const side1LabelY = cy + sideLabelDist * Math.sin(angle1);
+            const side2LabelX = cx + sideLabelDist * Math.cos(angle2);
+            const side2LabelY = cy + sideLabelDist * Math.sin(angle2);
+            ctx.fillText('side', side1LabelX + 12, side1LabelY - 8);
+            ctx.fillText('side', side2LabelX + 12, side2LabelY - 5);
+        }
+
+        // ==================== PAGE 4: DEGREES ====================
+        
+        function drawDegrees() {
+            const canvas = document.getElementById('degreesCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Four angle types arranged horizontally
+            const angles = [
+                { cx: 90, cy: 170, angle: Math.PI / 4, label: '45°', type: 'Acute', color: 'rgba(100, 100, 100, 0.12)' },
+                { cx: 240, cy: 170, angle: Math.PI / 2, label: '90°', type: 'Right', color: 'rgba(100, 100, 100, 0.12)' },
+                { cx: 420, cy: 170, angle: 2.27, label: '130°', type: 'Obtuse', color: 'rgba(100, 100, 100, 0.12)' },
+                { cx: 590, cy: 170, angle: Math.PI, label: '180°', type: 'Straight', color: 'rgba(100, 100, 100, 0.12)' }
+            ];
+            
+            const rayLength = 60;
+            
+            angles.forEach(a => {
+                const baseAngle = 0;  // horizontal right
+                const endAngle = -a.angle;
+                
+                // Draw angle
+                if (a.type === 'Right') {
+                    drawRightAngleSquare(ctx, a.cx, a.cy, 0, -Math.PI/2, 14, a.color);
+                } else if (a.type === 'Straight') {
+                    drawArc(ctx, a.cx, a.cy, 25, -Math.PI, 0, a.color, '#1a1a1a');
+                } else {
+                    drawArc(ctx, a.cx, a.cy, 28, endAngle, baseAngle, a.color, '#1a1a1a');
+                }
+                
+                // Draw rays
+                if (a.type === 'Straight') {
+                    drawLine(ctx, a.cx - rayLength, a.cy, a.cx + rayLength, a.cy, '#1a1a1a', 1.5);
+                    drawPoint(ctx, a.cx, a.cy, '', {x: 0, y: 0});
+                } else {
+                    drawArrow(ctx, a.cx, a.cy, a.cx + rayLength, a.cy, '#1a1a1a', 1.5);
+                    drawArrow(ctx, a.cx, a.cy, a.cx + rayLength * Math.cos(endAngle), a.cy + rayLength * Math.sin(endAngle), '#1a1a1a', 1.5);
+                    drawPoint(ctx, a.cx, a.cy, '', {x: 0, y: 0});
+                }
+                
+                // Label
+                ctx.font = '20px "Crimson Pro", serif';
+                ctx.fillStyle = '#1a1a1a';
+                ctx.textAlign = 'center';
+                ctx.fillText(a.label, a.cx, a.cy + 85);
+                
+                // Type label
+                ctx.font = 'italic 14px "Crimson Pro", serif';
+                ctx.fillStyle = '#666';
+                ctx.fillText(a.type, a.cx, a.cy + 105);
+            });
+        }
+
+        // ==================== PAGE 5: NAMING ANGLES ====================
+        
+        function drawNaming() {
+            const canvas = document.getElementById('namingCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            const bx = 130, by = 190;
+            const rayLength = 120;
+            const pointDist = 70;  // Points positioned interior to the rays
+            const angle1 = -Math.PI / 5;
+            const angle2 = -Math.PI / 1.5;
+            
+            // Ray endpoints (arrow tips)
+            const rayEndX1 = bx + rayLength * Math.cos(angle1);
+            const rayEndY1 = by + rayLength * Math.sin(angle1);
+            const rayEndX2 = bx + rayLength * Math.cos(angle2);
+            const rayEndY2 = by + rayLength * Math.sin(angle2);
+            
+            // Labeled point positions (interior, not at tips)
+            const ax = bx + pointDist * Math.cos(angle1);
+            const ay = by + pointDist * Math.sin(angle1);
+            const cxPt = bx + pointDist * Math.cos(angle2);
+            const cyPt = by + pointDist * Math.sin(angle2);
+            
+            // Draw angle arc
+            drawArc(ctx, bx, by, 35, angle2, angle1, 'rgba(100, 100, 100, 0.12)', '#1a1a1a');
+            
+            // Draw rays (extend beyond labeled points to arrow tips)
+            drawArrow(ctx, bx, by, rayEndX1, rayEndY1, '#1a1a1a', 1.5);
+            drawArrow(ctx, bx, by, rayEndX2, rayEndY2, '#1a1a1a', 1.5);
+            
+            // Draw labeled points interior to rays
+            drawPoint(ctx, ax, ay, 'A', {x: 10, y: 5});
+            drawPoint(ctx, cxPt, cyPt, 'C', {x: -22, y: -5});
+            
+            // Draw vertex B (slightly emphasized)
+            ctx.beginPath();
+            ctx.arc(bx, by, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fill();
+            
+            ctx.font = 'italic 18px "Crimson Pro", serif';
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillText('B', bx + 12, by + 22);
+            
+            // Angle name
+            ctx.font = '28px "Crimson Pro", serif';
+            ctx.fillStyle = '#1a1a1a';
+            ctx.textAlign = 'center';
+            ctx.fillText('∠ABC', 240, 80);
+        }
+
+        // ==================== PAGE 6: SUPPLEMENTARY ====================
+        
+        function drawSupplementary() {
+            const canvas = document.getElementById('supplementaryCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            const cxPt = 260, cyPt = 160;
+            const rayLength = 160;
+            const linePointDist = 100;  // Interior label positions for A, C
+            
+            // Line endpoints (arrow tips)
+            const lineEndLeft = cxPt - rayLength;
+            const lineEndRight = cxPt + rayLength;
+            
+            // Labeled positions for A and C (interior to line)
+            const ax = cxPt - linePointDist;
+            const cPointX = cxPt + linePointDist;
+            
+            // Point D above - ray extends further than labeled point
+            const dAngle = -Math.PI / 3;
+            const rayTipX = cxPt + rayLength * 0.85 * Math.cos(dAngle);
+            const rayTipY = cyPt + rayLength * 0.85 * Math.sin(dAngle);
+            const dx = cxPt + 60 * Math.cos(dAngle);  // D labeled interior
+            const dy = cyPt + 60 * Math.sin(dAngle);
+            
+            // Draw angles with subtle shading
+            drawArc(ctx, cxPt, cyPt, 40, -Math.PI, dAngle, 'rgba(100, 100, 100, 0.1)', '#666');
+            drawArc(ctx, cxPt, cyPt, 40, dAngle, 0, 'rgba(100, 100, 100, 0.18)', '#666');
+            
+            // Draw straight line (extends to arrow-like endpoints)
+            drawLine(ctx, lineEndLeft, cyPt, lineEndRight, cyPt, '#1a1a1a', 1.5);
+            
+            // Draw ray to D (arrow tip beyond labeled point)
+            drawArrow(ctx, cxPt, cyPt, rayTipX, rayTipY, '#1a1a1a', 1.5);
+            
+            // Draw labeled points - interior to lines/rays
+            drawPoint(ctx, ax, cyPt, 'A', {x: -5, y: 18});
+            drawPoint(ctx, cxPt, cyPt, 'B', {x: -5, y: 22});
+            drawPoint(ctx, cPointX, cyPt, 'C', {x: -5, y: 18});
+            drawPoint(ctx, dx, dy, 'D', {x: 10, y: -5});
+            
+            // Equation
+            ctx.font = '18px "Crimson Pro", serif';
+            ctx.fillStyle = '#1a1a1a';
+            ctx.textAlign = 'center';
+            ctx.fillText('∠ABD + ∠DBC = 180°', cxPt, cyPt + 65);
+        }
+
+        // ==================== PAGE 7: EXAMPLES ====================
+        
+        function drawExample1() {
+            const canvas = document.getElementById('example1Canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const cx = 130, cy = 100;
+            const rayLength = 90;
+            
+            // Angle at about 70 degrees from horizontal
+            const angle = -70 * Math.PI / 180;
+            
+            // Draw angles
+            drawArc(ctx, cx, cy, 28, -Math.PI, angle, 'rgba(100, 100, 100, 0.1)', '#666');
+            drawArc(ctx, cx, cy, 28, angle, 0, 'rgba(100, 100, 100, 0.18)', '#666');
+            
+            // Straight line
+            drawLine(ctx, cx - rayLength, cy, cx + rayLength, cy, '#1a1a1a', 1.5);
+            
+            // Ray up
+            const dx = cx + 70 * Math.cos(angle);
+            const dy = cy + 70 * Math.sin(angle);
+            drawArrow(ctx, cx, cy, dx, dy, '#1a1a1a', 1.5);
+            
+            drawPoint(ctx, cx, cy, '', {x: 0, y: 0});
+            
+            // Labels
+            ctx.font = '16px "Crimson Pro", serif';
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillText('70°', cx + 40, cy - 20);
+            ctx.fillText('?', cx - 50, cy - 12);
+        }
+        
+        function drawExample2() {
+            const canvas = document.getElementById('example2Canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const cx = 130, cy = 100;
+            const rayLength = 90;
+            
+            // Draw right angles
+            drawRightAngleSquare(ctx, cx, cy, -Math.PI, -Math.PI/2, 14, 'rgba(100, 100, 100, 0.1)');
+            drawRightAngleSquare(ctx, cx, cy, -Math.PI/2, 0, 14, 'rgba(100, 100, 100, 0.18)');
+            
+            // Straight line
+            drawLine(ctx, cx - rayLength, cy, cx + rayLength, cy, '#1a1a1a', 1.5);
+            
+            // Vertical ray
+            drawArrow(ctx, cx, cy, cx, cy - 70, '#1a1a1a', 1.5);
+            
+            drawPoint(ctx, cx, cy, '', {x: 0, y: 0});
+            
+            // Labels
+            ctx.font = '16px "Crimson Pro", serif';
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillText('90°', cx - 45, cy - 20);
+            ctx.fillText('90°', cx + 22, cy - 20);
+        }
+
+        // ==================== QUIZ LOGIC ====================
+        
+        const answers = {
+            1: { answer: 'vertex' },
+            2: { answer: '180' },
+            3: { answer: 'acute' },
+            4: { answer: 'Q' },
+            5: { answer: '65' },
+            6: { answer: 'supplementary' }
+        };
+        
+        // Handle multiple choice selection
+        document.querySelectorAll('.quiz-options').forEach(optionGroup => {
+            optionGroup.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Deselect others in this group
+                    this.parentElement.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        });
+        
+        document.getElementById('checkAnswers').addEventListener('click', function() {
+            let score = 0;
+            
+            for (let i = 1; i <= 6; i++) {
+                const question = document.getElementById(`q${i}`);
+                const feedback = document.getElementById(`f${i}`);
+                let userAnswer;
+                let isCorrect = false;
+                
+                const selected = document.querySelector(`#o${i} .quiz-option.selected`);
+                userAnswer = selected ? selected.dataset.value : '';
+                isCorrect = userAnswer === answers[i].answer;
+                
+                question.classList.remove('correct', 'incorrect');
+                feedback.classList.remove('correct', 'incorrect');
+                
+                if (isCorrect) {
+                    question.classList.add('correct');
+                    feedback.textContent = '✓ Correct!';
+                    feedback.classList.add('correct', 'show');
+                    score++;
+                } else {
+                    question.classList.add('incorrect');
+                    let correctText = answers[i].answer;
+                    if (i === 2) correctText = '180°';
+                    if (i === 5) correctText = '65°';
+                    feedback.textContent = `✗ The answer is: ${correctText}`;
+                    feedback.classList.add('incorrect', 'show');
+                }
+            }
+            
+            // Show score
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreNumber = document.getElementById('scoreNumber');
+            const scoreMessage = document.getElementById('scoreMessage');
+            
+            scoreNumber.textContent = `${score}/6`;
+            
+            if (score === 6) {
+                scoreMessage.textContent = 'Excellent. All answers correct.';
+            } else if (score >= 4) {
+                scoreMessage.textContent = 'Good progress. Review the incorrect answers above.';
+            } else if (score >= 2) {
+                scoreMessage.textContent = 'Consider reviewing the material before proceeding.';
+            } else {
+                scoreMessage.textContent = 'Further study recommended.';
+            }
+            
+            scoreDisplay.classList.add('show');
+        });
+
+        // ==================== NAVIGATION ====================
+        
+        const scrollContainer = document.getElementById('scrollContainer');
+        const navDots = document.querySelectorAll('.nav-dot');
+        const pages = document.querySelectorAll('.page');
+        
+        // Update active dot on scroll
+        scrollContainer.addEventListener('scroll', () => {
+            const scrollPos = scrollContainer.scrollTop;
+            const pageHeight = window.innerHeight;
+            const currentPage = Math.round(scrollPos / pageHeight);
+            
+            navDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentPage);
+            });
+        });
+        
+        // Click on dot to navigate
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const pageIndex = parseInt(dot.dataset.page);
+                pages[pageIndex].scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                const currentPage = Math.round(scrollContainer.scrollTop / window.innerHeight);
+                if (currentPage < pages.length - 1) {
+                    pages[currentPage + 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                const currentPage = Math.round(scrollContainer.scrollTop / window.innerHeight);
+                if (currentPage > 0) {
+                    pages[currentPage - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+
+        // ==================== INITIALIZE ALL DIAGRAMS ====================
+        
+        window.addEventListener('load', () => {
+            drawEuclidProposition();
+            drawBuildingBlocks();
+            drawAngleParts();
+            drawDegrees();
+            drawNaming();
+            drawSupplementary();
+            drawExample1();
+            drawExample2();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4: Angles in Action — Practice Session</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+        <span id="progress-text">Problem 1 of 19</span>
+    </div>
+
+    <!-- Main scroll container -->
+    <div id="scroll-container" class="h-screen overflow-y-scroll snap-y snap-mandatory">
+        
+        <!-- Page 0: Cover -->
+        <section id="page-0" class="snap-section bg-gradient-to-br from-amber-50 to-orange-50">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl heading-primary mb-4">Angles in Action</h1>
+                <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">Practice Session</p>
+                <p class="text-lg text-gray-400">Lesson IV</p>
+                <div class="mt-12">
+                    <p class="body-text text-center max-w-lg mx-auto mb-8">
+                        Apply what you learned in Lessons I–III. No new theorems—just practice.
+                    </p>
+                    <p class="text-sm text-gray-500">19 problems • ~25 minutes</p>
+                </div>
+                <div class="mt-12 bounce">
+                    <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 1: WARM-UP (Problems 1-4)
+             ============================================ -->
+
+        <!-- Problem 1: Identify angle type by appearance -->
+        <section id="page-1" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 1: Warm-Up</span>
+                    <h2 class="text-2xl heading-primary">Problem 1</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Classify the angle shown below.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p1" class="diagram-canvas" width="350" height="250"></canvas>
+                </div>
+
+                <div id="problem1-container" class="problem-options"></div>
+                <div id="problem1-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 2: Identify angle type -->
+        <section id="page-2" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 1: Warm-Up</span>
+                    <h2 class="text-2xl heading-primary">Problem 2</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Classify the angle shown below.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p2" class="diagram-canvas" width="350" height="250"></canvas>
+                </div>
+
+                <div id="problem2-container" class="problem-options"></div>
+                <div id="problem2-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 3: Name the angle -->
+        <section id="page-3" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 1: Warm-Up</span>
+                    <h2 class="text-2xl heading-primary">Problem 3</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    What is the measure of ∠<i>x</i> if it forms a linear pair with a 125° angle?
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p3" class="diagram-canvas" width="400" height="200"></canvas>
+                </div>
+
+                <div id="problem3-container" class="problem-input"></div>
+                <div id="problem3-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 4: Complementary angles -->
+        <section id="page-4" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 1: Warm-Up</span>
+                    <h2 class="text-2xl heading-primary">Problem 4</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Two angles are complementary. One measures 37°. What is the measure of the other angle?
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p4" class="diagram-canvas" width="350" height="250"></canvas>
+                </div>
+
+                <div id="problem4-container" class="problem-input"></div>
+                <div id="problem4-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 2: VERTICAL ANGLES (Problems 5-8)
+             ============================================ -->
+
+        <!-- Problem 5: Direct vertical angle application -->
+        <section id="page-5" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 2: Vertical Angles</span>
+                    <h2 class="text-2xl heading-primary">Problem 5</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Two lines intersect. If ∠<i>a</i> = 72°, find ∠<i>c</i> (the angle vertical to ∠<i>a</i>).
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p5" class="diagram-canvas" width="380" height="280"></canvas>
+                </div>
+
+                <div id="problem5-container" class="problem-input"></div>
+                <div id="problem5-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 6: Find all four angles -->
+        <section id="page-6" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 2: Vertical Angles</span>
+                    <h2 class="text-2xl heading-primary">Problem 6</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Two lines intersect. Given ∠<i>a</i> = 118°, find the measures of ∠<i>b</i>, ∠<i>c</i>, and ∠<i>d</i>.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p6" class="diagram-canvas" width="380" height="280"></canvas>
+                </div>
+
+                <div id="problem6-container" class="problem-multi-input"></div>
+                <div id="problem6-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 7: Algebraic vertical angles -->
+        <section id="page-7" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 2: Vertical Angles</span>
+                    <h2 class="text-2xl heading-primary">Problem 7</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Two vertical angles are equal. One measures 54° and the other measures (2<i>x</i> + 6)°. Find <i>x</i>.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p7" class="diagram-canvas" width="380" height="280"></canvas>
+                </div>
+
+                <div id="problem7-container" class="problem-input"></div>
+                <div id="problem7-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 8: Identify vertical angle pairs -->
+        <section id="page-8" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 2: Vertical Angles</span>
+                    <h2 class="text-2xl heading-primary">Problem 8</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Which pair of angles are vertical angles?
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p8" class="diagram-canvas" width="380" height="280"></canvas>
+                </div>
+
+                <div id="problem8-container" class="problem-options"></div>
+                <div id="problem8-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 3: PARALLEL LINES + TRANSVERSAL (Problems 9-15)
+             ============================================ -->
+
+        <!-- Problem 9: Corresponding angles -->
+        <section id="page-9" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 3: Parallel Lines</span>
+                    <h2 class="text-2xl heading-primary">Problem 9</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Lines <i>ℓ</i> and <i>m</i> are parallel. If ∠<i>a</i> = 63°, find ∠<i>e</i> (its corresponding angle).
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p9" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem9-container" class="problem-input"></div>
+                <div id="problem9-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 10: Alternate interior angles -->
+        <section id="page-10" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 3: Parallel Lines</span>
+                    <h2 class="text-2xl heading-primary">Problem 10</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Lines <i>ℓ</i> ∥ <i>m</i>. Given ∠<i>d</i> = 127°, find ∠<i>f</i> (alternate interior angle to ∠<i>d</i>).
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p10" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem10-container" class="problem-input"></div>
+                <div id="problem10-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 11: Co-interior (same-side interior) angles -->
+        <section id="page-11" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 3: Parallel Lines</span>
+                    <h2 class="text-2xl heading-primary">Problem 11</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Lines <i>ℓ</i> ∥ <i>m</i>. If ∠<i>c</i> = 72°, find ∠<i>f</i>.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p11" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem11-container" class="problem-input"></div>
+                <div id="problem11-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 12: Mixed - find angle using any relationship -->
+        <section id="page-12" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 3: Parallel Lines</span>
+                    <h2 class="text-2xl heading-primary">Problem 12</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Lines <i>ℓ</i> ∥ <i>m</i>. Given ∠<i>b</i> = 115°, find ∠<i>g</i>.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p12" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem12-container" class="problem-input"></div>
+                <div id="problem12-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 13: Identify the relationship -->
+        <section id="page-13" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 3: Parallel Lines</span>
+                    <h2 class="text-2xl heading-primary">Problem 13</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    If ∠<i>c</i> = 70°, what is ∠<i>e</i>?
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p13" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem13-container" class="problem-input"></div>
+                <div id="problem13-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 14: Identify the relationship -->
+        <section id="page-14" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 3: Parallel Lines</span>
+                    <h2 class="text-2xl heading-primary">Problem 14</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    If ∠<i>d</i> = 65°, what is ∠<i>e</i>?
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p14" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem14-container" class="problem-input"></div>
+                <div id="problem14-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 15: Are they parallel? -->
+        <section id="page-15" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 3: Parallel Lines</span>
+                    <h2 class="text-2xl heading-primary">Problem 15</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    If ∠<i>c</i> = 85° and ∠<i>f</i> = 85°, are lines <i>ℓ</i> and <i>m</i> parallel?
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p15" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem15-container" class="problem-options"></div>
+                <div id="problem15-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 4: COMBINED CHALLENGES (Problems 16-19)
+             ============================================ -->
+
+        <!-- Problem 16: Multi-step reasoning -->
+        <section id="page-16" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 4: Combined Challenges</span>
+                    <h2 class="text-2xl heading-primary">Problem 16</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Lines <i>ℓ</i> ∥ <i>m</i>. Given ∠<i>a</i> = 58°, find ∠<i>h</i>.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p16" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem16-container" class="problem-input"></div>
+                <div id="problem16-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 17: Multi-step with vertical + corresponding -->
+        <section id="page-17" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 4: Combined Challenges</span>
+                    <h2 class="text-2xl heading-primary">Problem 17</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Lines <i>ℓ</i> ∥ <i>m</i>. Given ∠<i>b</i> = 134°, find ∠<i>h</i>.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p17" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem17-container" class="problem-input"></div>
+                <div id="problem17-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- Problem 18: Algebraic with parallel lines -->
+        <section id="page-18" class="snap-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-label">Section 4: Combined Challenges</span>
+                    <h2 class="text-2xl heading-primary">Problem 18</h2>
+                </div>
+                
+                <p class="body-text mb-6">
+                    Lines <i>ℓ</i> ∥ <i>m</i>. ∠<i>c</i> and ∠<i>e</i> are equal. If ∠<i>c</i> = 50° and ∠<i>e</i> = (2<i>x</i> + 10)°, find <i>x</i>.
+                </p>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-p18" class="diagram-canvas" width="420" height="320"></canvas>
+                </div>
+
+                <div id="problem18-container" class="problem-input"></div>
+                <div id="problem18-feedback" class="feedback-box hidden"></div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             RESULTS PAGE
+             ============================================ -->
+        <section id="page-19" class="snap-section">
+            <div class="section-card">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Session Complete</h2>
+                
+                <div id="results-summary" class="results-box mb-8">
+                    <!-- Filled dynamically -->
+                </div>
+
+                <div id="results-breakdown" class="mb-8">
+                    <!-- Filled dynamically -->
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button id="retry-missed-btn" class="btn-primary hidden">
+                        Retry Missed Problems
+                    </button>
+                    <button id="restart-btn" class="btn-secondary">
+                        Start Over
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- JS files -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

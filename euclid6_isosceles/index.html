@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6: Isosceles Triangles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main scroll container -->
+    <div id="scroll-container" class="h-screen overflow-y-scroll snap-y snap-mandatory">
+
+        <!-- Page 0: Cover -->
+        <section id="page-0" class="snap-section bg-gradient-to-br from-blue-50 to-indigo-50">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl heading-primary mb-4">Isosceles Triangles</h1>
+                <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">Two equal sides. What follows?</p>
+                <p class="text-lg text-gray-400">Lesson VI</p>
+                <div class="mt-12 flex justify-center">
+                    <canvas id="canvas-cover" class="diagram-canvas" width="500" height="280"></canvas>
+                </div>
+                <div class="mt-12 bounce">
+                    <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 1: What is an Isosceles Triangle? -->
+        <section id="page-1" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">What is an Isosceles Triangle?</h2>
+                        <div class="definition-box mb-6">
+                            <p class="body-text">
+                                An <strong>isosceles triangle</strong> is a triangle with two sides of equal length.
+                            </p>
+                        </div>
+                        <p class="body-text mb-4">
+                            The parts have names:
+                        </p>
+                        <ul class="body-text mb-4 list-disc list-inside ml-4 space-y-1">
+                            <li><strong>Legs</strong> — the two equal sides</li>
+                            <li><strong>Base</strong> — the third side</li>
+                            <li><strong>Vertex angle</strong> — the angle between the two legs</li>
+                            <li><strong>Base angles</strong> — the two angles at the ends of the base</li>
+                        </ul>
+                        <p class="body-text text-gray-500 italic">
+                            Note: The "base" doesn't have to be at the bottom. It's simply the name for the side that's different from the two equal legs.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page1" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 2: Comparing Triangle Types -->
+        <section id="page-2" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Comparing Triangle Types</h2>
+                        <p class="body-text mb-4">
+                            Triangles are classified by their sides:
+                        </p>
+                        <ul class="body-text mb-6 list-disc list-inside ml-4 space-y-2">
+                            <li><strong>Scalene</strong> — no sides equal</li>
+                            <li><strong>Isosceles</strong> — two sides equal</li>
+                            <li><strong>Equilateral</strong> — all three sides equal</li>
+                        </ul>
+                        <p class="body-text text-gray-500 italic">
+                            An equilateral triangle is a special case of isosceles—it has not just two, but three equal sides.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page2" class="diagram-canvas" width="450" height="280"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Discovery — The Base Angles -->
+        <section id="page-3" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Discovery — The Base Angles</h2>
+                        <p class="body-text mb-4">
+                            Look at an isosceles triangle. The two legs are equal—that's the definition.
+                        </p>
+                        <p class="body-text mb-4">
+                            But look at the base angles.
+                        </p>
+                        <p class="body-text mb-4">
+                            <strong>They're equal too.</strong>
+                        </p>
+                        <p class="body-text mb-6">
+                            This isn't a coincidence. No matter how you draw an isosceles triangle—tall and narrow, short and wide—if the legs are equal, the base angles are equal.
+                        </p>
+                        <div class="theorem-box">
+                            <p class="body-text">
+                                <strong>Isosceles Triangle Theorem:</strong><br>
+                                If two sides of a triangle are congruent, then the angles opposite those sides are congruent.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page3" class="diagram-canvas" width="420" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 4: The Question -->
+        <section id="page-4" class="snap-section bg-gradient-to-br from-gray-50 to-slate-50">
+            <div class="section-card max-w-2xl">
+                <h2 class="text-3xl heading-primary mb-6 text-center">The Question</h2>
+                <div class="flex justify-center mb-8">
+                    <canvas id="canvas-page4" class="diagram-canvas" width="350" height="250"></canvas>
+                </div>
+                <p class="body-text mb-4 text-center">
+                    We can see that the base angles are equal.
+                </p>
+                <p class="body-text mb-4 text-center">
+                    But <em>why</em> must it be so?
+                </p>
+                <blockquote class="body-text mb-4">
+                    Geometry is not about observation—it's about proof. We need to show that equal legs <em>logically force</em> equal base angles.
+                </blockquote>
+                <p class="body-text text-center text-gray-500">
+                    The tool we'll use: <strong>SSS congruence</strong>, from the previous lesson.
+                </p>
+            </div>
+        </section>
+
+        <!-- Page 5: The Proof -->
+        <section id="page-5" class="snap-section">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6">The Proof</h2>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="lg:w-1/2">
+                        <div class="theorem-box mb-4">
+                            <p class="body-text">
+                                <strong>Theorem:</strong> If two sides of a triangle are congruent, then the angles opposite those sides are congruent.
+                            </p>
+                        </div>
+
+                        <div class="proof-given mb-2">
+                            <strong>Given:</strong> △<em>ABC</em> with <em>AB</em> ≅ <em>AC</em>
+                        </div>
+                        <div class="proof-prove mb-4">
+                            <strong>Prove:</strong> ∠<em>ABC</em> ≅ ∠<em>ACB</em>
+                        </div>
+
+                        <div class="proof-table">
+                            <div class="proof-header">
+                                <div>Statement</div>
+                                <div>Reason</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">1. Let <em>M</em> be the midpoint of <em>BC</em> (the point exactly halfway between <em>B</em> and <em>C</em>)</div>
+                                <div class="proof-reason">Construction</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">2. <em>AB</em> ≅ <em>AC</em></div>
+                                <div class="proof-reason">Given</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">3. <em>BM</em> ≅ <em>CM</em></div>
+                                <div class="proof-reason">Definition of midpoint</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">4. <em>AM</em> ≅ <em>AM</em></div>
+                                <div class="proof-reason">A segment is congruent to itself</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">5. △<em>ABM</em> ≅ △<em>ACM</em></div>
+                                <div class="proof-reason">SSS</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">6. ∠<em>ABM</em> ≅ ∠<em>ACM</em></div>
+                                <div class="proof-reason">Corresponding parts of ≅ triangles</div>
+                            </div>
+                            <div class="proof-qed">∎</div>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center items-start pt-8">
+                        <canvas id="canvas-page5" class="diagram-canvas" width="400" height="340"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: The Converse -->
+        <section id="page-6" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">The Converse</h2>
+                        <p class="body-text mb-4">
+                            The converse is also true:
+                        </p>
+                        <div class="theorem-box mb-6">
+                            <p class="body-text">
+                                If two angles of a triangle are congruent, then the sides opposite those angles are congruent.
+                            </p>
+                        </div>
+                        <p class="body-text mb-4">
+                            So equal sides imply equal angles, and equal angles imply equal sides. The relationship goes both ways.
+                        </p>
+                        <p class="body-text text-gray-500 italic">
+                            We won't prove the converse here, but it follows from similar reasoning.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page6" class="diagram-canvas" width="350" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 7: Exercises -->
+        <section id="page-7" class="snap-section">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Exercises</h2>
+                <p class="body-text text-center mb-8">Apply the Isosceles Triangle Theorem.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Exercise 1 -->
+                    <div class="exercise-item">
+                        <h3 class="text-xl heading-primary mb-3">Exercise 1</h3>
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-ex1" class="diagram-canvas-small" width="280" height="180"></canvas>
+                        </div>
+                        <p class="body-text mb-4">Each base angle of an isosceles triangle measures 65°. Find the vertex angle.</p>
+                        <div id="ex1-options" class="space-y-2 mb-4"></div>
+                        <button id="ex1-check" class="check-btn">Check</button>
+                        <div id="ex1-feedback" class="hidden"></div>
+                    </div>
+
+                    <!-- Exercise 2 -->
+                    <div class="exercise-item">
+                        <h3 class="text-xl heading-primary mb-3">Exercise 2</h3>
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-ex2" class="diagram-canvas-small" width="280" height="180"></canvas>
+                        </div>
+                        <p class="body-text mb-4">The vertex angle of an isosceles triangle measures 40°. Find the measure of each base angle.</p>
+                        <div id="ex2-options" class="space-y-2 mb-4"></div>
+                        <button id="ex2-check" class="check-btn">Check</button>
+                        <div id="ex2-feedback" class="hidden"></div>
+                    </div>
+
+                    <!-- Exercise 3 -->
+                    <div class="exercise-item">
+                        <h3 class="text-xl heading-primary mb-3">Exercise 3</h3>
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-ex3" class="diagram-canvas-small" width="280" height="180"></canvas>
+                        </div>
+                        <p class="body-text mb-4">A triangle has angles measuring 50°, 50°, and 80°. Is it isosceles? If so, which sides are the legs?</p>
+                        <div id="ex3-options" class="space-y-2 mb-4"></div>
+                        <button id="ex3-check" class="check-btn">Check</button>
+                        <div id="ex3-feedback" class="hidden"></div>
+                    </div>
+
+                    <!-- Exercise 4 -->
+                    <div class="exercise-item">
+                        <h3 class="text-xl heading-primary mb-3">Exercise 4</h3>
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-ex4" class="diagram-canvas-small" width="280" height="180"></canvas>
+                        </div>
+                        <p class="body-text mb-4">An isosceles triangle has base angles measuring 40° and (2<em>x</em> + 10)°. Find <em>x</em>.</p>
+                        <div id="ex4-input-area" class="mb-4"></div>
+                        <button id="ex4-check" class="check-btn">Check</button>
+                        <div id="ex4-feedback" class="hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 8: Summary -->
+        <section id="page-8" class="snap-section bg-gradient-to-br from-indigo-50 to-blue-50">
+            <div class="section-card max-w-2xl">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Summary</h2>
+
+                <div class="definition-box mb-4">
+                    <p class="body-text">
+                        An <strong>isosceles triangle</strong> has two equal sides (legs) and a third side (base).
+                    </p>
+                </div>
+
+                <div class="theorem-box mb-4">
+                    <p class="body-text">
+                        <strong>Isosceles Triangle Theorem:</strong><br>
+                        If two sides of a triangle are congruent, then the angles opposite those sides are congruent.
+                    </p>
+                </div>
+
+                <div class="notation-box mb-4">
+                    <p class="body-text">
+                        <strong>Proof method:</strong> Draw a segment from the vertex to the midpoint of the base. Use SSS to prove the two resulting triangles are congruent. The base angles are corresponding parts.
+                    </p>
+                </div>
+
+                <div class="summary-box mb-6">
+                    <p class="body-text">
+                        <strong>Converse:</strong> If two angles of a triangle are congruent, the sides opposite them are congruent.
+                    </p>
+                </div>
+
+                <p class="body-text text-gray-500 italic text-center">
+                    Next: More triangle congruence criteria (SAS, ASA) and their applications.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

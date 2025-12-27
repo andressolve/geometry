@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometry Lesson 2: Vertical Angles</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Noto Serif', serif;
+        }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        .snap-section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .section-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            max-width: 900px;
+            width: 90%;
+            padding: 3rem;
+        }
+        .heading-primary {
+            color: #6a82fb;
+            font-weight: 700;
+        }
+        .body-text {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+        .theorem-box {
+            border: 2px solid #6a82fb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            background: rgba(106, 130, 251, 0.05);
+        }
+        .proof-box {
+            border-left: 4px solid #6a82fb;
+            padding-left: 1.5rem;
+            background: rgba(106, 130, 251, 0.03);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+        }
+        .proof-step {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border-bottom: 1px solid rgba(106, 130, 251, 0.15);
+        }
+        .proof-step:last-child {
+            border-bottom: none;
+        }
+        .proof-statement, .proof-reason {
+            padding: 0.75rem 1rem;
+        }
+        .proof-statement {
+            background: rgba(106, 130, 251, 0.04);
+            border-right: 1px solid rgba(106, 130, 251, 0.15);
+        }
+        .proof-reason {
+            background: rgba(16, 185, 129, 0.04);
+            font-style: italic;
+            color: #6b7280;
+        }
+        .proof-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: linear-gradient(135deg, #6a82fb 0%, #8b5cf6 100%);
+            color: white;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0;
+        }
+        .proof-header > div {
+            padding: 0.75rem 1rem;
+        }
+        .proof-header > div:first-child {
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+        .proof-table {
+            border: 2px solid #6a82fb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.15);
+        }
+        .proof-qed {
+            text-align: right;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(106, 130, 251, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            font-weight: 600;
+            color: #6a82fb;
+            letter-spacing: 0.5px;
+        }
+        .proof-given {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+        }
+        .proof-prove {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .definition-box {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background: #fafafa;
+        }
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        blockquote {
+            border-left: 3px solid #6a82fb;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #4b5563;
+            font-style: italic;
+        }
+        .quiz-option {
+            min-height: 44px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            background: rgba(106, 130, 251, 0.1);
+        }
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        .nav-dot:hover {
+            background: #9ca3af;
+        }
+        .nav-dot.active {
+            background: #6a82fb;
+            transform: scale(1.3);
+        }
+        /* Exercise styles */
+        .exercise-box {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: #fafafa;
+        }
+        .exercise-box.correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .exercise-box.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+        .exercise-input {
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 1.1rem;
+            width: 80px;
+            text-align: center;
+            font-family: 'Noto Serif', serif;
+        }
+        .exercise-input:focus {
+            outline: none;
+            border-color: #6a82fb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef, useEffect } = React;
+
+        // ============================================
+        // GEOMETRY UTILITIES
+        // ============================================
+        const GeometryUtils = {
+            // Extend a point past a target by a given distance
+            extendPoint(start, target, distance) {
+                const dx = target.x - start.x;
+                const dy = target.y - start.y;
+                const len = Math.sqrt(dx * dx + dy * dy);
+                return {
+                    x: target.x + (dx / len) * distance,
+                    y: target.y + (dy / len) * distance
+                };
+            },
+
+            // Calculate angle between two points from a vertex
+            getAngle(vertex, point) {
+                return Math.atan2(point.y - vertex.y, point.x - vertex.x);
+            },
+
+            // Draw a line with arrows extending past points
+            drawLine(ctx, p1, p2, extend = 40) {
+                const ext1 = this.extendPoint(p2, p1, extend);
+                const ext2 = this.extendPoint(p1, p2, extend);
+                
+                ctx.beginPath();
+                ctx.moveTo(ext1.x, ext1.y);
+                ctx.lineTo(ext2.x, ext2.y);
+                ctx.stroke();
+
+                // Draw arrowheads
+                this.drawArrowhead(ctx, p1, ext1);
+                this.drawArrowhead(ctx, p2, ext2);
+            },
+
+            drawArrowhead(ctx, from, to, size = 8) {
+                const angle = Math.atan2(to.y - from.y, to.x - from.x);
+                ctx.beginPath();
+                ctx.moveTo(to.x, to.y);
+                ctx.lineTo(to.x - size * Math.cos(angle - Math.PI / 6), to.y - size * Math.sin(angle - Math.PI / 6));
+                ctx.moveTo(to.x, to.y);
+                ctx.lineTo(to.x - size * Math.cos(angle + Math.PI / 6), to.y - size * Math.sin(angle + Math.PI / 6));
+                ctx.stroke();
+            },
+
+            drawRay(ctx, start, through, extend = 60) {
+                const ext = this.extendPoint(start, through, extend);
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(ext.x, ext.y);
+                ctx.stroke();
+                this.drawArrowhead(ctx, through, ext);
+            },
+
+            drawPoint(ctx, x, y, label, offsetX = 0, offsetY = 0, size = 4) {
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (label) {
+                    ctx.font = 'italic 16px Noto Serif';
+                    ctx.fillText(label, x + offsetX, y + offsetY);
+                }
+            },
+
+            drawAngleMark(ctx, vertex, p1, p2, fillColor, strokeColor, radius = 30, label = null, labelRadius = 45) {
+                const angle1 = this.getAngle(vertex, p1);
+                const angle2 = this.getAngle(vertex, p2);
+
+                // Calculate the angular difference going counterclockwise from angle1 to angle2
+                let diff = angle2 - angle1;
+                // Normalize to [0, 2π)
+                while (diff < 0) diff += 2 * Math.PI;
+                while (diff >= 2 * Math.PI) diff -= 2 * Math.PI;
+
+                // If diff > π, we're going the long way; go clockwise instead
+                const counterclockwise = diff > Math.PI;
+
+                ctx.beginPath();
+                ctx.moveTo(vertex.x, vertex.y);
+                ctx.arc(vertex.x, vertex.y, radius, angle1, angle2, counterclockwise);
+                ctx.closePath();
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+                ctx.strokeStyle = strokeColor;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                if (label) {
+                    // Calculate midpoint angle for the arc we actually drew
+                    let midAngle;
+                    if (counterclockwise) {
+                        // Going clockwise from angle1 to angle2
+                        let cwDiff = angle1 - angle2;
+                        while (cwDiff < 0) cwDiff += 2 * Math.PI;
+                        midAngle = angle1 - cwDiff / 2;
+                    } else {
+                        // Going counterclockwise from angle1 to angle2
+                        midAngle = angle1 + diff / 2;
+                    }
+                    const labelX = vertex.x + labelRadius * Math.cos(midAngle);
+                    const labelY = vertex.y + labelRadius * Math.sin(midAngle);
+                    ctx.fillStyle = '#333';
+                    ctx.font = '14px Noto Serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(label, labelX, labelY);
+                }
+
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = '#333';
+            },
+
+            drawRightAngleMark(ctx, vertex, p1, p2, size = 15) {
+                const angle1 = this.getAngle(vertex, p1);
+                const angle2 = this.getAngle(vertex, p2);
+
+                const corner1 = {
+                    x: vertex.x + size * Math.cos(angle1),
+                    y: vertex.y + size * Math.sin(angle1)
+                };
+                const corner2 = {
+                    x: vertex.x + size * Math.cos(angle2),
+                    y: vertex.y + size * Math.sin(angle2)
+                };
+                const corner3 = {
+                    x: corner1.x + size * Math.cos(angle2),
+                    y: corner1.y + size * Math.sin(angle2)
+                };
+
+                ctx.beginPath();
+                ctx.moveTo(corner1.x, corner1.y);
+                ctx.lineTo(corner3.x, corner3.y);
+                ctx.lineTo(corner2.x, corner2.y);
+                ctx.strokeStyle = '#333';
+                ctx.stroke();
+            }
+        };
+
+        // ============================================
+        // GEOMETRY CANVAS COMPONENT
+        // ============================================
+        function GeometryCanvas({ draw, width = 400, height = 300 }) {
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+
+                ctx.scale(dpr, dpr);
+                ctx.clearRect(0, 0, width, height);
+                
+                // Set default styles
+                ctx.strokeStyle = '#333333';
+                ctx.fillStyle = '#333333';
+                ctx.lineWidth = 1.5;
+                ctx.lineCap = 'round';
+
+                draw(ctx, width, height, GeometryUtils);
+            }, [draw, width, height]);
+
+            return (
+                <canvas 
+                    ref={canvasRef} 
+                    className="border border-gray-200 rounded-lg bg-white"
+                    style={{ maxWidth: '100%' }}
+                />
+            );
+        }
+
+        // ============================================
+        // PAGE 0: COVER
+        // ============================================
+        function Cover() {
+            return (
+                <section className="snap-section bg-gradient-to-br from-blue-50 to-indigo-100">
+                    <div className="text-center">
+                        <h1 className="text-6xl md:text-7xl heading-primary mb-4">Vertical Angles</h1>
+                        <p className="text-2xl md:text-3xl text-gray-500 italic">Lesson II</p>
+                        <div className="mt-16 bounce">
+                            <svg className="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                            </svg>
+                            <p className="text-sm text-gray-400 mt-2">Scroll to begin</p>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 1: REVIEW - LINEAR PAIR POSTULATE
+        // ============================================
+        function Review() {
+            const drawLinearPair = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 60, y: h / 2 };
+                const rightPt = { x: w - 60, y: h / 2 };
+                // Position ray endpoint at an angle (not 90°) to avoid looking like right angles
+                const angleRad = (120 * Math.PI) / 180; // 120° from positive x-axis = 60° from left
+                const rayLength = 80;
+                const topPt = { x: O.x + rayLength * Math.cos(angleRad), y: O.y - rayLength * Math.sin(angleRad) };
+
+                // Draw angle marks first (behind lines)
+                // angle a: the angle from left ray to top ray (upper-left angle)
+                utils.drawAngleMark(ctx, O, leftPt, topPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 35, 'a', 50);
+                // angle b: the angle from top ray to right ray (upper-right angle)
+                utils.drawAngleMark(ctx, O, topPt, rightPt, 'rgba(16, 185, 129, 0.3)', 'rgb(16, 185, 129)', 35, 'b', 50);
+
+                // Draw line ℓ (horizontal)
+                utils.drawLine(ctx, leftPt, rightPt, 20);
+
+                // Draw ray m
+                utils.drawRay(ctx, O, topPt, 30);
+
+                // Draw labels for line and ray
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 16px Noto Serif';
+                ctx.fillText('ℓ', rightPt.x + 15, rightPt.y + 18);
+                ctx.fillText('m', topPt.x + 18, topPt.y - 8);
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 4);
+
+                // Draw equation
+                ctx.font = '16px Noto Serif';
+                ctx.fillStyle = '#333';
+                ctx.textAlign = 'center';
+                ctx.fillText('a + b = 180°', w / 2, h - 30);
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">Review: The Linear Pair Postulate</h2>
+                        
+                        <blockquote className="text-lg mb-6">
+                            If two angles form a linear pair (two angles that share a vertex and together form a straight line), 
+                            then they are supplementary—their measures sum to 180°.
+                        </blockquote>
+
+                        <p className="body-text mb-8">
+                            We established this as an accepted truth in Lesson I. It will be our primary tool today.
+                        </p>
+
+                        <div className="flex justify-center">
+                            <GeometryCanvas draw={drawLinearPair} width={400} height={250} />
+                        </div>
+
+                        <p className="body-text text-center mt-4 text-sm text-gray-600">
+                            Line <i>ℓ</i> with ray <i>m</i> forms angles <i>a</i> and <i>b</i>, which together make 180°.
+                        </p>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 2: REVIEW EXERCISE
+        // ============================================
+        function ReviewExercise() {
+            const [answer, setAnswer] = useState('');
+            const [feedback, setFeedback] = useState(null);
+            const givenAngle = 65;
+            const correctAnswer = 180 - givenAngle;
+
+            const checkAnswer = () => {
+                const numAnswer = parseFloat(answer);
+                if (numAnswer === correctAnswer) {
+                    setFeedback({ correct: true, message: `Correct! 180° − ${givenAngle}° = ${correctAnswer}°` });
+                } else {
+                    setFeedback({ correct: false, message: `Not quite. Remember: the angles must sum to 180°. So 180° − ${givenAngle}° = ${correctAnswer}°` });
+                }
+            };
+
+            const drawExercise = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 60, y: h / 2 };
+                const rightPt = { x: w - 60, y: h / 2 };
+                // Position ray so angle b is approximately 65°
+                const angleRad = (65 * Math.PI) / 180;
+                const rayLength = 80;
+                const topPt = { x: O.x + rayLength * Math.cos(angleRad), y: O.y - rayLength * Math.sin(angleRad) };
+
+                // Draw angle marks
+                // angle a: upper-left angle
+                utils.drawAngleMark(ctx, O, leftPt, topPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 35, '?', 50);
+                // angle b: upper-right angle
+                utils.drawAngleMark(ctx, O, topPt, rightPt, 'rgba(16, 185, 129, 0.3)', 'rgb(16, 185, 129)', 35, '65°', 50);
+
+                // Draw line ℓ
+                utils.drawLine(ctx, leftPt, rightPt, 20);
+
+                // Draw ray m
+                utils.drawRay(ctx, O, topPt, 30);
+
+                // Draw labels
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 16px Noto Serif';
+                ctx.fillText('ℓ', rightPt.x + 15, rightPt.y + 18);
+                ctx.fillText('m', topPt.x + 22, topPt.y - 8);
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 4);
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">Exercise</h2>
+                        <p className="body-text mb-6">Apply the Linear Pair Postulate to find the missing angle.</p>
+
+                        <div className="flex flex-col md:flex-row gap-8 items-center">
+                            <div className="flex-1 flex justify-center">
+                                <GeometryCanvas draw={drawExercise} width={350} height={220} />
+                            </div>
+                            
+                            <div className="flex-1">
+                                <p className="body-text mb-4">
+                                    Given: angle at 65°
+                                </p>
+                                <p className="body-text mb-4">
+                                    Find: the other angle = ?
+                                </p>
+
+                                <div className="flex gap-2 items-center mb-4">
+                                    <input
+                                        type="number"
+                                        value={answer}
+                                        onChange={(e) => setAnswer(e.target.value)}
+                                        className="border border-gray-300 rounded-lg px-4 py-2 w-24 text-center text-lg"
+                                        placeholder="?"
+                                    />
+                                    <span className="text-lg">°</span>
+                                    <button
+                                        onClick={checkAnswer}
+                                        className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition ml-2"
+                                    >
+                                        Check
+                                    </button>
+                                </div>
+
+                                {feedback && (
+                                    <div className={`p-4 rounded-lg ${feedback.correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                        {feedback.message}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 3: TWO LINES INTERSECT
+        // ============================================
+        function Intersection() {
+            const drawIntersection = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 60, y: h / 2 };
+                const rightPt = { x: w - 60, y: h / 2 };
+                const bottomPt = { x: 100, y: h - 60 };
+                const topPt = { x: w - 100, y: 60 };
+
+                // Draw all four angles with distinct light colors and labels
+                // Going around clockwise from the left:
+                // angle a (lower-left)
+                utils.drawAngleMark(ctx, O, leftPt, bottomPt, 'rgba(59, 130, 246, 0.2)', 'rgba(59, 130, 246, 0.5)', 30, 'a', 45);
+                // angle b (lower-right)
+                utils.drawAngleMark(ctx, O, bottomPt, rightPt, 'rgba(16, 185, 129, 0.2)', 'rgba(16, 185, 129, 0.5)', 30, 'b', 45);
+                // angle c (upper-right)
+                utils.drawAngleMark(ctx, O, rightPt, topPt, 'rgba(59, 130, 246, 0.2)', 'rgba(59, 130, 246, 0.5)', 30, 'c', 45);
+                // angle d (upper-left)
+                utils.drawAngleMark(ctx, O, topPt, leftPt, 'rgba(16, 185, 129, 0.2)', 'rgba(16, 185, 129, 0.5)', 30, 'd', 45);
+
+                // Draw line ℓ (horizontal)
+                utils.drawLine(ctx, leftPt, rightPt, 25);
+
+                // Draw line m (diagonal)
+                utils.drawLine(ctx, bottomPt, topPt, 25);
+
+                // Draw line labels
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 16px Noto Serif';
+                ctx.fillText('ℓ', rightPt.x + 20, rightPt.y + 18);
+                ctx.fillText('m', topPt.x + 22, topPt.y - 5);
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 5); // intersection point
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">Two Intersecting Lines</h2>
+                        
+                        <p className="body-text mb-6">
+                            When two lines intersect at a point, they form four angles. Consider lines <i>ℓ</i> and <i>m</i>.
+                        </p>
+
+                        <div className="flex justify-center mb-6">
+                            <GeometryCanvas draw={drawIntersection} width={400} height={300} />
+                        </div>
+
+                        <p className="body-text">
+                            The four angles formed are <i>a</i>, <i>b</i>, <i>c</i>, and <i>d</i>.
+                        </p>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 4: VERTICAL ANGLES DEFINITION
+        // ============================================
+        function VerticalAngles() {
+            const drawVerticalAngles = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 60, y: h / 2 };
+                const rightPt = { x: w - 60, y: h / 2 };
+                const bottomPt = { x: 100, y: h - 50 };
+                const topPt = { x: w - 100, y: 50 };
+
+                // Highlight first vertical angle pair in blue (a and c)
+                utils.drawAngleMark(ctx, O, leftPt, bottomPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 30, 'a', 45);
+                utils.drawAngleMark(ctx, O, rightPt, topPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 30, 'c', 45);
+
+                // Second vertical pair in green (b and d)
+                utils.drawAngleMark(ctx, O, bottomPt, rightPt, 'rgba(16, 185, 129, 0.3)', 'rgb(16, 185, 129)', 30, 'b', 45);
+                utils.drawAngleMark(ctx, O, topPt, leftPt, 'rgba(16, 185, 129, 0.3)', 'rgb(16, 185, 129)', 30, 'd', 45);
+
+                // Draw lines
+                utils.drawLine(ctx, leftPt, rightPt, 25);
+                utils.drawLine(ctx, bottomPt, topPt, 25);
+
+                // Draw line labels
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 16px Noto Serif';
+                ctx.fillText('ℓ', rightPt.x + 20, rightPt.y + 18);
+                ctx.fillText('m', topPt.x + 22, topPt.y - 5);
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 5);
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">Vertical Angles</h2>
+
+                        <div className="flex flex-col md:flex-row gap-8 items-center">
+                            <div className="flex-1">
+                                <div className="definition-box">
+                                    <p className="body-text text-lg">
+                                        Two angles are <strong>vertical angles</strong> if they are formed by two intersecting lines 
+                                        and are opposite each other. Vertical angles share only the vertex—they do not share a side.
+                                    </p>
+                                </div>
+
+                                <div className="mt-6 body-text">
+                                    <p className="mb-3">In our diagram, there are two pairs of vertical angles:</p>
+                                    <ul className="ml-4 space-y-2">
+                                        <li><span className="text-blue-600 font-semibold"><i>a</i></span> and <span className="text-blue-600 font-semibold"><i>c</i></span> are vertical angles (shown in blue)</li>
+                                        <li><span className="text-green-600 font-semibold"><i>b</i></span> and <span className="text-green-600 font-semibold"><i>d</i></span> are vertical angles (shown in green)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div className="flex-1 flex justify-center">
+                                <GeometryCanvas draw={drawVerticalAngles} width={350} height={280} />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 5: ADJACENT ANGLES DEFINITION
+        // ============================================
+        function AdjacentAngles() {
+            const drawAdjacentAngles = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 60, y: h / 2 };
+                const rightPt = { x: w - 60, y: h / 2 };
+                const bottomPt = { x: 100, y: h - 50 };
+                const topPt = { x: w - 100, y: 50 };
+
+                // Highlight adjacent angle pair: a and b (they share a side)
+                utils.drawAngleMark(ctx, O, leftPt, bottomPt, 'rgba(147, 51, 234, 0.3)', 'rgb(147, 51, 234)', 30, 'a', 45);
+                utils.drawAngleMark(ctx, O, bottomPt, rightPt, 'rgba(249, 115, 22, 0.3)', 'rgb(249, 115, 22)', 30, 'b', 45);
+
+                // Draw other angles lightly
+                utils.drawAngleMark(ctx, O, rightPt, topPt, 'rgba(200, 200, 200, 0.15)', 'rgba(200, 200, 200, 0.3)', 30);
+                utils.drawAngleMark(ctx, O, topPt, leftPt, 'rgba(200, 200, 200, 0.15)', 'rgba(200, 200, 200, 0.3)', 30);
+
+                // Draw lines
+                utils.drawLine(ctx, leftPt, rightPt, 25);
+                utils.drawLine(ctx, bottomPt, topPt, 25);
+
+                // Highlight the shared side (part of line m)
+                ctx.strokeStyle = 'rgb(6, 182, 212)';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(O.x, O.y);
+                const extBottom = utils.extendPoint(O, bottomPt, 25);
+                ctx.lineTo(extBottom.x, extBottom.y);
+                ctx.stroke();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1.5;
+
+                // Draw line labels
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 16px Noto Serif';
+                ctx.fillText('ℓ', rightPt.x + 20, rightPt.y + 18);
+                ctx.fillText('m', topPt.x + 22, topPt.y - 5);
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 5);
+
+                // Label the shared side
+                ctx.font = '12px Noto Serif';
+                ctx.fillStyle = 'rgb(6, 182, 212)';
+                ctx.fillText('shared side', bottomPt.x + 60, bottomPt.y - 25);
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">Adjacent Angles</h2>
+
+                        <div className="flex flex-col md:flex-row gap-8 items-center">
+                            <div className="flex-1">
+                                <div className="definition-box">
+                                    <p className="body-text text-lg">
+                                        Two angles are <strong>adjacent</strong> if they share a common vertex and a common side, 
+                                        but their interiors do not overlap.
+                                    </p>
+                                </div>
+
+                                <div className="mt-6 body-text">
+                                    <p className="mb-3">In our diagram:</p>
+                                    <ul className="ml-4 space-y-2">
+                                        <li><span className="text-purple-600 font-semibold"><i>a</i></span> and <span className="text-orange-500 font-semibold"><i>b</i></span> are adjacent angles</li>
+                                        <li>They share the vertex and a common side (shown in <span className="text-cyan-500">cyan</span>)</li>
+                                    </ul>
+                                    <p className="mt-4 text-gray-600 italic">
+                                        Notice that adjacent angles are next to each other, while vertical angles are across from each other.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="flex-1 flex justify-center">
+                                <GeometryCanvas draw={drawAdjacentAngles} width={350} height={280} />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 6: OBSERVATION
+        // ============================================
+        function Observation() {
+            const drawLinearPairHighlight = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 60, y: h / 2 };
+                const rightPt = { x: w - 60, y: h / 2 };
+                const bottomPt = { x: 100, y: h - 50 };
+                const topPt = { x: w - 100, y: 50 };
+
+                // Highlight the linear pair a and d (on line m)
+                utils.drawAngleMark(ctx, O, leftPt, bottomPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 35, 'a', 50);
+                utils.drawAngleMark(ctx, O, topPt, leftPt, 'rgba(16, 185, 129, 0.3)', 'rgb(16, 185, 129)', 35, 'd', 50);
+
+                // Draw lines
+                utils.drawLine(ctx, leftPt, rightPt, 25);
+                utils.drawLine(ctx, bottomPt, topPt, 25);
+
+                // Highlight line m
+                ctx.strokeStyle = '#6a82fb';
+                ctx.lineWidth = 3;
+                const extBottom = utils.extendPoint(O, bottomPt, 25);
+                const extTop = utils.extendPoint(O, topPt, 25);
+                ctx.beginPath();
+                ctx.moveTo(extBottom.x, extBottom.y);
+                ctx.lineTo(extTop.x, extTop.y);
+                ctx.stroke();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1.5;
+
+                // Draw line labels
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 16px Noto Serif';
+                ctx.fillText('ℓ', rightPt.x + 20, rightPt.y + 18);
+                ctx.fillText('m', topPt.x + 22, topPt.y - 5);
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 5);
+
+                // Draw equation
+                ctx.font = '14px Noto Serif';
+                ctx.fillStyle = '#333';
+                ctx.textAlign = 'center';
+                ctx.fillText('a + d = 180°', w / 2, h - 15);
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">A Key Observation</h2>
+                        
+                        <p className="body-text mb-4">
+                            Notice that any two adjacent angles in our configuration form a linear pair. 
+                            For instance, <i>a</i> and <i>d</i> together form a straight line along <i>m</i>.
+                        </p>
+
+                        <div className="flex flex-col md:flex-row gap-8 items-center">
+                            <div className="flex-1">
+                                <p className="body-text mb-4">By the Linear Pair Postulate:</p>
+                                <ul className="body-text space-y-2 ml-4">
+                                    <li>• <i>a</i> + <i>d</i> = 180°</li>
+                                    <li>• <i>d</i> + <i>c</i> = 180°</li>
+                                    <li>• <i>c</i> + <i>b</i> = 180°</li>
+                                    <li>• <i>b</i> + <i>a</i> = 180°</li>
+                                </ul>
+                                <p className="body-text mt-4 font-semibold">
+                                    Each adjacent pair is supplementary. We will use this fact shortly.
+                                </p>
+                            </div>
+                            <div className="flex-1 flex justify-center">
+                                <GeometryCanvas draw={drawLinearPairHighlight} width={350} height={280} />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 7: WHAT IS A THEOREM?
+        // ============================================
+        function WhatIsTheorem() {
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">What is a Theorem?</h2>
+                        
+                        <div className="space-y-6">
+                            <div className="definition-box">
+                                <h3 className="font-bold text-lg mb-2 text-blue-600">Postulate</h3>
+                                <p className="body-text">
+                                    A <strong>postulate</strong> is a statement we accept as true without proof. 
+                                    It serves as a starting point for reasoning.
+                                </p>
+                                <p className="body-text mt-2 text-sm text-gray-600 italic">
+                                    Example: The Linear Pair Postulate—we accepted it as true in Lesson I.
+                                </p>
+                            </div>
+
+                            <div className="definition-box">
+                                <h3 className="font-bold text-lg mb-2 text-green-600">Theorem</h3>
+                                <p className="body-text">
+                                    A <strong>theorem</strong> is a statement that can be <em>proved</em> to be true 
+                                    using postulates, definitions, and logical reasoning.
+                                </p>
+                                <p className="body-text mt-2 text-sm text-gray-600 italic">
+                                    Unlike a postulate, a theorem requires a proof—a logical argument showing why it must be true.
+                                </p>
+                            </div>
+
+                            <div className="definition-box">
+                                <h3 className="font-bold text-lg mb-2 text-purple-600">Proof</h3>
+                                <p className="body-text">
+                                    A <strong>proof</strong> is a logical argument that demonstrates why a theorem is true, 
+                                    starting from accepted truths and proceeding step by step to the conclusion.
+                                </p>
+                            </div>
+
+                            <p className="body-text text-center mt-6 text-lg">
+                                We are now ready to state and prove our first theorem.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 8: THEOREM
+        // ============================================
+        function Theorem() {
+            const drawTheoremDiagram = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 60, y: h / 2 };
+                const rightPt = { x: w - 60, y: h / 2 };
+                const bottomPt = { x: 100, y: h - 50 };
+                const topPt = { x: w - 100, y: 50 };
+
+                // Vertical pair 1 in blue (a and c)
+                utils.drawAngleMark(ctx, O, leftPt, bottomPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 35, 'a', 50);
+                utils.drawAngleMark(ctx, O, rightPt, topPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 35, 'c', 50);
+
+                // Vertical pair 2 in green (b and d)
+                utils.drawAngleMark(ctx, O, bottomPt, rightPt, 'rgba(16, 185, 129, 0.3)', 'rgb(16, 185, 129)', 35, 'b', 50);
+                utils.drawAngleMark(ctx, O, topPt, leftPt, 'rgba(16, 185, 129, 0.3)', 'rgb(16, 185, 129)', 35, 'd', 50);
+
+                // Draw lines
+                utils.drawLine(ctx, leftPt, rightPt, 25);
+                utils.drawLine(ctx, bottomPt, topPt, 25);
+
+                // Draw line labels
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 16px Noto Serif';
+                ctx.fillText('ℓ', rightPt.x + 20, rightPt.y + 18);
+                ctx.fillText('m', topPt.x + 22, topPt.y - 5);
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 5);
+
+                // Labels
+                ctx.font = '14px Noto Serif';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = 'rgb(59, 130, 246)';
+                ctx.fillText('a = c', w / 2, h - 30);
+                ctx.fillStyle = 'rgb(16, 185, 129)';
+                ctx.fillText('b = d', w / 2, h - 12);
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">Theorem: Vertical Angles are Congruent</h2>
+                        
+                        <div className="theorem-box mb-8">
+                            <h3 className="font-bold text-xl mb-3 heading-primary">Vertical Angles Theorem</h3>
+                            <p className="body-text text-lg">
+                                If two lines intersect, then the vertical angles formed are congruent (equal in measure).
+                            </p>
+                        </div>
+
+                        <p className="body-text mb-6">
+                            We will now prove this theorem using only the Linear Pair Postulate.
+                        </p>
+
+                        <div className="flex justify-center">
+                            <GeometryCanvas draw={drawTheoremDiagram} width={380} height={280} />
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 9: PROOF
+        // ============================================
+        function Proof() {
+            const drawProofDiagram = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 40, y: h / 2 };
+                const rightPt = { x: w - 40, y: h / 2 };
+                const bottomPt = { x: 50, y: h - 40 };
+                const topPt = { x: w - 50, y: 40 };
+
+                // Highlight the angles being proved equal (a and c) in blue
+                utils.drawAngleMark(ctx, O, leftPt, bottomPt, 'rgba(59, 130, 246, 0.35)', 'rgb(59, 130, 246)', 30, 'a', 45);
+                utils.drawAngleMark(ctx, O, rightPt, topPt, 'rgba(59, 130, 246, 0.35)', 'rgb(59, 130, 246)', 30, 'c', 45);
+
+                // Show d (the common angle in the proof) in green
+                utils.drawAngleMark(ctx, O, topPt, leftPt, 'rgba(16, 185, 129, 0.35)', 'rgb(16, 185, 129)', 30, 'd', 45);
+
+                // Draw lines
+                ctx.strokeStyle = '#374151';
+                ctx.lineWidth = 2;
+                utils.drawLine(ctx, leftPt, rightPt, 20);
+                utils.drawLine(ctx, bottomPt, topPt, 20);
+
+                // Draw line labels
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 14px Noto Serif';
+                ctx.fillText('ℓ', rightPt.x + 15, rightPt.y + 18);
+                ctx.fillText('m', topPt.x + 18, topPt.y - 8);
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 5);
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card" style={{maxWidth: '960px'}}>
+                        <h2 className="text-3xl heading-primary mb-6 text-center">
+                            ✦ Proof of the Vertical Angles Theorem ✦
+                        </h2>
+                        
+                        <div className="flex flex-col lg:flex-row gap-6 mb-6">
+                            {/* Given and Prove statements */}
+                            <div className="flex-1">
+                                <div className="proof-given">
+                                    <span className="font-semibold text-amber-700">Given:</span>
+                                    <span className="body-text ml-2">Lines <i>ℓ</i> and <i>m</i> intersect, forming angles <i>a</i>, <i>b</i>, <i>c</i>, <i>d</i></span>
+                                </div>
+                                <div className="proof-prove">
+                                    <span className="font-semibold text-blue-700">Prove:</span>
+                                    <span className="body-text ml-2"><i>a</i> = <i>c</i> (vertical angles are congruent)</span>
+                                </div>
+                            </div>
+                            
+                            {/* Diagram */}
+                            <div className="flex justify-center items-center">
+                                <GeometryCanvas draw={drawProofDiagram} width={280} height={200} />
+                            </div>
+                        </div>
+
+                        {/* Two-column proof table */}
+                        <div className="proof-table">
+                            <div className="proof-header">
+                                <div>Statements</div>
+                                <div>Reasons</div>
+                            </div>
+                            
+                            <div className="proof-step">
+                                <div className="proof-statement body-text">
+                                    1. Lines <i>ℓ</i> and <i>m</i> intersect
+                                </div>
+                                <div className="proof-reason body-text">
+                                    Given
+                                </div>
+                            </div>
+                            
+                            <div className="proof-step">
+                                <div className="proof-statement body-text">
+                                    2. <i>a</i> and <i>d</i> form a linear pair
+                                </div>
+                                <div className="proof-reason body-text">
+                                    Definition of linear pair (angles on line <i>m</i>)
+                                </div>
+                            </div>
+                            
+                            <div className="proof-step">
+                                <div className="proof-statement body-text">
+                                    3. <i>a</i> + <i>d</i> = 180°
+                                </div>
+                                <div className="proof-reason body-text">
+                                    Linear Pair Postulate
+                                </div>
+                            </div>
+                            
+                            <div className="proof-step">
+                                <div className="proof-statement body-text">
+                                    4. <i>d</i> and <i>c</i> form a linear pair
+                                </div>
+                                <div className="proof-reason body-text">
+                                    Definition of linear pair (angles on line <i>ℓ</i>)
+                                </div>
+                            </div>
+                            
+                            <div className="proof-step">
+                                <div className="proof-statement body-text">
+                                    5. <i>d</i> + <i>c</i> = 180°
+                                </div>
+                                <div className="proof-reason body-text">
+                                    Linear Pair Postulate
+                                </div>
+                            </div>
+                            
+                            <div className="proof-step">
+                                <div className="proof-statement body-text">
+                                    6. <i>a</i> + <i>d</i> = <i>d</i> + <i>c</i>
+                                </div>
+                                <div className="proof-reason body-text">
+                                    Substitution (both equal 180°)
+                                </div>
+                            </div>
+                            
+                            <div className="proof-step">
+                                <div className="proof-statement body-text">
+                                    7. <strong><i>a</i> = <i>c</i></strong>
+                                </div>
+                                <div className="proof-reason body-text">
+                                    Subtraction Property of Equality
+                                </div>
+                            </div>
+                            
+                            <div className="proof-qed">
+                                ∴ Vertical angles are congruent. &nbsp;∎
+                            </div>
+                        </div>
+                        
+                        <p className="body-text text-center mt-6 text-sm opacity-75">
+                            <em>By the same reasoning, we can also prove that <i>b</i> = <i>d</i>.</em>
+                        </p>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 10: EXERCISES - FINDING ANGLES
+        // ============================================
+        function Exercise1() {
+            const [answers, setAnswers] = useState({ a: '', b: '', c: '' });
+            const [checked, setChecked] = useState(false);
+            const correctAnswers = { a: '72', b: '108', c: '108' };
+
+            const drawExercise1 = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 40, y: h / 2 };
+                const rightPt = { x: w - 40, y: h / 2 };
+                const bottomPt = { x: 70, y: h - 35 };
+                const topPt = { x: w - 70, y: 35 };
+
+                // Draw angles - given angle is 72°, find a, b, c
+                utils.drawAngleMark(ctx, O, leftPt, bottomPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 30, '72°', 50);
+                utils.drawAngleMark(ctx, O, rightPt, topPt, 'rgba(59, 130, 246, 0.2)', 'rgb(59, 130, 246)', 30, 'a', 45);
+                utils.drawAngleMark(ctx, O, bottomPt, rightPt, 'rgba(16, 185, 129, 0.2)', 'rgb(16, 185, 129)', 30, 'b', 45);
+                utils.drawAngleMark(ctx, O, topPt, leftPt, 'rgba(16, 185, 129, 0.2)', 'rgb(16, 185, 129)', 30, 'c', 45);
+
+                utils.drawLine(ctx, leftPt, rightPt, 20);
+                utils.drawLine(ctx, bottomPt, topPt, 20);
+
+                ctx.fillStyle = '#333';
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 4);
+            };
+
+            const checkAnswers = () => setChecked(true);
+            const reset = () => { setAnswers({ a: '', b: '', c: '' }); setChecked(false); };
+
+            const isCorrect = (key) => checked && answers[key] === correctAnswers[key];
+            const isIncorrect = (key) => checked && answers[key] !== correctAnswers[key] && answers[key] !== '';
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">Exercise 1: Finding Angle Measures</h2>
+                        
+                        <p className="body-text mb-6">
+                            Two lines intersect as shown. One angle measures 72°. Find the measures of angles <i>a</i>, <i>b</i>, and <i>c</i>.
+                        </p>
+
+                        <div className="flex flex-col md:flex-row gap-8 items-center">
+                            <div className="flex justify-center">
+                                <GeometryCanvas draw={drawExercise1} width={300} height={220} />
+                            </div>
+
+                            <div className="flex-1">
+                                <div className={`exercise-box ${isCorrect('a') ? 'correct' : ''} ${isIncorrect('a') ? 'incorrect' : ''}`}>
+                                    <label className="body-text flex items-center gap-3">
+                                        <span className="font-semibold">a =</span>
+                                        <input 
+                                            type="text" 
+                                            className="exercise-input"
+                                            value={answers.a}
+                                            onChange={(e) => setAnswers({...answers, a: e.target.value})}
+                                            disabled={checked}
+                                        />
+                                        <span>degrees</span>
+                                        {isCorrect('a') && <span className="text-green-600 ml-2">✓</span>}
+                                        {isIncorrect('a') && <span className="text-red-600 ml-2">✗ (72°)</span>}
+                                    </label>
+                                    {!checked && <p className="text-sm text-gray-500 mt-2 italic">Hint: What is the relationship between <i>a</i> and the 72° angle?</p>}
+                                </div>
+
+                                <div className={`exercise-box ${isCorrect('b') ? 'correct' : ''} ${isIncorrect('b') ? 'incorrect' : ''}`}>
+                                    <label className="body-text flex items-center gap-3">
+                                        <span className="font-semibold">b =</span>
+                                        <input 
+                                            type="text" 
+                                            className="exercise-input"
+                                            value={answers.b}
+                                            onChange={(e) => setAnswers({...answers, b: e.target.value})}
+                                            disabled={checked}
+                                        />
+                                        <span>degrees</span>
+                                        {isCorrect('b') && <span className="text-green-600 ml-2">✓</span>}
+                                        {isIncorrect('b') && <span className="text-red-600 ml-2">✗ (108°)</span>}
+                                    </label>
+                                    {!checked && <p className="text-sm text-gray-500 mt-2 italic">Hint: What is the relationship between <i>b</i> and the 72° angle?</p>}
+                                </div>
+
+                                <div className={`exercise-box ${isCorrect('c') ? 'correct' : ''} ${isIncorrect('c') ? 'incorrect' : ''}`}>
+                                    <label className="body-text flex items-center gap-3">
+                                        <span className="font-semibold">c =</span>
+                                        <input 
+                                            type="text" 
+                                            className="exercise-input"
+                                            value={answers.c}
+                                            onChange={(e) => setAnswers({...answers, c: e.target.value})}
+                                            disabled={checked}
+                                        />
+                                        <span>degrees</span>
+                                        {isCorrect('c') && <span className="text-green-600 ml-2">✓</span>}
+                                        {isIncorrect('c') && <span className="text-red-600 ml-2">✗ (108°)</span>}
+                                    </label>
+                                </div>
+
+                                <div className="flex gap-3 mt-4">
+                                    {!checked ? (
+                                        <button onClick={checkAnswers} className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition font-semibold">
+                                            Check Answers
+                                        </button>
+                                    ) : (
+                                        <button onClick={reset} className="border border-blue-500 text-blue-500 px-6 py-2 rounded-lg hover:bg-blue-50 transition">
+                                            Try Again
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 11: EXERCISES - ALGEBRA
+        // ============================================
+        function Exercise2() {
+            const [answer, setAnswer] = useState('');
+            const [checked, setChecked] = useState(false);
+            const correctAnswer = '35';
+
+            const drawExercise2 = (ctx, w, h, utils) => {
+                const O = { x: w / 2, y: h / 2 };
+                const leftPt = { x: 40, y: h / 2 };
+                const rightPt = { x: w - 40, y: h / 2 };
+                const bottomPt = { x: 70, y: h - 35 };
+                const topPt = { x: w - 70, y: 35 };
+
+                // Draw angles with algebraic expressions
+                utils.drawAngleMark(ctx, O, leftPt, bottomPt, 'rgba(59, 130, 246, 0.3)', 'rgb(59, 130, 246)', 30, '2x', 48);
+                utils.drawAngleMark(ctx, O, rightPt, topPt, 'rgba(147, 51, 234, 0.3)', 'rgb(147, 51, 234)', 30, '70°', 50);
+
+                utils.drawLine(ctx, leftPt, rightPt, 20);
+                utils.drawLine(ctx, bottomPt, topPt, 20);
+
+                ctx.fillStyle = '#333';
+                utils.drawPoint(ctx, O.x, O.y, '', 0, 0, 4);
+            };
+
+            const isCorrect = checked && answer === correctAnswer;
+            const isIncorrect = checked && answer !== correctAnswer && answer !== '';
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card">
+                        <h2 className="text-3xl heading-primary mb-6">Exercise 2: Using Algebra</h2>
+                        
+                        <p className="body-text mb-6">
+                            In the diagram, the two highlighted angles are vertical angles. 
+                            Use the Vertical Angles Theorem to find the value of <i>x</i>.
+                        </p>
+
+                        <div className="flex flex-col md:flex-row gap-8 items-center">
+                            <div className="flex justify-center">
+                                <GeometryCanvas draw={drawExercise2} width={300} height={220} />
+                            </div>
+
+                            <div className="flex-1">
+                                <div className="definition-box mb-6">
+                                    <p className="body-text">
+                                        Since vertical angles are congruent:
+                                    </p>
+                                    <p className="body-text font-mono text-center text-lg mt-2">
+                                        2<i>x</i> = 70
+                                    </p>
+                                </div>
+
+                                <div className={`exercise-box ${isCorrect ? 'correct' : ''} ${isIncorrect ? 'incorrect' : ''}`}>
+                                    <label className="body-text flex items-center gap-3">
+                                        <span className="font-semibold"><i>x</i> =</span>
+                                        <input 
+                                            type="text" 
+                                            className="exercise-input"
+                                            value={answer}
+                                            onChange={(e) => setAnswer(e.target.value)}
+                                            disabled={checked}
+                                        />
+                                        {isCorrect && <span className="text-green-600 ml-2">✓ Correct!</span>}
+                                        {isIncorrect && <span className="text-red-600 ml-2">✗ The answer is 35</span>}
+                                    </label>
+                                </div>
+
+                                {checked && isCorrect && (
+                                    <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                                        <p className="body-text text-sm">
+                                            <strong>Solution:</strong> 2<i>x</i> = 70 → <i>x</i> = 35
+                                        </p>
+                                        <p className="body-text text-sm mt-1">
+                                            Both vertical angles measure 70°
+                                        </p>
+                                    </div>
+                                )}
+
+                                <div className="flex gap-3 mt-4">
+                                    {!checked ? (
+                                        <button onClick={() => setChecked(true)} className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition font-semibold">
+                                            Check Answer
+                                        </button>
+                                    ) : (
+                                        <button onClick={() => { setAnswer(''); setChecked(false); }} className="border border-blue-500 text-blue-500 px-6 py-2 rounded-lg hover:bg-blue-50 transition">
+                                            Try Again
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // PAGE 12: QUIZ
+        // ============================================
+        function Quiz() {
+            const [answers, setAnswers] = useState({});
+            const [showResults, setShowResults] = useState(false);
+
+            const questions = [
+                {
+                    id: 1,
+                    question: "What do we call two angles that are opposite each other when two lines intersect?",
+                    options: ["Adjacent angles", "Vertical angles", "Supplementary angles", "Complementary angles"],
+                    correct: "Vertical angles"
+                },
+                {
+                    id: 2,
+                    question: "Vertical angles are always ___.",
+                    options: ["Supplementary (sum to 180°)", "Congruent (equal)", "Adjacent (next to each other)", "Acute (less than 90°)"],
+                    correct: "Congruent (equal)"
+                },
+                {
+                    id: 3,
+                    question: "Two lines intersect. One angle is 43°. What is the measure of the opposite angle?",
+                    options: ["43°", "47°", "137°", "90°"],
+                    correct: "43°"
+                },
+                {
+                    id: 4,
+                    question: "Two lines intersect. One angle is 43°. What is the measure of an adjacent angle?",
+                    options: ["43°", "47°", "137°", "90°"],
+                    correct: "137°"
+                },
+                {
+                    id: 5,
+                    question: "In the proof of the Vertical Angles Theorem, what postulate did we use?",
+                    options: ["Vertical Angles Theorem", "Linear Pair Postulate", "Angle Addition Postulate", "Reflexive Property"],
+                    correct: "Linear Pair Postulate"
+                },
+                {
+                    id: 6,
+                    question: "What is the difference between a postulate and a theorem?",
+                    options: ["Postulates are accepted without proof; theorems must be proven", "Theorems are accepted without proof; postulates must be proven", "They are the same thing", "Postulates only apply to angles"],
+                    correct: "Postulates are accepted without proof; theorems must be proven"
+                }
+            ];
+
+            const selectAnswer = (questionId, option) => {
+                if (!showResults) {
+                    setAnswers({ ...answers, [questionId]: option });
+                }
+            };
+
+            const checkAnswers = () => setShowResults(true);
+            const resetQuiz = () => { setAnswers({}); setShowResults(false); };
+
+            const score = showResults ? questions.filter(q => answers[q.id] === q.correct).length : 0;
+
+            const getMessage = () => {
+                if (score === 6) return { text: "Excellent! You have mastered vertical angles.", color: "text-green-700", emoji: "🎉" };
+                if (score >= 4) return { text: "Good work! Review any errors before proceeding.", color: "text-yellow-700", emoji: "👍" };
+                return { text: "Review the lesson and try again.", color: "text-red-700", emoji: "📖" };
+            };
+
+            return (
+                <section className="snap-section">
+                    <div className="section-card" style={{maxWidth: '960px'}}>
+                        <h2 className="text-3xl heading-primary mb-6">Final Quiz</h2>
+
+                        <div className="space-y-4">
+                            {questions.map((q, idx) => (
+                                <div key={q.id} className="border border-gray-200 rounded-lg p-4">
+                                    <p className="body-text font-medium mb-3">
+                                        {idx + 1}. {q.question}
+                                    </p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                        {q.options.map(option => {
+                                            let bgColor = 'bg-white hover:bg-gray-50';
+                                            if (showResults) {
+                                                if (option === q.correct) {
+                                                    bgColor = 'bg-green-100 border-green-500';
+                                                } else if (answers[q.id] === option && option !== q.correct) {
+                                                    bgColor = 'bg-red-100 border-red-500';
+                                                }
+                                            } else if (answers[q.id] === option) {
+                                                bgColor = 'bg-blue-100 border-blue-500';
+                                            }
+
+                                            return (
+                                                <button
+                                                    key={option}
+                                                    onClick={() => selectAnswer(q.id, option)}
+                                                    className={`quiz-option border rounded-lg px-4 py-2 text-left text-sm ${bgColor}`}
+                                                >
+                                                    {option}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-6 flex flex-col sm:flex-row items-center gap-4">
+                            {!showResults ? (
+                                <button
+                                    onClick={checkAnswers}
+                                    disabled={Object.keys(answers).length < 6}
+                                    className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Submit Quiz
+                                </button>
+                            ) : (
+                                <>
+                                    <div className="text-center p-4 bg-gray-50 rounded-lg flex items-center gap-4">
+                                        <span className="text-3xl">{getMessage().emoji}</span>
+                                        <div>
+                                            <p className="text-2xl font-bold heading-primary">{score}/6</p>
+                                            <p className={`text-sm ${getMessage().color}`}>{getMessage().text}</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={resetQuiz}
+                                        className="border border-blue-500 text-blue-500 px-6 py-2 rounded-lg hover:bg-blue-50 transition"
+                                    >
+                                        Try Again
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ============================================
+        // NAVIGATION DOTS
+        // ============================================
+        function NavDots({ totalPages, currentPage, onNavigate }) {
+            return (
+                <div className="nav-dots">
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <button
+                            key={i}
+                            className={`nav-dot ${currentPage === i ? 'active' : ''}`}
+                            onClick={() => onNavigate(i)}
+                            aria-label={`Go to page ${i + 1}`}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
+        // ============================================
+        // MAIN APP
+        // ============================================
+        function App() {
+            const [currentPage, setCurrentPage] = useState(0);
+            const totalPages = 13;
+            const containerRef = useRef(null);
+
+            useEffect(() => {
+                const container = containerRef.current;
+                if (!container) return;
+
+                const handleScroll = () => {
+                    const scrollPos = container.scrollTop;
+                    const pageHeight = window.innerHeight;
+                    const newPage = Math.round(scrollPos / pageHeight);
+                    setCurrentPage(newPage);
+                };
+
+                container.addEventListener('scroll', handleScroll);
+                return () => container.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const navigateToPage = (pageIndex) => {
+                const container = containerRef.current;
+                if (!container) return;
+                const sections = container.querySelectorAll('.snap-section');
+                if (sections[pageIndex]) {
+                    sections[pageIndex].scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            return (
+                <div ref={containerRef} style={{ height: '100vh', overflowY: 'scroll', scrollSnapType: 'y mandatory' }}>
+                    <NavDots totalPages={totalPages} currentPage={currentPage} onNavigate={navigateToPage} />
+                    <Cover />
+                    <Review />
+                    <ReviewExercise />
+                    <Intersection />
+                    <VerticalAngles />
+                    <AdjacentAngles />
+                    <Observation />
+                    <WhatIsTheorem />
+                    <Theorem />
+                    <Proof />
+                    <Exercise1 />
+                    <Exercise2 />
+                    <Quiz />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

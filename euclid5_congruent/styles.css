@@ -1,0 +1,274 @@
+/* ============================================
+   GEOMETRY LESSON 5 - CONGRUENCE STYLES
+   Color Palette:
+   - Primary: #6a82fb (blue headings)
+   - Congruence pair 1: rgba(59, 130, 246, 0.6) blue
+   - Congruence pair 2: rgba(239, 68, 68, 0.6) red
+   - Congruence pair 3: rgba(16, 185, 129, 0.6) green
+   ============================================ */
+
+/* Global Font - STIX Two Text per spec */
+* {
+    font-family: 'STIX Two Text', serif;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #fefefe;
+}
+
+/* ============================================
+   SCROLL SNAP SECTIONS
+   ============================================ */
+.snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #fefefe;
+}
+
+/* ============================================
+   SECTION CARDS
+   ============================================ */
+.section-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    max-width: 700px;
+    width: 100%;
+    padding: 3rem;
+}
+
+.section-card-wide {
+    max-width: 1000px;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+.heading-primary {
+    color: #6a82fb;
+    font-weight: 700;
+}
+
+.body-text {
+    color: #4b5563;
+    line-height: 1.8;
+    font-size: 18px;
+}
+
+blockquote {
+    border-left: 3px solid #6a82fb;
+    padding-left: 1.25rem;
+    margin: 1rem 0;
+    color: #4b5563;
+}
+
+/* ============================================
+   SPECIAL BOXES
+   ============================================ */
+.definition-box {
+    border: 2px solid #6a82fb;
+    border-radius: 12px;
+    padding: 1.25rem;
+    background: rgba(106, 130, 251, 0.05);
+}
+
+.notation-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.25rem;
+    background: #fafafa;
+}
+
+.theorem-box {
+    border: 2px solid #6a82fb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: rgba(106, 130, 251, 0.08);
+}
+
+.summary-box {
+    border: 2px solid #10b981;
+    border-radius: 12px;
+    padding: 1.25rem;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+/* ============================================
+   CANVAS / DIAGRAMS
+   ============================================ */
+.diagram-canvas {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: white;
+    max-width: 100%;
+}
+
+.diagram-canvas-small {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    max-width: 100%;
+}
+
+/* ============================================
+   NAVIGATION DOTS
+   ============================================ */
+.nav-dots {
+    position: fixed;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+}
+
+.nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d1d5db;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.nav-dot:hover {
+    background: #9ca3af;
+    transform: scale(1.2);
+}
+
+.nav-dot.active {
+    background: #6a82fb;
+    transform: scale(1.3);
+}
+
+/* ============================================
+   EXERCISES
+   ============================================ */
+.exercises-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.exercise-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: #fafafa;
+}
+
+.show-answer-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid #6a82fb;
+    border-radius: 8px;
+    background: white;
+    color: #6a82fb;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'STIX Two Text', serif;
+}
+
+.show-answer-btn:hover {
+    background: rgba(106, 130, 251, 0.1);
+}
+
+.answer-reveal {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #10b981;
+    border-radius: 8px;
+    background: rgba(16, 185, 129, 0.05);
+    display: none;
+}
+
+.answer-reveal.visible {
+    display: block;
+}
+
+.answer-reveal p {
+    color: #065f46;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* ============================================
+   FEEDBACK STYLES
+   ============================================ */
+.feedback-box {
+    margin-top: 1rem;
+    display: none;
+}
+
+.feedback-correct {
+    background: #d1fae5;
+    border: 1px solid #10b981;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: #065f46;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.feedback-incorrect {
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: #991b1b;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+
+.bounce {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .section-card {
+        padding: 1.5rem;
+    }
+
+    .section-card-wide {
+        max-width: 100%;
+    }
+
+    .heading-primary {
+        font-size: 1.75rem;
+    }
+
+    .body-text {
+        font-size: 16px;
+    }
+
+    .nav-dots {
+        right: 15px;
+    }
+
+    .exercises-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5: Congruence in Geometry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main scroll container -->
+    <div id="scroll-container" class="h-screen overflow-y-scroll snap-y snap-mandatory">
+        
+        <!-- Page 0: Cover -->
+        <section id="page-0" class="snap-section bg-gradient-to-br from-blue-50 to-indigo-50">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl heading-primary mb-4">Congruence in Geometry</h1>
+                <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">Same size. Same shape. A perfect match.</p>
+                <p class="text-lg text-gray-400">Lesson V</p>
+                <div class="mt-12 flex justify-center">
+                    <canvas id="canvas-cover" class="diagram-canvas" width="500" height="280"></canvas>
+                </div>
+                <div class="mt-12 bounce">
+                    <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 1: What Does Congruent Mean? -->
+        <section id="page-1" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">What Does Congruent Mean?</h2>
+                        <div class="definition-box mb-6">
+                            <p class="body-text">
+                                Two figures are <strong>congruent</strong> if they look exactly alike.
+                            </p>
+                        </div>
+                        <p class="body-text mb-4">
+                            One can be placed exactly on top of the other—a perfect match. You might need to slide, rotate, or flip it, but if it fits exactly, the figures are congruent.
+                        </p>
+                        <p class="body-text text-gray-500 italic">
+                            The word comes from Latin: <em>con-</em> (together) + <em>gruere</em> (to agree).
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page1" class="diagram-canvas" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 2: Congruent Segments -->
+        <section id="page-2" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Congruent Segments</h2>
+                        <p class="body-text mb-4">
+                            Two segments are <strong>congruent</strong> if they have the same length.
+                        </p>
+                        <div class="notation-box mb-4">
+                            <p class="body-text">
+                                <strong>Notation:</strong> We write <em>AB</em> ≅ <em>CD</em> to mean "segment <em>AB</em> is congruent to segment <em>CD</em>."
+                            </p>
+                        </div>
+                        <p class="body-text">
+                            In diagrams, we mark congruent segments with <strong>tick marks</strong>—small lines crossing the segment. Segments with the same number of ticks are congruent.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page2" class="diagram-canvas" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Congruent Angles -->
+        <section id="page-3" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Congruent Angles</h2>
+                        <p class="body-text mb-4">
+                            Two angles are <strong>congruent</strong> if they have the same measure.
+                        </p>
+                        <div class="notation-box mb-4">
+                            <p class="body-text">
+                                <strong>Notation:</strong> We write ∠<em>ABC</em> ≅ ∠<em>DEF</em> to mean "angle <em>ABC</em> is congruent to angle <em>DEF</em>."
+                            </p>
+                        </div>
+                        <p class="body-text mb-4">
+                            In diagrams, we mark congruent angles with <strong>arcs</strong>—small curves near the vertex. Angles with the same number of arcs are congruent.
+                        </p>
+                        <p class="body-text text-gray-500 italic">
+                            You've already seen examples: vertical angles are congruent, and when a transversal crosses parallel lines, alternate interior angles are congruent.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page3" class="diagram-canvas" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 4: Congruent Triangles -->
+        <section id="page-4" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Congruent Triangles</h2>
+                        <p class="body-text mb-4">
+                            Two triangles are <strong>congruent</strong> if all their corresponding parts match:
+                        </p>
+                        <ul class="body-text mb-4 list-disc list-inside ml-4">
+                            <li>Three pairs of corresponding sides (equal lengths)</li>
+                            <li>Three pairs of corresponding angles (equal measures)</li>
+                        </ul>
+                        <div class="notation-box mb-4">
+                            <p class="body-text">
+                                <strong>Notation:</strong> We write △<em>ABC</em> ≅ △<em>DEF</em>.
+                            </p>
+                        </div>
+                        <p class="body-text mb-2">
+                            <strong>The order of letters matters.</strong> It tells you which vertices correspond:
+                        </p>
+                        <p class="body-text ml-4 text-gray-600">
+                            <em>A</em> ↔ <em>D</em>, <em>B</em> ↔ <em>E</em>, <em>C</em> ↔ <em>F</em>
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page4" class="diagram-canvas" width="450" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 5: The SSS Criterion -->
+        <section id="page-5" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">The SSS Criterion</h2>
+                        <p class="body-text mb-4">
+                            Checking all six pairs of parts is tedious. Fortunately, we don't have to.
+                        </p>
+                        <div class="theorem-box mb-4">
+                            <p class="body-text">
+                                <strong>SSS (Side-Side-Side):</strong> If three sides of one triangle are congruent to three sides of another triangle, then the triangles are congruent.
+                            </p>
+                        </div>
+                        <p class="body-text mb-4">
+                            Why does this work? Once you fix three side lengths, there is only one triangle you can build (aside from flipping or rotating it). The angles are completely determined by the sides.
+                        </p>
+                        <p class="body-text text-gray-500 italic">
+                            Try it yourself: given three sticks of fixed lengths, can you arrange them into two <em>different</em> triangle shapes? You cannot. The shape is locked in.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page5" class="diagram-canvas" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: A Note on Foundations -->
+        <section id="page-6" class="snap-section bg-gradient-to-br from-gray-50 to-slate-50">
+            <div class="section-card max-w-2xl">
+                <h2 class="text-3xl heading-primary mb-6 text-center">A Note on Foundations</h2>
+                <blockquote class="body-text mb-4">
+                    In geometry, we build from a small set of accepted truths called <strong>axioms</strong> or <strong>postulates</strong>. These are our starting points—statements we accept without proof.
+                </blockquote>
+                <p class="body-text mb-4">
+                    SSS is one of these foundational facts. In most modern treatments of geometry, a criterion called SAS (Side-Angle-Side) is taken as an axiom, and SSS is then proved from it. But either way, these criteria are bedrock. We accept them and build upon them.
+                </p>
+                <p class="body-text text-gray-500 italic text-center">
+                    There are other criteria for triangle congruence—SAS, ASA, AAS—which we will meet in future lessons. Each provides another way to establish that two triangles are congruent.
+                </p>
+            </div>
+        </section>
+
+        <!-- Page 7: Why Triangles Are Special -->
+        <section id="page-7" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Why Triangles Are Special</h2>
+                        <p class="body-text mb-4">
+                            SSS works for triangles. Does it work for quadrilaterals?
+                        </p>
+                        <p class="body-text mb-4">
+                            <strong>No.</strong> Consider the quadrilaterals in the diagram. All four sides of one are congruent to the four sides of the other—yet the quadrilaterals themselves are not congruent.
+                        </p>
+                        <p class="body-text text-gray-500 italic">
+                            Triangles are rigid. Quadrilaterals are not.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page7" class="diagram-canvas" width="450" height="280"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 8: Exercises 1 & 2 -->
+        <section id="page-8" class="snap-section">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Exercises</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Exercise 1 -->
+                    <div class="exercise-item p-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl heading-primary mb-4">Exercise 1</h3>
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-ex1" class="diagram-canvas-small" width="360" height="200"></canvas>
+                        </div>
+                        <p class="body-text mb-4">Are △<em>PQR</em> and △<em>STU</em> congruent?</p>
+                        <div class="space-y-2 mb-4">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex1" value="a" class="w-4 h-4">
+                                <span class="body-text">A) No, not enough information</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex1" value="b" class="w-4 h-4">
+                                <span class="body-text">B) Yes, by SSS</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex1" value="c" class="w-4 h-4">
+                                <span class="body-text">C) No, the sides are different</span>
+                            </label>
+                        </div>
+                        <div id="exercise1-container"></div>
+                    </div>
+
+                    <!-- Exercise 2 -->
+                    <div class="exercise-item p-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl heading-primary mb-4">Exercise 2</h3>
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-ex2" class="diagram-canvas-small" width="360" height="200"></canvas>
+                        </div>
+                        <p class="body-text mb-4">Are △<em>ABD</em> and △<em>CBD</em> congruent?</p>
+                        <div class="space-y-2 mb-4">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex2" value="a" class="w-4 h-4">
+                                <span class="body-text">A) No, only two sides match</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex2" value="b" class="w-4 h-4">
+                                <span class="body-text">B) Yes, by SSS (BD is shared)</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex2" value="c" class="w-4 h-4">
+                                <span class="body-text">C) Cannot be determined</span>
+                            </label>
+                        </div>
+                        <div id="exercise2-container"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 9: Exercises 3 & 4 -->
+        <section id="page-9" class="snap-section">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Exercises (continued)</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Exercise 3 -->
+                    <div class="exercise-item p-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl heading-primary mb-4">Exercise 3</h3>
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-ex3" class="diagram-canvas-small" width="360" height="200"></canvas>
+                        </div>
+                        <p class="body-text mb-4">Which congruence statement is correct?</p>
+                        <div class="space-y-2 mb-4">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex3" value="a" class="w-4 h-4">
+                                <span class="body-text">A) △ABC ≅ △ADC by SSS</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex3" value="b" class="w-4 h-4">
+                                <span class="body-text">B) △ABC ≅ △DCA by SSS</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex3" value="c" class="w-4 h-4">
+                                <span class="body-text">C) The triangles are not congruent</span>
+                            </label>
+                        </div>
+                        <div id="exercise3-container"></div>
+                    </div>
+
+                    <!-- Exercise 4 -->
+                    <div class="exercise-item p-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl heading-primary mb-4">Exercise 4</h3>
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-ex4" class="diagram-canvas-small" width="360" height="200"></canvas>
+                        </div>
+                        <p class="body-text mb-4">Are these triangles congruent?</p>
+                        <div class="space-y-2 mb-4">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex4" value="a" class="w-4 h-4">
+                                <span class="body-text">A) Yes, by SSS</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex4" value="b" class="w-4 h-4">
+                                <span class="body-text">B) No, not all sides match</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" name="ex4" value="c" class="w-4 h-4">
+                                <span class="body-text">C) Yes, by SAS</span>
+                            </label>
+                        </div>
+                        <div id="exercise4-container"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 10: Summary -->
+        <section id="page-10" class="snap-section bg-gradient-to-br from-indigo-50 to-blue-50">
+            <div class="section-card max-w-2xl">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Summary</h2>
+                
+                <div class="summary-box mb-4">
+                    <p class="body-text mb-2">
+                        Two figures are <strong>congruent</strong> if they look exactly alike.
+                    </p>
+                </div>
+
+                <ul class="body-text mb-6 space-y-2">
+                    <li>• <strong>Congruent segments</strong> have equal length (marked with tick marks).</li>
+                    <li>• <strong>Congruent angles</strong> have equal measure (marked with arcs).</li>
+                    <li>• <strong>Congruent triangles</strong> have all corresponding parts congruent.</li>
+                </ul>
+
+                <div class="theorem-box mb-6">
+                    <p class="body-text">
+                        <strong>SSS:</strong> If three sides of one triangle are congruent to three sides of another, the triangles are congruent.
+                    </p>
+                </div>
+
+                <p class="body-text mb-4">
+                    Triangles are rigid: three sides lock in the shape. Quadrilaterals are not.
+                </p>
+
+                <p class="body-text text-gray-500 italic text-center">
+                    Next: Isosceles triangles and putting SSS to work in proofs.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,539 @@
+/* ============================================
+   GEOMETRY LESSON 4 - PRACTICE SESSION STYLES
+   Color Palette (from spec):
+   - Background: warm off-white #faf8f5
+   - Lines: dark gray #3d3d3d
+   - Given angles: soft coral #e8a87c
+   - Unknown angles: soft blue #7ca8e8
+   - Correct: muted green #7cb87c
+   - Incorrect: muted red #c87c7c
+   ============================================ */
+
+/* Global Font - STIX Two per spec */
+* {
+    font-family: 'STIX Two Text', serif;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #faf8f5;
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+#progress-bar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: rgba(250, 248, 245, 0.95);
+    border-bottom: 1px solid #e5e1dc;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 200;
+    gap: 15px;
+}
+
+#progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #e5e1dc;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+#progress-bar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: var(--progress, 0%);
+    background: linear-gradient(90deg, #7ca8e8, #6a82fb);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+#progress-text {
+    font-size: 14px;
+    color: #5a5a5a;
+    white-space: nowrap;
+    min-width: 120px;
+    text-align: right;
+}
+
+/* ============================================
+   SCROLL SNAP SECTIONS
+   ============================================ */
+.snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 2rem 2rem 2rem; /* Extra top padding for progress bar */
+    background: #faf8f5;
+}
+
+/* ============================================
+   SECTION CARDS
+   ============================================ */
+.section-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    max-width: 700px;
+    width: 100%;
+    padding: 2.5rem;
+}
+
+.section-header {
+    margin-bottom: 1.5rem;
+}
+
+.section-label {
+    display: inline-block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+.heading-primary {
+    color: #4a5568;
+    font-weight: 700;
+}
+
+.body-text {
+    color: #4b5563;
+    line-height: 1.8;
+    font-size: 18px;
+}
+
+blockquote {
+    border-left: 3px solid #7ca8e8;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: #4b5563;
+    font-style: italic;
+}
+
+/* ============================================
+   CANVAS / DIAGRAMS
+   ============================================ */
+.diagram-canvas {
+    border: 1px solid #e5e1dc;
+    border-radius: 12px;
+    background: white;
+    max-width: 100%;
+}
+
+/* ============================================
+   PROBLEM OPTIONS (Multiple Choice)
+   ============================================ */
+.problem-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.option-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid #e5e1dc;
+    border-radius: 10px;
+    background: white;
+    color: #4b5563;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'STIX Two Text', serif;
+}
+
+.option-btn:hover:not(:disabled) {
+    border-color: #7ca8e8;
+    background: rgba(124, 168, 232, 0.08);
+}
+
+.option-btn.selected {
+    border-color: #7ca8e8;
+    background: rgba(124, 168, 232, 0.12);
+}
+
+.option-btn.correct {
+    border-color: #7cb87c;
+    background: rgba(124, 184, 124, 0.15);
+    color: #3d6b3d;
+}
+
+.option-btn.incorrect {
+    border-color: #c87c7c;
+    background: rgba(200, 124, 124, 0.15);
+    color: #8b4545;
+}
+
+.option-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+/* ============================================
+   PROBLEM INPUT (Number Input)
+   ============================================ */
+.problem-input {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.input-field {
+    width: 100px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e1dc;
+    border-radius: 10px;
+    font-size: 18px;
+    text-align: center;
+    font-family: 'STIX Two Text', serif;
+    transition: border-color 0.2s;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #7ca8e8;
+}
+
+.input-field.correct {
+    border-color: #7cb87c;
+    background: rgba(124, 184, 124, 0.1);
+}
+
+.input-field.incorrect {
+    border-color: #c87c7c;
+    background: rgba(200, 124, 124, 0.1);
+}
+
+.input-label {
+    font-size: 18px;
+    color: #4b5563;
+}
+
+.submit-btn {
+    padding: 0.75rem 1.5rem;
+    background: #7ca8e8;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'STIX Two Text', serif;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: #6a96d6;
+}
+
+.submit-btn:disabled {
+    background: #b8c8dc;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   MULTI-INPUT (Multiple fields)
+   ============================================ */
+.problem-multi-input {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.input-row.given {
+    background: rgba(232, 168, 124, 0.15);
+}
+
+.input-row .angle-label {
+    width: 60px;
+    font-size: 16px;
+    color: #4b5563;
+}
+
+.input-row .input-field {
+    width: 80px;
+    padding: 0.5rem 0.75rem;
+}
+
+.input-row .feedback-icon {
+    font-size: 18px;
+    min-width: 24px;
+}
+
+.multi-submit-btn {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: #7ca8e8;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'STIX Two Text', serif;
+    cursor: pointer;
+    align-self: center;
+}
+
+.multi-submit-btn:hover:not(:disabled) {
+    background: #6a96d6;
+}
+
+.multi-submit-btn:disabled {
+    background: #b8c8dc;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   FEEDBACK BOX
+   ============================================ */
+.feedback-box {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.feedback-box.correct {
+    background: rgba(124, 184, 124, 0.12);
+    border: 1px solid #7cb87c;
+    color: #3d6b3d;
+}
+
+.feedback-box.incorrect {
+    background: rgba(200, 124, 124, 0.12);
+    border: 1px solid #c87c7c;
+    color: #6b3d3d;
+}
+
+.feedback-box.hidden {
+    display: none;
+}
+
+/* ============================================
+   RESULTS PAGE
+   ============================================ */
+.results-box {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.results-box.excellent {
+    background: rgba(124, 184, 124, 0.15);
+    border: 2px solid #7cb87c;
+}
+
+.results-box.good {
+    background: rgba(124, 168, 232, 0.15);
+    border: 2px solid #7ca8e8;
+}
+
+.results-box.needs-practice {
+    background: rgba(232, 168, 124, 0.15);
+    border: 2px solid #e8a87c;
+}
+
+.results-score {
+    font-size: 48px;
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+.results-label {
+    font-size: 18px;
+    color: #6b7280;
+}
+
+#results-breakdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.breakdown-section {
+    background: #fafafa;
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.breakdown-section h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.breakdown-section .score {
+    font-size: 20px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-primary {
+    padding: 0.875rem 2rem;
+    background: #7ca8e8;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'STIX Two Text', serif;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background: #6a96d6;
+}
+
+.btn-secondary {
+    padding: 0.875rem 2rem;
+    background: white;
+    color: #4b5563;
+    border: 2px solid #e5e1dc;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'STIX Two Text', serif;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    border-color: #7ca8e8;
+    background: rgba(124, 168, 232, 0.08);
+}
+
+/* ============================================
+   NAVIGATION DOTS
+   ============================================ */
+.nav-dots {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+}
+
+.nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d1d5db;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.nav-dot:hover {
+    background: #9ca3af;
+}
+
+.nav-dot.active {
+    background: #7ca8e8;
+    transform: scale(1.4);
+}
+
+.nav-dot.completed {
+    background: #7cb87c;
+}
+
+.nav-dot.missed {
+    background: #c87c7c;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 800px) {
+    .section-card {
+        padding: 1.5rem;
+    }
+
+    #results-breakdown {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nav-dots {
+        right: 10px;
+    }
+
+    .nav-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    #progress-bar-container {
+        padding: 0 10px;
+    }
+
+    #progress-text {
+        font-size: 12px;
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 500px) {
+    .problem-input {
+        flex-direction: column;
+    }
+
+    #results-breakdown {
+        grid-template-columns: 1fr 1fr;
+    }
+}

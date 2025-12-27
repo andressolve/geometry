@@ -11,10 +11,10 @@
  */
 
 const App = {
-    totalPages: 21, // Pages 0-20 (cover + 19 problems + results)
+    totalPages: 20, // Pages 0-19 (cover + 18 problems + results)
     currentPage: 0,
-    problemPages: { start: 1, end: 19 }, // Problem pages are 1-19
-    resultsPage: 20,
+    problemPages: { start: 1, end: 18 }, // Problem pages are 1-18
+    resultsPage: 19,
 
     // ============================================
     // PROGRESS BAR

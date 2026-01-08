@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 7: Angles in Circles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main scroll container -->
+    <div id="scroll-container" class="h-screen overflow-y-scroll snap-y snap-mandatory">
+
+        <!-- Page 0: Cover -->
+        <section id="page-0" class="snap-section bg-gradient-to-br from-blue-50 to-indigo-50">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl heading-primary mb-4">Angles in Circles</h1>
+                <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">What patterns will you find?</p>
+                <p class="text-lg text-gray-400">Lesson VII</p>
+                <div class="mt-12 flex justify-center">
+                    <canvas id="canvas-cover" class="diagram-canvas" width="400" height="280"></canvas>
+                </div>
+                <div class="mt-12 bounce">
+                    <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 1: What is a Circle? -->
+        <section id="page-1" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">What is a Circle?</h2>
+                        <p class="body-text mb-4">
+                            A circle is all points that are the <strong>same distance</strong> from a center point.
+                        </p>
+                        <p class="body-text mb-4">
+                            This distance is called the <strong>radius</strong>.
+                        </p>
+                        <p class="body-text mb-4">
+                            Every point on the circle is exactly one radius away from the center.
+                        </p>
+                        <p class="body-text text-gray-500 italic">
+                            In the diagram, all the lines from the center to the circle have the same length.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page1" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 2: Triangles from the Center -->
+        <section id="page-2" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Triangles from the Center</h2>
+                        <p class="body-text mb-4">
+                            Pick any two points on the circle: <em>A</em> and <em>B</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            Connect them to the center <em>O</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            Triangle <em>OAB</em> has two sides that are radii.
+                        </p>
+                        <p class="body-text mb-4">
+                            Since all radii are equal: <em>OA</em> = <em>OB</em>
+                        </p>
+                        <div class="theorem-box">
+                            <p class="body-text">
+                                This is an <strong>isosceles triangle</strong>!
+                            </p>
+                        </div>
+                        <p class="body-text text-gray-500 italic mt-4">
+                            Remember isosceles triangles from Lesson 6?
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page2" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Exercise 0 -->
+        <section id="page-3" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Exercise</h2>
+                        <p class="body-text mb-4">
+                            Two radii form a triangle with a chord.
+                        </p>
+                        <p class="body-text mb-4">
+                            One base angle is <strong>20°</strong>.
+                        </p>
+                        <p class="body-text mb-6">
+                            What's the other base angle?
+                        </p>
+                        <div id="ex0-options" class="space-y-2 mb-4"></div>
+                        <button id="ex0-check" class="check-btn">Check</button>
+                        <div id="ex0-feedback" class="hidden"></div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page3" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 4: Exercise 1 -->
+        <section id="page-4" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Exercise</h2>
+                        <p class="body-text mb-4">
+                            The angle at <em>C</em> is <strong>30° + 30° = 60°</strong>.
+                        </p>
+                        <p class="body-text mb-6">
+                            What is the angle at <em>O</em>?
+                        </p>
+                        <div id="ex1-options" class="space-y-2 mb-4"></div>
+                        <button id="ex1-check" class="check-btn">Check</button>
+                        <div id="ex1-feedback" class="hidden"></div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page4" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 5: Exercise 2 -->
+        <section id="page-5" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Exercise</h2>
+                        <p class="body-text mb-4">
+                            The angle at <em>C</em> is <strong>20° + 40° = 60°</strong>.
+                        </p>
+                        <p class="body-text mb-6">
+                            What is the angle at <em>O</em>?
+                        </p>
+                        <div id="ex2-options" class="space-y-2 mb-4"></div>
+                        <button id="ex2-check" class="check-btn">Check</button>
+                        <div id="ex2-feedback" class="hidden"></div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page5" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: Interactive -->
+        <section id="page-6" class="snap-section bg-gradient-to-br from-gray-50 to-slate-50">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6 text-center">See It In Action</h2>
+                <p class="body-text text-center mb-6">
+                    Drag point <em>C</em> around the arc. Watch what happens to the angle.
+                </p>
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-interactive" class="diagram-canvas cursor-grab" width="500" height="400"></canvas>
+                </div>
+                <div class="text-center">
+                    <p class="body-text mb-2">
+                        Angle at <em>C</em>: <span id="angle-display" class="text-2xl font-bold text-blue-600">60°</span>
+                    </p>
+                    <p class="body-text text-gray-500">
+                        Angle at center: <span class="font-bold">120°</span> (fixed)
+                    </p>
+                </div>
+                <div class="theorem-box mt-6 max-w-lg mx-auto">
+                    <p class="body-text text-center">
+                        No matter where <em>C</em> is on the arc, the angle stays the same!<br>
+                        And it's always <strong>half</strong> the angle at the center.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 7: The Theorem -->
+        <section id="page-7" class="snap-section">
+            <div class="section-card">
+                <h2 class="text-3xl heading-primary mb-6 text-center">The Theorem</h2>
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-page7" class="diagram-canvas" width="400" height="320"></canvas>
+                </div>
+                <div class="text-center">
+                    <p class="text-xl body-text">∠<em>AOB</em> = 2 ∠<em>ACB</em></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 8: The Proof -->
+        <section id="page-8" class="snap-section">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6">The Proof</h2>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="lg:w-1/2">
+                        <div class="proof-given mb-2">
+                            <strong>Given:</strong> Circle with center <em>O</em>. Points <em>A</em>, <em>B</em>, <em>C</em> on the circle. ∠<em>ACB</em> = <em>c</em>.
+                        </div>
+                        <div class="proof-prove mb-4">
+                            <strong>Prove:</strong> ∠<em>AOB</em> = 2<em>c</em>
+                        </div>
+
+                        <div class="proof-table">
+                            <div class="proof-header">
+                                <div>Statement</div>
+                                <div>Reason</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">1. Let <em>D</em> be diametrically opposite <em>C</em></div>
+                                <div class="proof-reason">Construction</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">2. Let ∠<em>OCA</em> = <em>a</em>, ∠<em>OCB</em> = <em>b</em></div>
+                                <div class="proof-reason">—</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">3. <em>a</em> + <em>b</em> = <em>c</em></div>
+                                <div class="proof-reason">Given (∠<em>ACB</em> = <em>c</em>)</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">4. ∠<em>OAC</em> = <em>a</em></div>
+                                <div class="proof-reason">Base angles of isosceles △<em>OAC</em></div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">5. ∠<em>AOC</em> = 180° − 2<em>a</em></div>
+                                <div class="proof-reason">Angles in △<em>OAC</em></div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">6. ∠<em>AOD</em> = 2<em>a</em></div>
+                                <div class="proof-reason"><em>CD</em> is a straight line</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">7. ∠<em>BOD</em> = 2<em>b</em></div>
+                                <div class="proof-reason">Same reasoning for △<em>OBC</em></div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">8. ∠<em>AOB</em> = ∠<em>AOD</em> + ∠<em>BOD</em> = 2<em>a</em> + 2<em>b</em></div>
+                                <div class="proof-reason">Angle addition</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="proof-statement">9. ∠<em>AOB</em> = 2(<em>a</em> + <em>b</em>) = 2<em>c</em></div>
+                                <div class="proof-reason">Substitution</div>
+                            </div>
+                            <div class="proof-qed">∎</div>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center items-start pt-8">
+                        <canvas id="canvas-page8" class="diagram-canvas" width="400" height="340"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 9: Corollary -->
+        <section id="page-9" class="snap-section bg-gradient-to-br from-indigo-50 to-blue-50">
+            <div class="section-card">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Corollary</h2>
+                <p class="body-text text-center text-gray-500 italic mb-4">
+                    A corollary is a consequence of a theorem.
+                </p>
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-page9" class="diagram-canvas" width="400" height="320"></canvas>
+                </div>
+                <div class="text-center">
+                    <p class="text-xl body-text">∠<em>AXB</em> = ∠<em>AYB</em></p>
+                </div>
+                <p class="body-text text-center text-gray-500 mt-4">
+                    Angles on the same arc are equal.
+                </p>
+            </div>
+        </section>
+
+        <!-- Page 10: Exercise - Corollary -->
+        <section id="page-10" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Exercise</h2>
+                        <p class="body-text mb-4">
+                            As in the diagram, the angle at <em>X</em> is <strong>35°</strong>.
+                        </p>
+                        <p class="body-text mb-6">
+                            What is the angle at <em>Y</em>?
+                        </p>
+                        <div id="ex3-options" class="space-y-2 mb-4"></div>
+                        <button id="ex3-check" class="check-btn">Check</button>
+                        <div id="ex3-feedback" class="hidden"></div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page10" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+
+                <a href="../index.html" class="inline-block mt-8 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-semibold no-underline">Back to Lessons</a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

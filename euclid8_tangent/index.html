@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 8: Tangent Lines</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main scroll container -->
+    <div id="scroll-container" class="h-screen overflow-y-scroll snap-y snap-mandatory">
+
+        <!-- Page 0: Cover -->
+        <section id="page-0" class="snap-section bg-gradient-to-br from-blue-50 to-indigo-50">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl heading-primary mb-4">Tangent Lines</h1>
+                <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">When does a line touch a circle just once?</p>
+                <p class="text-lg text-gray-400">Lesson VIII</p>
+                <div class="mt-12 flex justify-center">
+                    <canvas id="canvas-cover" class="diagram-canvas" width="400" height="280"></canvas>
+                </div>
+                <div class="mt-12 bounce">
+                    <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 1: What is a Tangent Line? -->
+        <section id="page-1" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">What is a Tangent Line?</h2>
+                        <p class="body-text mb-4">
+                            A <strong>tangent line</strong> is a line that touches a circle at exactly one point.
+                        </p>
+                        <p class="body-text mb-4">
+                            Like a wheel rolling on the ground—the ground is tangent to the wheel.
+                        </p>
+                        <p class="body-text mb-4">
+                            The point where they touch is called the <strong>point of tangency</strong>.
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page1" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 2: Two Ways to Meet -->
+        <section id="page-2" class="snap-section">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Two Ways to Meet</h2>
+                <p class="body-text text-center mb-6">
+                    A line and circle can meet in two ways:
+                </p>
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-page2" class="diagram-canvas" width="450" height="200"></canvas>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                    <div class="definition-box">
+                        <div class="font-semibold mb-2">Tangent line</div>
+                        <p class="body-text">Touches at exactly one point</p>
+                    </div>
+                    <div class="definition-box">
+                        <div class="font-semibold mb-2">Secant line</div>
+                        <p class="body-text">Crosses through at two points</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Looking at Secants -->
+        <section id="page-3" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Looking at Secants</h2>
+                        <p class="body-text mb-4">
+                            When a line crosses a circle at two points, call them <em>A</em> and <em>B</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            Connect both points to the center <em>O</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            This makes triangle <em>OAB</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            Remember: <em>OA</em> = <em>OB</em> because they're both radii.
+                        </p>
+                        <div class="theorem-box">
+                            <p class="body-text">
+                                So triangle <em>OAB</em> is <strong>isosceles</strong>!
+                            </p>
+                        </div>
+                        <p class="body-text text-gray-500 italic mt-4">
+                            Remember isosceles triangles from Lesson 6?
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page3" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 4: Warm-up Exercise -->
+        <section id="page-4" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Exercise</h2>
+                        <p class="body-text mb-4">
+                            A line crosses the circle at points <em>A</em> and <em>B</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            This forms triangle <em>OAB</em> with the center <em>O</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            The angle at <em>A</em> is <strong>70°</strong>.
+                        </p>
+                        <p class="body-text mb-6">
+                            What is the angle at <em>B</em>?
+                        </p>
+                        <div id="ex0-options" class="space-y-2 mb-4"></div>
+                        <button id="ex0-check" class="check-btn">Check</button>
+                        <div id="ex0-feedback" class="hidden"></div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page4" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 5: A Perpendicular Line -->
+        <section id="page-5" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">A Perpendicular Line</h2>
+                        <p class="body-text mb-4">
+                            Now let's look at something special.
+                        </p>
+                        <p class="body-text mb-4">
+                            Draw a radius <em>OP</em> (from center <em>O</em> to point <em>P</em> on the circle).
+                        </p>
+                        <p class="body-text mb-4">
+                            Draw a line <strong>perpendicular</strong> to <em>OP</em> at point <em>P</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            This makes a right angle at <em>P</em>.
+                        </p>
+                        <p class="body-text mb-6">
+                            Question: Could this line cross the circle at another point?
+                        </p>
+                        <p class="body-text text-gray-500 italic">
+                            Let's investigate...
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page5" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: Let's Suppose It Does -->
+        <section id="page-6" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Let's Suppose It Does</h2>
+                        <p class="body-text mb-4">
+                            Let's suppose the perpendicular line crosses the circle at another point.
+                        </p>
+                        <p class="body-text mb-4">
+                            Call that second point <em>Q</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            Now we have two points on the circle: <em>P</em> and <em>Q</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            Connect <em>O</em> to <em>Q</em> to form triangle <em>OPQ</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            Since <em>OP</em> = <em>OQ</em> (both radii), triangle <em>OPQ</em> is isosceles.
+                        </p>
+                        <p class="body-text mb-4">
+                            So the angles at <em>P</em> and <em>Q</em> must be equal.
+                        </p>
+                        <p class="body-text text-gray-500 italic mt-4">
+                            We're assuming this is possible. Let's see what happens...
+                        </p>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page6" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 7: Exercise - What Are the Angles? -->
+        <section id="page-7" class="snap-section">
+            <div class="section-card section-card-wide">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl heading-primary mb-6">Exercise</h2>
+                        <p class="body-text mb-4">
+                            We know the line is perpendicular to <em>OP</em> at point <em>P</em>.
+                        </p>
+                        <p class="body-text mb-4">
+                            So the angle at <em>P</em> = <strong>90°</strong>
+                        </p>
+                        <p class="body-text mb-4">
+                            Triangle <em>OPQ</em> is isosceles with <em>OP</em> = <em>OQ</em>.
+                        </p>
+                        <p class="body-text mb-6">
+                            What is the angle at <em>Q</em>?
+                        </p>
+                        <div id="ex1-options" class="space-y-2 mb-4"></div>
+                        <button id="ex1-check" class="check-btn">Check</button>
+                        <div id="ex1-feedback" class="hidden"></div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <canvas id="canvas-page7" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 8: Something's Wrong! -->
+        <section id="page-8" class="snap-section bg-gradient-to-br from-orange-50 to-red-50">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Something's Wrong!</h2>
+
+                <div class="flex flex-col lg:flex-row gap-8 items-start">
+                    <div class="lg:w-1/2">
+                        <p class="body-text mb-4">
+                            Let's add up the angles in triangle <em>OPQ</em>:
+                        </p>
+                        <ul class="list-disc list-inside body-text mb-4 space-y-2">
+                            <li>Angle at <em>P</em> = 90°</li>
+                            <li>Angle at <em>Q</em> = 90°</li>
+                            <li>Angle at <em>O</em> = some positive amount (it can't be 0°)</li>
+                        </ul>
+                        <p class="body-text mb-4">
+                            Total = 90° + 90° + (angle at <em>O</em>)
+                        </p>
+                        <div class="warning-box text-center mb-4">
+                            <p class="text-xl font-bold text-orange-600">That's more than 180°!</p>
+                        </div>
+                        <p class="body-text mb-6">
+                            But wait... we learned that angles in a triangle always add up to exactly 180°.
+                        </p>
+                        <p class="text-xl font-bold text-red-600 text-center mb-6">This can't happen!</p>
+
+                        <div class="mt-6 pt-6 border-t border-gray-300">
+                            <p class="text-lg font-semibold mb-3">So what went wrong?</p>
+                            <p class="body-text mb-2">
+                                • We started by <strong>supposing</strong> the line crossed the circle at two points: <em>P</em> and <em>Q</em>
+                            </p>
+                            <p class="body-text mb-2">
+                                • That assumption led us to an impossible situation
+                            </p>
+                            <p class="body-text mb-2">
+                                • When an assumption leads to something impossible, the assumption must be <strong>wrong</strong>
+                            </p>
+                            <p class="body-text mb-2">
+                                • The line <strong>cannot</strong> cross the circle at two points
+                            </p>
+                            <p class="body-text">
+                                • It can only touch the circle at <strong>one point</strong>: <em>P</em>
+                            </p>
+                        </div>
+
+                        <div class="conclusion-box mt-6">
+                            <p class="body-text font-semibold text-center">
+                                Our assumption was wrong. A line perpendicular to a radius can only touch the circle at one point!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center items-start pt-8">
+                        <canvas id="canvas-page8" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 9: The Proof -->
+        <section id="page-9" class="snap-section">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6">The Proof</h2>
+                <p class="text-xl body-text mb-6 text-center italic">Why a Perpendicular Line is Tangent</p>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="lg:w-1/2">
+                        <div class="proof-given">
+                            <strong>Given:</strong> Circle with center <em>O</em>, radius <em>OP</em>, and a line perpendicular to <em>OP</em> at point <em>P</em>.
+                        </div>
+
+                        <div class="proof-claim">
+                            <strong>Claim:</strong> The line touches the circle only at point <em>P</em>.
+                        </div>
+
+                        <div class="proof-paragraph">
+                            <p class="mb-4">
+                                <strong>Proof:</strong> Suppose the line crosses the circle at another point <em>Q</em> (in addition to <em>P</em>). Then <em>OP</em> and <em>OQ</em> are both radii, so <em>OP</em> = <em>OQ</em>. This means triangle <em>OPQ</em> is isosceles.
+                            </p>
+                            <p class="mb-4">
+                                In an isosceles triangle, the base angles are equal. Since the line is perpendicular to <em>OP</em> at point <em>P</em>, the angle at <em>P</em> is 90°. Because the base angles are equal, the angle at <em>Q</em> must also be 90°.
+                            </p>
+                            <p class="mb-4">
+                                Now let's add up the angles in triangle <em>OPQ</em>. We have 90° at <em>P</em>, 90° at <em>Q</em>, and some positive angle at <em>O</em>. The sum is 90° + 90° + (angle at <em>O</em>), which is more than 180°.
+                            </p>
+                            <p class="mb-4">
+                                But we know that the angles in any triangle always sum to exactly 180°. This is a contradiction!
+                            </p>
+                            <p class="mb-4">
+                                Our assumption must be wrong. The line cannot cross the circle at a second point <em>Q</em>. So the line touches the circle at exactly one point: <em>P</em>.
+                            </p>
+                            <p>
+                                A line that touches a circle at exactly one point is called a <strong>tangent line</strong>. We've just proved that a line perpendicular to a radius at its endpoint is tangent to the circle.
+                            </p>
+                        </div>
+                        <div class="proof-qed">∎</div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center items-start pt-8">
+                        <canvas id="canvas-page9" class="diagram-canvas" width="400" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 10: The Theorem -->
+        <section id="page-10" class="snap-section bg-gradient-to-br from-green-50 to-emerald-50">
+            <div class="section-card">
+                <h2 class="text-3xl heading-primary mb-6 text-center">The Theorem</h2>
+                <p class="body-text text-center mb-6">What we just proved:</p>
+
+                <div class="theorem-box mb-6">
+                    <p class="text-xl body-text text-center font-semibold">
+                        A line perpendicular to a radius at its endpoint is tangent to the circle.
+                    </p>
+                    <p class="text-lg body-text text-center text-gray-600 mt-4">
+                        Or in other words: A line perpendicular to a radius touches the circle at exactly one point.
+                    </p>
+                </div>
+
+                <div class="flex justify-center mb-6">
+                    <canvas id="canvas-page10" class="diagram-canvas" width="400" height="320"></canvas>
+                </div>
+
+                <p class="body-text text-center text-gray-600 italic">
+                    This is why when you draw a tangent line to a circle, it always looks perpendicular to the radius at that point!
+                </p>
+            </div>
+        </section>
+
+        <!-- Page 11: Practice -->
+        <section id="page-11" class="snap-section">
+            <div class="section-card section-card-wide">
+                <h2 class="text-3xl heading-primary mb-6 text-center">Practice</h2>
+                <p class="body-text text-center mb-8">
+                    Look at each diagram. Which lines are tangent to the circle?
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                    <!-- Diagram A -->
+                    <div class="border border-gray-300 rounded-lg p-4">
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-page11-a" class="diagram-canvas-small" width="180" height="140"></canvas>
+                        </div>
+                        <p class="text-center font-bold mb-2">Diagram A</p>
+                        <div id="ex2-a-options" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Diagram B -->
+                    <div class="border border-gray-300 rounded-lg p-4">
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-page11-b" class="diagram-canvas-small" width="180" height="140"></canvas>
+                        </div>
+                        <p class="text-center font-bold mb-2">Diagram B</p>
+                        <div id="ex2-b-options" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Diagram C -->
+                    <div class="border border-gray-300 rounded-lg p-4">
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-page11-c" class="diagram-canvas-small" width="180" height="140"></canvas>
+                        </div>
+                        <p class="text-center font-bold mb-2">Diagram C</p>
+                        <div id="ex2-c-options" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Diagram D -->
+                    <div class="border border-gray-300 rounded-lg p-4">
+                        <div class="flex justify-center mb-4">
+                            <canvas id="canvas-page11-d" class="diagram-canvas-small" width="180" height="140"></canvas>
+                        </div>
+                        <p class="text-center font-bold mb-2">Diagram D</p>
+                        <div id="ex2-d-options" class="space-y-2"></div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="ex2-check" class="check-btn">Check All</button>
+                    <div id="ex2-feedback" class="hidden mt-4"></div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <a href="../index.html" class="inline-block px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-semibold no-underline">Back to Lessons</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

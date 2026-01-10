@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometry Practice Worksheet</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #333;
+            --accent-color: #6a82fb;
+            --border-color: #ddd;
+        }
+
+        body {
+            font-family: 'STIX Two Text', serif;
+            color: var(--primary-color);
+            margin: 0;
+            padding: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: white;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-info {
+            text-align: right;
+        }
+
+        .header-field {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .header-line {
+            display: inline-block;
+            border-bottom: 1px solid #999;
+            width: 150px;
+            margin-left: 0.5rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            background-color: #f3f4f6;
+            padding: 0.5rem 1rem;
+            border-left: 4px solid var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .problem {
+            margin-bottom: 1rem;
+        }
+
+        .problem-text {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 0.5rem 0;
+            border: 1px solid transparent;
+            /* Placeholder for debugging */
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+
+        .vocab-match {
+            display: grid;
+            grid-template-columns: 1fr 2rem 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .vocab-term {
+            text-align: right;
+            padding: 0.25rem;
+        }
+
+        .vocab-line {
+            border-bottom: 1px solid #ccc;
+            height: 1.25rem;
+        }
+
+        .vocab-def {
+            padding: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+
+        @media print {
+            body {
+                padding: 0.5in;
+                max-width: none;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+
+            .section-title {
+                background-color: #eee !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div>
+            <h1>Geometry Practice</h1>
+            <div style="font-size: 0.9rem; color: #666; font-style: italic;">Mixed Concepts Review</div>
+        </div>
+        <div class="header-info">
+            <div class="header-field">Name: <span class="header-line"></span></div>
+            <div class="header-field">Date: <span class="header-line"></span></div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: VOCABULARY -->
+    <section class="section">
+        <div class="section-title">
+            <span>I. Vocabulary Match</span>
+            <span style="font-size: 0.8rem; font-weight: normal; color: #555;">Match the term to its definition</span>
+        </div>
+        <div class="vocab-match">
+            <div class="vocab-term">1. Tangent Line</div>
+            <div class="vocab-line"></div>
+            <div class="vocab-def">A. A triangle with at least two equal sides</div>
+
+            <div class="vocab-term">2. Isosceles Triangle</div>
+            <div class="vocab-line"></div>
+            <div class="vocab-def">B. A line that touches a circle at exactly one point</div>
+
+            <div class="vocab-term">3. Radius</div>
+            <div class="vocab-line"></div>
+            <div class="vocab-def">C. Two figures that are exactly the same size and shape</div>
+
+            <div class="vocab-term">4. Congruent</div>
+            <div class="vocab-line"></div>
+            <div class="vocab-def">D. The distance from the center of a circle to any point on its edge</div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: PARALLEL LINES -->
+    <section class="section">
+        <div class="section-title">II. Parallel Lines & Transversals</div>
+        <div class="problem-grid">
+            <div class="problem">
+                <div class="problem-text">1. Find the measure of angle <em>x</em>. Lines <em>m</em> and <em>n</em> are
+                    parallel.</div>
+                <div class="canvas-container">
+                    <canvas id="canvas-parallel-1" width="300" height="200"></canvas>
+                </div>
+                <div style="margin-top: 1rem;">Answer: <span
+                        style="display:inline-block; width: 60px; border-bottom: 1px solid #333;"></span></div>
+            </div>
+            <div class="problem">
+                <div class="problem-text">2. Find the measure of angle <em>y</em>.</div>
+                <div class="canvas-container">
+                    <canvas id="canvas-parallel-2" width="300" height="200"></canvas>
+                </div>
+                <div style="margin-top: 1rem;">Answer: <span
+                        style="display:inline-block; width: 60px; border-bottom: 1px solid #333;"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: TRIANGLES & CONGRUENCE -->
+    <section class="section">
+        <div class="section-title">III. Triangles & Congruence</div>
+        <div class="problem-grid">
+            <div class="problem">
+                <div class="problem-text">3. Are these triangles congruent? If yes, by what rule?</div>
+                <div class="canvas-container">
+                    <canvas id="canvas-tri-1" width="300" height="200"></canvas>
+                </div>
+                <div style="margin-top: 1rem;">
+                    Circle one: &nbsp; Yes &nbsp;/&nbsp; No
+                    <br>
+                    Reason: <span style="display:inline-block; width: 100px; border-bottom: 1px solid #333;"></span>
+                </div>
+            </div>
+            <div class="problem">
+                <div class="problem-text">4. Find the missing angle <em>z</em> in this isosceles triangle.</div>
+                <div class="canvas-container">
+                    <canvas id="canvas-tri-2" width="300" height="200"></canvas>
+                </div>
+                <div style="margin-top: 1rem;">Answer: <span
+                        style="display:inline-block; width: 60px; border-bottom: 1px solid #333;"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: CIRCLES & ANGLES -->
+    <section class="section page-break">
+        <div class="section-title">IV. Circles & Tangents</div>
+        <div class="problem-grid">
+            <div class="problem">
+                <div class="problem-text">5. Point O is the center. Find angle <em>a</em>.</div>
+                <div class="canvas-container">
+                    <canvas id="canvas-circle-1" width="300" height="220"></canvas>
+                </div>
+                <div style="margin-top: 1rem;">Answer: <span
+                        style="display:inline-block; width: 60px; border-bottom: 1px solid #333;"></span></div>
+            </div>
+            <div class="problem">
+                <div class="problem-text">6. Line AB is tangent to the circle at P. Find angle <em>b</em>.</div>
+                <div class="canvas-container">
+                    <canvas id="canvas-circle-2" width="350" height="250"></canvas>
+                </div>
+                <div style="margin-top: 1rem;">Answer: <span
+                        style="display:inline-block; width: 60px; border-bottom: 1px solid #333;"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: TANGENT CHALLENGE -->
+    <section class="section">
+        <div class="section-title">V. Tangent Challenge</div>
+        <div class="problem-grid">
+            <div class="problem">
+                <div class="problem-text">7. Line AB is tangent to the circle at A. Find angle <em>x</em>.</div>
+                <div class="canvas-container">
+                    <canvas id="canvas-tangent-1" width="350" height="250"></canvas>
+                </div>
+                <div style="margin-top: 1rem;">Answer: <span
+                        style="display:inline-block; width: 60px; border-bottom: 1px solid #333;"></span></div>
+            </div>
+            <div class="problem">
+                <div class="problem-text">8. Line T is tangent at P. Find angle <em>z</em> between the chord and the
+                    tangent.</div>
+                <div class="canvas-container">
+                    <canvas id="canvas-tangent-2" width="400" height="300"></canvas>
+                </div>
+                <div style="margin-top: 1rem;">Answer: <span
+                        style="display:inline-block; width: 60px; border-bottom: 1px solid #333;"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        Practice makes perfect. Keep up the great work!
+    </div>
+
+    <script>
+        // ==========================================
+        // GEOMETRY UTILS (Inlined for portability)
+        // ==========================================
+        const GeometryUtils = {
+            setupCanvas(canvas, width, height) {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+                const ctx = canvas.getContext('2d');
+                ctx.scale(dpr, dpr);
+                ctx.lineWidth = 1.5;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.fillStyle = '#333';
+                ctx.strokeStyle = '#333';
+                return ctx;
+            },
+
+            drawPoint(ctx, x, y, label, offsetX = 0, offsetY = 0, size = 3) {
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+                if (label) {
+                    ctx.font = 'italic 16px "STIX Two Text", serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(label, x + offsetX, y + offsetY);
+                }
+            },
+
+            drawLine(ctx, p1, p2, color = '#333', width = 1.5) {
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = width;
+                ctx.stroke();
+            },
+
+            drawCircle(ctx, center, radius, color = '#333') {
+                ctx.beginPath();
+                ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = color;
+                ctx.stroke();
+            },
+
+            drawAngleArc(ctx, vertex, p1, p2, radius = 20, label = null) {
+                const angle1 = Math.atan2(p1.y - vertex.y, p1.x - vertex.x);
+                const angle2 = Math.atan2(p2.y - vertex.y, p2.x - vertex.x);
+                let diff = angle2 - angle1;
+                while (diff > Math.PI) diff -= 2 * Math.PI;
+                while (diff < -Math.PI) diff += 2 * Math.PI;
+
+                ctx.beginPath();
+                ctx.arc(vertex.x, vertex.y, radius, angle1, angle2, diff < 0);
+                ctx.stroke();
+
+                if (label) {
+                    const midAngle = angle1 + diff / 2;
+                    const labelR = radius + 15;
+                    ctx.font = '14px "STIX Two Text", serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(label, vertex.x + Math.cos(midAngle) * labelR, vertex.y + Math.sin(midAngle) * labelR);
+                }
+            },
+
+            drawTickMarks(ctx, p1, p2, count = 1) {
+                const midX = (p1.x + p2.x) / 2;
+                const midY = (p1.y + p2.y) / 2;
+                const dx = p2.x - p1.x;
+                const dy = p2.y - p1.y;
+                const len = Math.sqrt(dx * dx + dy * dy);
+                if (len === 0) return;
+
+                const perpX = -dy / len;
+                const perpY = dx / len;
+                const tickLen = 6;
+                const spacing = 5;
+
+                for (let i = 0; i < count; i++) {
+                    const offset = (i - (count - 1) / 2) * spacing;
+                    const cx = midX + (dx / len) * offset;
+                    const cy = midY + (dy / len) * offset;
+                    ctx.beginPath();
+                    ctx.moveTo(cx - perpX * tickLen, cy - perpY * tickLen);
+                    ctx.lineTo(cx + perpX * tickLen, cy + perpY * tickLen);
+                    ctx.stroke();
+                }
+            },
+
+            drawRightAngle(ctx, vertex, p1, p2, size = 10) {
+                const a1 = Math.atan2(p1.y - vertex.y, p1.x - vertex.x);
+                const a2 = Math.atan2(p2.y - vertex.y, p2.x - vertex.x);
+
+                const c1 = { x: vertex.x + size * Math.cos(a1), y: vertex.y + size * Math.sin(a1) };
+                const c2 = { x: vertex.x + size * Math.cos(a2), y: vertex.y + size * Math.sin(a2) };
+                const c3 = {
+                    x: vertex.x + size * Math.cos(a1) + size * Math.cos(a2),
+                    y: vertex.y + size * Math.sin(a1) + size * Math.sin(a2)
+                };
+
+                ctx.beginPath();
+                ctx.moveTo(c1.x, c1.y);
+                ctx.lineTo(c3.x, c3.y);
+                ctx.lineTo(c2.x, c2.y);
+                ctx.stroke();
+            },
+
+            drawArrow(ctx, p1, p2, location = 0.5) {
+                const dx = p2.x - p1.x;
+                const dy = p2.y - p1.y;
+                const cx = p1.x + dx * location;
+                const cy = p1.y + dy * location;
+                const angle = Math.atan2(dy, dx);
+                const size = 8;
+
+                ctx.beginPath();
+                ctx.moveTo(cx - size * Math.cos(angle - Math.PI / 6), cy - size * Math.sin(angle - Math.PI / 6));
+                ctx.lineTo(cx, cy);
+                ctx.lineTo(cx - size * Math.cos(angle + Math.PI / 6), cy - size * Math.sin(angle + Math.PI / 6));
+                ctx.fillStyle = '#333';
+                ctx.fill();
+            }
+        };
+
+        // ==========================================
+        // DRAWING FUNCTIONS
+        // ==========================================
+
+        // 1. Parallel Lines
+        function drawParallel1() {
+            const ctx = GeometryUtils.setupCanvas(document.getElementById('canvas-parallel-1'), 300, 200);
+
+            // Parallel lines
+            const p1 = { x: 20, y: 60 };
+            const p2 = { x: 250, y: 60 };
+            const p3 = { x: 20, y: 140 };
+            const p4 = { x: 250, y: 140 };
+
+            GeometryUtils.drawLine(ctx, p1, p2);
+            GeometryUtils.drawLine(ctx, p3, p4);
+
+            // Arrows to show parallel
+            GeometryUtils.drawArrow(ctx, p1, p2, 0.8);
+            GeometryUtils.drawArrow(ctx, p3, p4, 0.8);
+
+            // Label lines m and n
+            ctx.fillText('m', 260, 63);
+            ctx.fillText('n', 260, 143);
+
+            // Transversal
+            const t1 = { x: 80, y: 20 };
+            const t2 = { x: 180, y: 180 };
+            GeometryUtils.drawLine(ctx, t1, t2);
+
+            // Intersections
+            // y = mx + b. m = (180-20)/(180-80) = 160/100 = 1.6
+            // y - 20 = 1.6(x - 80) => y = 1.6x - 128 + 20 => y = 1.6x - 108
+            // 60 = 1.6x - 108 => 168 = 1.6x => x = 105
+            const i1 = { x: 105, y: 60 };
+            // 140 = 1.6x - 108 => 248 = 1.6x => x = 155
+            const i2 = { x: 155, y: 140 };
+
+            GeometryUtils.drawPoint(ctx, i1.x, i1.y);
+            GeometryUtils.drawPoint(ctx, i2.x, i2.y);
+
+            // Angles
+            // Top right angle (obtuse)
+            const tr1 = { x: i1.x + 20, y: 60 };
+            const tr2 = { x: i1.x + 10, y: 60 - 16 }; // approx direction of transversal up
+            GeometryUtils.drawAngleArc(ctx, i1, { x: t1.x, y: t1.y }, { x: p2.x, y: p2.y }, 20, '110°');
+
+            // Bottom left angle x (alternate exterior or calculate via corresponding + vertical)
+            // Let's ask for the alternate interior one: bottom right inside
+            // Or corresponding: bottom right outside
+            // Let's place x at bottom left (corresponding to top left, vertical to bottom right)
+            // Top left is acute (180-110=70).
+            // Let's label x at bottom right interior (consecutive interior to top right? No alt int)
+            // Let's label x at alternate interior to top right (bottom left)
+
+            // Let's keep it simple: Corresponding.
+            // Angle x at bottom right (corresponding to 110)
+            // Angle x at bottom right (corresponding to 110)
+            // Using i2 as vertex, angle between right-parallel and top-transversal
+            GeometryUtils.drawAngleArc(ctx, i2, { x: p4.x, y: p4.y }, { x: i1.x, y: i1.y }, 25, 'x');
+
+        }
+
+        function drawParallel2() {
+            const ctx = GeometryUtils.setupCanvas(document.getElementById('canvas-parallel-2'), 300, 200);
+
+            // Parallel lines
+            const p1 = { x: 40, y: 50 };
+            const p2 = { x: 220, y: 50 };
+            const p3 = { x: 40, y: 150 };
+            const p4 = { x: 220, y: 150 };
+
+            GeometryUtils.drawLine(ctx, p1, p2);
+            GeometryUtils.drawLine(ctx, p3, p4);
+            GeometryUtils.drawArrow(ctx, p1, p2, 0.9);
+            GeometryUtils.drawArrow(ctx, p3, p4, 0.9);
+
+            // Transversal (other way)
+            const t1 = { x: 200, y: 20 };
+            const t2 = { x: 40, y: 180 };
+            GeometryUtils.drawLine(ctx, t1, t2);
+
+            // Intersections
+            // m = (180-20)/(40-200) = 160/-160 = -1
+            // y - 20 = -1(x - 200) => y = -x + 200 + 20 => y = -x + 220
+            // 50 = -x + 220 => x = 170
+            const i1 = { x: 170, y: 50 };
+            // 150 = -x + 220 => x = 70
+            const i2 = { x: 70, y: 150 };
+
+            GeometryUtils.drawPoint(ctx, i1.x, i1.y);
+            GeometryUtils.drawPoint(ctx, i2.x, i2.y);
+
+            // Angle top left (obtuse) labeled 130
+            GeometryUtils.drawAngleArc(ctx, i1, { x: t1.x, y: t1.y }, { x: p1.x, y: p1.y }, 20, '130°');
+
+            // Angle bottom right interior y (consecutive interior? alternate interior?)
+            // Let's find alternate interior angle.
+            // Top left (130) and Bottom Right (130).
+            GeometryUtils.drawAngleArc(ctx, i2, { x: p4.x, y: p4.y }, { x: i1.x, y: i1.y }, 20, 'y');
+        }
+
+        // 2. Triangles
+        // 2. Triangles
+        function drawTri1() {
+            const ctx = GeometryUtils.setupCanvas(document.getElementById('canvas-tri-1'), 300, 200);
+
+            // Triangle 1
+            const A = { x: 50, y: 30 };
+            const B = { x: 30, y: 130 };
+            const C = { x: 100, y: 130 };
+
+            GeometryUtils.drawLine(ctx, A, B);
+            GeometryUtils.drawLine(ctx, B, C);
+            GeometryUtils.drawLine(ctx, C, A);
+
+            GeometryUtils.drawTickMarks(ctx, A, B, 1);
+            GeometryUtils.drawTickMarks(ctx, B, C, 2);
+            GeometryUtils.drawTickMarks(ctx, C, A, 3);
+
+            // Triangle 2 (rotated)
+            const offset = 150;
+            // Initial position (translated)
+            const A2_base = { x: A.x + offset, y: A.y };
+            const B2_base = { x: B.x + offset, y: B.y };
+            const C2_base = { x: C.x + offset, y: C.y };
+
+            // Pivot around centroid approx (200, 100)
+            const pivot = { x: 215, y: 100 };
+            const angle = Math.PI * 0.7; // Rotate ~126 degrees
+
+            function rotate(p, center, ang) {
+                const s = Math.sin(ang);
+                const c = Math.cos(ang);
+                return {
+                    x: center.x + (p.x - center.x) * c - (p.y - center.y) * s,
+                    y: center.y + (p.x - center.x) * s + (p.y - center.y) * c
+                };
+            }
+
+            const A2 = rotate(A2_base, pivot, angle);
+            const B2 = rotate(B2_base, pivot, angle);
+            const C2 = rotate(C2_base, pivot, angle);
+
+            GeometryUtils.drawLine(ctx, A2, B2);
+            GeometryUtils.drawLine(ctx, B2, C2);
+            GeometryUtils.drawLine(ctx, C2, A2);
+
+            GeometryUtils.drawTickMarks(ctx, A2, B2, 1);
+            GeometryUtils.drawTickMarks(ctx, B2, C2, 2);
+            GeometryUtils.drawTickMarks(ctx, C2, A2, 3);
+
+            ctx.fillText('Triangle 1', 65, 160);
+            ctx.fillText('Triangle 2', 215, 160);
+        }
+
+        function drawTri2() {
+            const ctx = GeometryUtils.setupCanvas(document.getElementById('canvas-tri-2'), 300, 200);
+
+            // Isosceles Triangle
+            const top = { x: 150, y: 30 };
+            const left = { x: 80, y: 170 };
+            const right = { x: 220, y: 170 };
+
+            GeometryUtils.drawLine(ctx, top, left);
+            GeometryUtils.drawLine(ctx, top, right);
+            GeometryUtils.drawLine(ctx, left, right);
+
+            GeometryUtils.drawTickMarks(ctx, top, left, 1);
+            GeometryUtils.drawTickMarks(ctx, top, right, 1);
+
+            GeometryUtils.drawAngleArc(ctx, top, left, right, 30, '40°');
+            GeometryUtils.drawAngleArc(ctx, left, right, top, 25, 'z');
+            GeometryUtils.drawAngleArc(ctx, right, top, left, 25, 'z');
+        }
+
+        // 3. Circles
+        function drawCircle1() {
+            const ctx = GeometryUtils.setupCanvas(document.getElementById('canvas-circle-1'), 300, 220);
+            const center = { x: 150, y: 110 };
+            const r = 70;
+
+            GeometryUtils.drawCircle(ctx, center, r, '#6a82fb');
+            GeometryUtils.drawPoint(ctx, center.x, center.y, 'O', 0, -10);
+
+            // Points on circle
+            const p1 = { x: center.x + r * Math.cos(Math.PI / 6), y: center.y + r * Math.sin(Math.PI / 6) };
+            const p2 = { x: center.x + r * Math.cos(5 * Math.PI / 6), y: center.y + r * Math.sin(5 * Math.PI / 6) };
+
+            // Radii
+            GeometryUtils.drawLine(ctx, center, p1);
+            GeometryUtils.drawLine(ctx, center, p2);
+
+            // Inscribed point at bottom
+            const p3 = { x: center.x + r * Math.cos(3 * Math.PI / 2), y: center.y + r * Math.sin(3 * Math.PI / 2) };
+            GeometryUtils.drawLine(ctx, p3, p1);
+            GeometryUtils.drawLine(ctx, p3, p2);
+
+            // Label angle at center
+            GeometryUtils.drawAngleArc(ctx, center, p1, p2, 20, 'a');
+
+            // Label angle at circumference
+            // Arc logic is counterclockwise. Angle p2 to p1 via p3? 
+            // Angle at p3 subtended by arc p1-p2
+            GeometryUtils.drawAngleArc(ctx, p3, p1, p2, 30, '35°');
+        }
+
+        function drawCircle2() {
+            const ctx = GeometryUtils.setupCanvas(document.getElementById('canvas-circle-2'), 350, 250);
+            const center = { x: 120, y: 100 };
+            const r = 80;
+
+            GeometryUtils.drawCircle(ctx, center, r, '#6a82fb');
+
+            // Point P at bottom
+            const P = { x: center.x, y: center.y + r }; // 120, 180
+            GeometryUtils.drawPoint(ctx, P.x, P.y, 'P', 0, -15);
+            GeometryUtils.drawPoint(ctx, center.x, center.y, 'O', 0, -10);
+
+            // Tangent line
+            const t1 = { x: 20, y: P.y };
+            const t2 = { x: 330, y: P.y };
+            GeometryUtils.drawLine(ctx, t1, t2);
+
+            // Radius
+            GeometryUtils.drawLine(ctx, center, P);
+
+            // Triangle from center to point on tangent
+            // Increase distance to B for clarity
+            const B = { x: center.x + 100, y: P.y }; // 220, 180
+            GeometryUtils.drawPoint(ctx, B.x, B.y, 'B', 0, 15);
+            GeometryUtils.drawLine(ctx, center, B);
+
+            // Angle b at center
+            GeometryUtils.drawAngleArc(ctx, center, B, P, 30, 'b');
+
+            // Angle at B given? Or P is right angle
+            GeometryUtils.drawRightAngle(ctx, P, { x: center.x, y: center.y }, { x: B.x, y: B.y }); // order matters for quadrant
+
+            // Label angle at B
+            GeometryUtils.drawAngleArc(ctx, B, center, P, 35, '40°');
+
+            ctx.fillText('A', 30, P.y + 15);
+            ctx.fillText('Tangent AB', 175, P.y + 30);
+        }
+
+        // 4. Tangent Challenge
+        // 4. Tangent Challenge
+        function drawTangent1() {
+            const ctx = GeometryUtils.setupCanvas(document.getElementById('canvas-tangent-1'), 350, 250);
+            const center = { x: 100, y: 180 };
+            const r = 70;
+            const A = { x: center.x + r, y: center.y }; // Point A on right
+
+            GeometryUtils.drawCircle(ctx, center, r, '#6a82fb');
+            GeometryUtils.drawPoint(ctx, center.x, center.y, 'O', -15, 0); // Offset label O slightly left
+            GeometryUtils.drawPoint(ctx, A.x, A.y, 'A', 5, 10);
+
+            // Tangent line AB (vertical up)
+            // Make line longer for clarity
+            const B = { x: A.x, y: A.y - 140 };
+            GeometryUtils.drawPoint(ctx, B.x, B.y, 'B', 5, -5);
+
+            GeometryUtils.drawLine(ctx, center, A);
+            GeometryUtils.drawLine(ctx, A, B);
+            GeometryUtils.drawLine(ctx, center, B);
+
+            // Mark Right Angle
+            GeometryUtils.drawRightAngle(ctx, A, center, B);
+
+            // Label known angle B
+            GeometryUtils.drawAngleArc(ctx, B, A, center, 35, '35°');
+
+            // Label unknown angle O - make arc bigger and label clearer
+            GeometryUtils.drawAngleArc(ctx, center, B, A, 28, 'x');
+        }
+
+        function drawTangent2() {
+            const ctx = GeometryUtils.setupCanvas(document.getElementById('canvas-tangent-2'), 400, 300);
+            const center = { x: 200, y: 140 };
+            const r = 80;
+
+            GeometryUtils.drawCircle(ctx, center, r, '#6a82fb');
+            GeometryUtils.drawPoint(ctx, center.x, center.y, 'O', 0, -10);
+
+            // Point P at bottom
+            const P = { x: center.x, y: center.y + r };
+            GeometryUtils.drawPoint(ctx, P.x, P.y, 'P', 0, 15);
+
+            // Tangent Line horizontal
+            const T1 = { x: 50, y: P.y };
+            const T2 = { x: 350, y: P.y };
+            GeometryUtils.drawLine(ctx, T1, T2);
+
+            // Point Q on circle (to make chord)
+            // Let's place Q at roughly 330 degrees (bottom right)
+            const angleQ = Math.PI / 6; // 30 deg
+            const Q_pt = { x: center.x + r * Math.cos(angleQ), y: center.y + r * Math.sin(angleQ) };
+
+            // Draw Radii
+            GeometryUtils.drawLine(ctx, center, P);
+            GeometryUtils.drawLine(ctx, center, Q_pt);
+
+            // Draw Chord
+            GeometryUtils.drawLine(ctx, P, Q_pt);
+            GeometryUtils.drawPoint(ctx, Q_pt.x, Q_pt.y, 'Q', 10, 0);
+
+            // Isosceles marks
+            GeometryUtils.drawTickMarks(ctx, center, P, 1);
+            GeometryUtils.drawTickMarks(ctx, center, Q_pt, 1);
+
+            // Known Angle OQP
+            GeometryUtils.drawAngleArc(ctx, Q_pt, center, P, 30, '65°');
+
+            // Unknown angle z (between chord PQ and Tangent PT2)
+            GeometryUtils.drawAngleArc(ctx, P, T2, Q_pt, 35, 'z');
+
+            // Label "Tangent"
+            ctx.fillText('Tangent', 280, P.y + 15);
+        }
+
+        // Initialize
+        window.onload = function () {
+            drawParallel1();
+            drawParallel2();
+            drawTri1();
+            drawTri2();
+            drawCircle1();
+            drawCircle2();
+            drawTangent1();
+            drawTangent2();
+        };
+
+    </script>
+</body>
+
+</html>

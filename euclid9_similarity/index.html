@@ -40,10 +40,15 @@
                 <div class="flex flex-col lg:flex-row gap-8 items-center">
                     <div class="lg:w-1/2">
                         <h2 class="text-3xl heading-primary mb-6">Same Shape, Different Size</h2>
-                        <p class="body-text mb-4">
-                            Two triangles are <strong>similar</strong> if they have the exact same shape, but not
-                            necessarily the same size.
-                        </p>
+                        <div class="definition-box mb-4">
+                            <p class="body-text">
+                                Two triangles are <strong>similar</strong> if their corresponding angles are
+                                <strong>equal</strong>.
+                            </p>
+                            <p class="body-text text-sm mt-2 text-gray-600">
+                                This ensures they have the exact same shape, just scaled differently.
+                            </p>
+                        </div>
                         <p class="body-text mb-4">
                             Think of it like zooming in on a photo.
                         </p>
@@ -65,16 +70,11 @@
                     <div class="lg:w-1/2">
                         <h2 class="text-3xl heading-primary mb-6">Angles Stay the Same</h2>
                         <p class="body-text mb-4">
-                            Check the corners. Even though the triangle gets bigger, the angles stay exactly the same.
+                            Check the corners. When you zoom in, the angles stay exactly the same.
                         </p>
                         <p class="body-text mb-4">
-                            A 90° angle stays exactly 90°, whether it's on a postage stamp or a skyscraper.
+                            A right angle looks the same on a postage stamp and on a skyscraper.
                         </p>
-                        <div class="theorem-box">
-                            <p class="body-text">
-                                <strong>Theorem:</strong> In similar triangles, corresponding angles are equal.
-                            </p>
-                        </div>
                     </div>
                     <div class="lg:w-1/2 flex justify-center">
                         <canvas id="canvas-page2" class="diagram-canvas" width="450" height="320"></canvas>
@@ -119,8 +119,23 @@
                             If the scale factor is <strong>2</strong>, every side becomes 2 times as long.
                         </p>
                         <div class="definition-box mt-4">
-                            <p class="math text-center text-lg">
+                            <p class="math text-center text-lg mb-2">
                                 New Length = Original Length × Scale Factor
+                            </p>
+                        </div>
+                        <div class="theorem-box mt-4">
+                            <p class="body-text text-sm">
+                                <strong>Observation:</strong> Ratios are preserved.
+                            </p>
+                            <p class="body-text text-sm mt-2">
+                                If <i>a, b</i> are sides of one triangle and <i>x, y</i> are corresponding sides of the
+                                other:
+                            </p>
+                            <p class="math text-center text-lg mt-2">
+                                a / b = x / y
+                            </p>
+                            <p class="text-xs text-gray-500 text-center mt-1">
+                                (The internal ratio of sides stays the same)
                             </p>
                         </div>
                     </div>

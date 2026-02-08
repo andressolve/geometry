@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 12: Lines in the Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Page 0: Cover -->
+    <section id="page-0" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl heading-primary mb-4">Lines in the Plane</h1>
+            <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">When points line up.</p>
+            <p class="text-lg text-gray-400">Lesson XII</p>
+            <div class="mt-10 flex justify-center">
+                <canvas id="canvas-cover" class="diagram-canvas" width="400" height="300"></canvas>
+            </div>
+            <div class="mt-10 bounce">
+                <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 1: Plot These Points (Interactive) -->
+    <section id="page-1" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Plot These Points</h2>
+            <p class="body-text text-center mb-6">
+                Here are five points. Plot each one on the grid.
+            </p>
+
+            <div class="flex flex-col items-center gap-5">
+                <div class="flex items-center gap-4">
+                    <span class="body-text">Plot:</span>
+                    <span id="target-coord" class="target-coordinate">(1, 2)</span>
+                    <span class="text-sm text-gray-500" id="interactive-progress">1 of 5 points</span>
+                </div>
+
+                <canvas id="canvas-interactive" class="interactive-canvas" width="460" height="460"></canvas>
+
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-gray-500">Cursor at:</span>
+                    <span id="live-coords" class="coordinate-display">(0, 0)</span>
+                </div>
+
+                <div id="interactive-feedback" class="feedback" style="min-height:2.5rem">&nbsp;</div>
+
+                <div id="interactive-complete" class="hidden text-center">
+                    <p class="body-text font-bold mb-2">Good. Now look at what you've plotted.</p>
+                    <p class="body-text mb-4">What shape do these points make?</p>
+                    <button id="reveal-line-btn" class="reveal-btn">Reveal</button>
+
+                    <div id="reveal-text" class="hidden mt-5 max-w-lg mx-auto">
+                        <p class="body-text mb-2">
+                            These five points aren't scattered randomly. They line up.
+                        </p>
+                        <p class="body-text">
+                            Whenever points line up like this, we say they lie on a <strong>line</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: The Relationship -->
+    <section id="page-2" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6">The Relationship</h2>
+
+            <div class="side-by-side">
+                <!-- Left: table + text + input -->
+                <div>
+                    <p class="body-text mb-4">
+                        Look at the coordinates of each point. There's a pattern here: a relationship between x and y.
+                    </p>
+
+                    <div class="flex justify-center mb-5">
+                        <table class="coord-table">
+                            <thead><tr><th>x</th><th>y</th></tr></thead>
+                            <tbody>
+                                <tr><td>3</td><td>6</td></tr>
+                                <tr><td>2</td><td>4</td></tr>
+                                <tr><td>1</td><td>2</td></tr>
+                                <tr><td>0</td><td>0</td></tr>
+                                <tr><td>&minus;1</td><td>&minus;2</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="body-text mb-3">
+                        Suppose we wanted to add a new point to this line. If x = 4, what should y be?
+                    </p>
+
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="body-text">y =</span>
+                        <input type="number" id="page3-y-input" class="border border-gray-300 rounded p-2 w-20 text-center" placeholder="?">
+                        <button id="page3-check" class="check-btn">Check</button>
+                    </div>
+                    <div id="page3-feedback" class="hidden"></div>
+
+                    <div id="page3-reveal" class="hidden mt-4">
+                        <p class="body-text mb-2">(4, 8) lands right on the line.</p>
+                        <p class="body-text mb-3">How did you know? What's the rule connecting x and y?</p>
+                        <div class="definition-box">
+                            <p class="body-text text-center">
+                                <strong>On this line, y is always twice x.</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: diagram -->
+                <div class="centered-col">
+                    <canvas id="canvas-page3" class="diagram-canvas" width="320" height="380"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 3: Writing It Down -->
+    <section id="page-3" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4">Writing It Down</h2>
+
+            <p class="body-text mb-6">
+                The pattern "y is twice x" can be written as an equation:
+            </p>
+
+            <!-- Three views: equation, table, diagram -->
+            <div class="side-by-side items-center mb-6" style="justify-content:center; gap:4rem;">
+                <div class="centered-col" style="flex:0 0 auto;">
+                    <p class="equation" style="font-size:2rem;">y = 2x</p>
+                </div>
+                <table class="coord-table" style="flex:0 0 auto;">
+                    <thead><tr><th>x</th><th>y</th></tr></thead>
+                    <tbody>
+                        <tr><td>4</td><td>8</td></tr>
+                        <tr><td>3</td><td>6</td></tr>
+                        <tr><td>2</td><td>4</td></tr>
+                        <tr><td>1</td><td>2</td></tr>
+                        <tr><td>0</td><td>0</td></tr>
+                        <tr><td>&minus;1</td><td>&minus;2</td></tr>
+                    </tbody>
+                </table>
+                <canvas id="canvas-page4" class="diagram-canvas" style="flex:0 0 auto;" width="320" height="380"></canvas>
+            </div>
+
+            <p class="body-text text-center">
+                Every point on this line follows this rule. And every point that follows this rule is on this line.
+            </p>
+        </div>
+    </section>
+
+    <!-- Page 4: A Different Line -->
+    <section id="page-4" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">A Different Line</h2>
+
+            <!-- Phase 1: Plotting UI (hides after Continue) -->
+            <div id="phase2-plot-ui">
+                <p class="body-text text-center mb-6">Let's try another set of points.</p>
+
+                <div class="flex flex-col items-center gap-5">
+                    <div id="phase2-plot-controls" class="flex items-center gap-4">
+                        <span class="body-text">Plot:</span>
+                        <span id="target-coord-2" class="target-coordinate">(0, 1)</span>
+                        <span class="text-sm text-gray-500" id="interactive2-progress">1 of 5 points</span>
+                    </div>
+
+                    <div class="side-by-side items-start" style="justify-content:center; gap:2.5rem;">
+                        <!-- Left: table + question (hidden until after Continue) -->
+                        <div id="phase2-discovery-panel" class="hidden" style="flex:0 0 auto; opacity:0; transition: opacity 0.6s ease;">
+                            <div class="flex justify-center mb-5">
+                                <table class="coord-table">
+                                    <thead><tr><th>x</th><th>y</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>3</td><td>4</td></tr>
+                                        <tr><td>2</td><td>3</td></tr>
+                                        <tr><td>1</td><td>2</td></tr>
+                                        <tr><td>0</td><td>1</td></tr>
+                                        <tr><td>&minus;1</td><td>0</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="phase2-question" class="hidden">
+                                <p class="body-text mb-3">If x = 5, what should y be?</p>
+
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="body-text">y =</span>
+                                    <input type="number" id="page5-y-input" class="border border-gray-300 rounded p-2 w-20 text-center" placeholder="?">
+                                    <button id="page5-check" class="check-btn">Check</button>
+                                </div>
+                                <div id="page5-feedback" class="hidden"></div>
+
+                                <div id="page5-reveal" class="hidden mt-4">
+                                    <div class="definition-box mb-4">
+                                        <p class="body-text text-center">
+                                            <strong>On this line, y is always 1 more than x.</strong>
+                                        </p>
+                                    </div>
+                                    <p class="equation">y = x + 1</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Center/Right: the interactive canvas (stays visible throughout) -->
+                        <div class="centered-col" style="flex:0 0 auto;">
+                            <canvas id="canvas-interactive2" class="interactive-canvas" width="460" height="400"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="phase2-bottom-controls">
+                        <div class="flex items-center gap-4 justify-center">
+                            <span class="text-sm text-gray-500">Cursor at:</span>
+                            <span id="live-coords-2" class="coordinate-display">(0, 0)</span>
+                        </div>
+
+                        <div id="interactive2-feedback" class="feedback" style="min-height:2.5rem">&nbsp;</div>
+
+                        <div id="interactive2-complete" class="hidden text-center mt-4">
+                            <button id="phase2-continue" class="next-btn text-lg px-6 py-3">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 5: Exercises -->
+    <section id="page-5" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Exercises</h2>
+
+            <div class="space-y-8">
+                <!-- Exercise 1: Find the Rule -->
+                <div class="exercise-item border border-gray-200">
+                    <p class="font-bold mb-2">Exercise 1: Find the Rule</p>
+                    <p class="text-sm text-gray-600 mb-4">These points lie on a line. What's the relationship between x and y?</p>
+                    <div class="side-by-side items-center">
+                        <div class="centered-col">
+                            <canvas id="canvas-ex1" class="diagram-canvas-small" width="360" height="360"></canvas>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="body-text">y =</span>
+                                <input type="number" id="ex1-multiplier" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                                <span class="body-text"> &middot; x</span>
+                                <button id="ex1-check" class="check-btn ml-2">Check</button>
+                            </div>
+                            <div id="ex1-feedback" class="hidden"></div>
+                            <div id="ex1-followup" class="hidden mt-4">
+                                <p class="text-sm text-gray-600 mb-2">If x = 5, what's y?</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="body-text">y =</span>
+                                    <input type="number" id="ex1-followup-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                                    <button id="ex1-followup-check" class="check-btn ml-2">Check</button>
+                                </div>
+                                <div id="ex1-followup-feedback" class="hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 2: Does It Belong? -->
+                <div class="exercise-item border border-gray-200">
+                    <p class="font-bold mb-2">Exercise 2: Does It Belong?</p>
+                    <p class="text-sm text-gray-600 mb-4">The line follows the rule y = 2x.</p>
+                    <div class="side-by-side items-center">
+                        <div class="centered-col">
+                            <canvas id="canvas-ex2" class="diagram-canvas-small" width="360" height="360"></canvas>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-2">Does the point (4, 7) lie on this line?</p>
+                            <div class="flex gap-3 mb-2">
+                                <button id="ex2a-yes" class="check-btn bg-gray-400 hover:bg-gray-500">Yes</button>
+                                <button id="ex2a-no" class="check-btn bg-gray-400 hover:bg-gray-500">No</button>
+                            </div>
+                            <div id="ex2a-feedback" class="hidden"></div>
+                            <div id="ex2b-section" class="hidden mt-4">
+                                <p class="text-sm text-gray-600 mb-2">What about (5, 10)?</p>
+                                <div class="flex gap-3 mb-2">
+                                    <button id="ex2b-yes" class="check-btn bg-gray-400 hover:bg-gray-500">Yes</button>
+                                    <button id="ex2b-no" class="check-btn bg-gray-400 hover:bg-gray-500">No</button>
+                                </div>
+                                <div id="ex2b-feedback" class="hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 3: Build a Line -->
+                <div class="exercise-item border border-gray-200">
+                    <p class="font-bold mb-2">Exercise 3: Build a Line from an Equation</p>
+                    <p class="text-sm text-gray-600 mb-4">The equation is y = x + 2. What points are on this line?</p>
+                    <div class="side-by-side items-center">
+                        <div>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm" style="min-width:120px">When x = 0, y =</span>
+                                    <input type="number" id="ex3-y0" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm" style="min-width:120px">When x = 1, y =</span>
+                                    <input type="number" id="ex3-y1" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm" style="min-width:120px">When x = 3, y =</span>
+                                    <input type="number" id="ex3-y3" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                                </div>
+                            </div>
+                            <button id="ex3-check" class="check-btn mt-4">Check</button>
+                            <div id="ex3-feedback" class="hidden"></div>
+                        </div>
+                        <div class="centered-col">
+                            <canvas id="canvas-ex3" class="diagram-canvas-small" width="360" height="360"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 6: Summary -->
+    <section id="page-6" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #ede9fe);">
+        <div class="section-card">
+            <h2 class="text-3xl heading-primary mb-6 text-center">What We Discovered</h2>
+
+            <div class="side-by-side items-center">
+                <div class="space-y-4">
+                    <div class="definition-box">
+                        <p class="body-text">
+                            Some points on the coordinate plane line up — they form a <strong>line</strong>.
+                        </p>
+                    </div>
+                    <div class="definition-box">
+                        <p class="body-text">
+                            When points line up, their coordinates follow a <strong>rule</strong> — a relationship between x and y.
+                        </p>
+                    </div>
+                    <div class="definition-box">
+                        <p class="body-text">
+                            We can write this rule as an <strong>equation</strong>, like y = 2x or y = x + 1.
+                        </p>
+                    </div>
+                    <div class="definition-box">
+                        <p class="body-text">
+                            Every point on the line satisfies the equation. Every point that satisfies the equation is on the line.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-summary" class="diagram-canvas" width="360" height="320"></canvas>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="../index.html"
+                    class="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-bold no-underline shadow-lg transform hover:-translate-y-1">
+                    Back to Lessons
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="interactive.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

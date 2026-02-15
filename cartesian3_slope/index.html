@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 13: Slope</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Page 0: Cover -->
+    <section id="page-0" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl heading-primary mb-4">Slope</h1>
+            <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">What makes a line a line.</p>
+            <p class="text-lg text-gray-400">Lesson XIII</p>
+            <div class="mt-10 flex justify-center">
+                <canvas id="canvas-cover" class="diagram-canvas" width="400" height="300"></canvas>
+            </div>
+            <div class="mt-10 bounce">
+                <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 1: Building a Line -->
+    <section id="page-1" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Building a Line</h2>
+            <p class="body-text text-center mb-2">
+                Start at the origin. We'll build something one step at a time.
+            </p>
+            <p class="body-text text-center mb-6">
+                Each step goes 1 to the right and 2 up — like a knight's move.
+            </p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-build" class="diagram-canvas" width="440" height="400"></canvas>
+
+                <div class="flex items-center gap-4">
+                    <button id="step-btn" class="step-btn">Step</button>
+                    <span id="step-counter" class="text-sm text-gray-500">0 of 4</span>
+                </div>
+
+                <div id="build-reveal" class="hidden text-center mt-4 max-w-lg">
+                    <p class="body-text">
+                        Those points line up. The same step, repeated, makes a line.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: What Line Did We Build? -->
+    <section id="page-2" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">What Line Did We Build?</h2>
+
+            <div class="side-by-side">
+                <!-- Left: table + question -->
+                <div>
+                    <p class="body-text mb-4">
+                        These are the points you built.
+                    </p>
+
+                    <div class="flex justify-center mb-5">
+                        <table class="coord-table">
+                            <thead><tr><th>x</th><th>y</th></tr></thead>
+                            <tbody>
+                                <tr><td>0</td><td>0</td></tr>
+                                <tr><td>1</td><td>2</td></tr>
+                                <tr><td>2</td><td>4</td></tr>
+                                <tr><td>3</td><td>6</td></tr>
+                                <tr><td>4</td><td>8</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="body-text mb-3">What's the equation of this line?</p>
+
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="body-text italic">y</span>
+                        <span class="body-text">=</span>
+                        <input type="number" id="eq1-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                        <span class="body-text italic">x</span>
+                        <button id="eq1-check" class="check-btn">Check</button>
+                    </div>
+                    <div id="eq1-feedback" class="hidden"></div>
+
+                    <!-- Pairing: step + equation side by side -->
+                    <div id="eq1-pairing" class="hidden mt-6">
+                        <div class="step-pairing">
+                            <div class="centered-col gap-2">
+                                <canvas id="canvas-page2-pairing" class="diagram-canvas-small" width="200" height="160"></canvas>
+                                <span class="step-label">The step: right 1, up <span class="highlight">2</span></span>
+                            </div>
+                            <div class="centered-col gap-2">
+                                <p class="equation" style="font-size:2rem;">y = 2x</p>
+                                <span class="equation-label">The equation: y = <span class="highlight">2</span>x</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: diagram -->
+                <div class="centered-col">
+                    <canvas id="canvas-page2" class="diagram-canvas" width="340" height="380"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 3: Another Step (multi-phase) -->
+    <section id="page-3" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Another Step</h2>
+
+            <p class="body-text text-center mb-4">
+                Another line. This time the step is right 1, up 3.
+            </p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-build3" class="diagram-canvas" width="400" height="360"></canvas>
+
+                <button id="build3-start" class="step-btn">Build</button>
+
+                <!-- Phase 2: Find the equation -->
+                <div id="phase2-eq" class="hidden w-full max-w-2xl">
+                    <div class="side-by-side items-start" style="justify-content:center; gap:2rem;">
+                        <div>
+                            <div class="flex justify-center mb-4">
+                                <table class="coord-table">
+                                    <thead><tr><th>x</th><th>y</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>0</td><td>0</td></tr>
+                                        <tr><td>1</td><td>3</td></tr>
+                                        <tr><td>2</td><td>6</td></tr>
+                                        <tr><td>3</td><td>9</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <p class="body-text mb-3">What's the equation?</p>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="body-text italic">y</span>
+                                <span class="body-text">=</span>
+                                <input type="number" id="eq3-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                                <span class="body-text italic">x</span>
+                                <button id="eq3-check" class="check-btn">Check</button>
+                            </div>
+                            <div id="eq3-feedback" class="hidden"></div>
+
+                            <!-- Pairing -->
+                            <div id="eq3-pairing" class="hidden mt-4">
+                                <div class="step-pairing" style="padding:1rem;">
+                                    <span class="step-label">The step: right 1, up <span class="highlight">3</span></span>
+                                    <span class="equation-label">The equation: y = <span class="highlight">3</span>x</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3: Predict -->
+                    <div id="phase3-predict" class="hidden mt-6" style="border-top: 1px solid #e5e7eb; padding-top: 1.5rem;">
+                        <p class="body-text mb-2">
+                            One more. A line is built from a step that goes 1 to the right and 5 up.
+                        </p>
+                        <p class="body-text mb-3">
+                            Without building it — what's the equation?
+                        </p>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="body-text italic">y</span>
+                            <span class="body-text">=</span>
+                            <input type="number" id="pred-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                            <span class="body-text italic">x</span>
+                            <button id="pred-check" class="check-btn">Check</button>
+                        </div>
+                        <div id="pred-feedback" class="hidden"></div>
+
+                        <div id="pred-observation" class="hidden mt-6">
+                            <p class="body-text">
+                                The number in the step is the number in the equation. Every time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 4: Slope -->
+    <section id="page-4" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Slope</h2>
+
+            <div class="side-by-side items-center mb-8">
+                <div>
+                    <p class="body-text">
+                        Have a look at y = 2x. Start at any point on it, move 1 right and 2 up, and you land right back on the line.
+                    </p>
+                </div>
+                <div class="centered-col">
+                    <canvas id="canvas-slope-2x" class="diagram-canvas" width="380" height="320"></canvas>
+                </div>
+            </div>
+
+            <div class="side-by-side items-center mb-8">
+                <div>
+                    <p class="body-text">
+                        Now have a look at y = 3x. Start at any point on it, move 1 right and 3 up, and you land right back on the line.
+                    </p>
+                </div>
+                <div class="centered-col">
+                    <canvas id="canvas-slope-3x" class="diagram-canvas" width="380" height="320"></canvas>
+                </div>
+            </div>
+
+            <div class="max-w-2xl mx-auto">
+                <p class="body-text mb-4">
+                    Those numbers — 2, 3 — describe something special about these lines. They are called the <strong>slope</strong>.
+                </p>
+                <div class="definition-box">
+                    <p class="body-text text-center">
+                        The <strong>slope</strong> of a line is how much y increases when x increases by 1.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 5: y = 4x -->
+    <section id="page-5" class="page-section" style="background: #eef2ff;">
+        <div class="section-card">
+            <p class="body-text text-center mb-6">How about y = 4x?</p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-explore-4x" class="diagram-canvas diagram-clickable" width="440" height="400"></canvas>
+                <p class="text-sm text-gray-400">Click on the line to see its points.</p>
+
+                <div class="flex items-center gap-3">
+                    <span class="body-text">What's the slope?</span>
+                    <input type="number" id="explore1-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                    <button id="explore1-check" class="check-btn">Check</button>
+                </div>
+                <div id="explore1-feedback" class="hidden"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 6: y = x -->
+    <section id="page-6" class="page-section">
+        <div class="section-card">
+            <p class="body-text text-center mb-6">Now y = x.</p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-explore-x" class="diagram-canvas diagram-clickable" width="440" height="400"></canvas>
+                <p class="text-sm text-gray-400">Click on the line to see its points.</p>
+
+                <div class="flex items-center gap-3">
+                    <span class="body-text">What's the slope?</span>
+                    <input type="number" id="explore2-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                    <button id="explore2-check" class="check-btn">Check</button>
+                </div>
+                <div id="explore2-feedback" class="hidden"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 7: y = x + 1 -->
+    <section id="page-7" class="page-section" style="background: #eef2ff;">
+        <div class="section-card">
+            <p class="body-text text-center mb-6">Now y = x + 1.</p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-explore-x1" class="diagram-canvas diagram-clickable" width="440" height="400"></canvas>
+                <p class="text-sm text-gray-400">Click on the line to see its points.</p>
+
+                <div class="flex items-center gap-3">
+                    <span class="body-text">What's the slope?</span>
+                    <input type="number" id="explore3-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                    <button id="explore3-check" class="check-btn">Check</button>
+                </div>
+                <div id="explore3-feedback" class="hidden"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 8: y = 2x + 1 -->
+    <section id="page-8" class="page-section">
+        <div class="section-card">
+            <p class="body-text text-center mb-6">Now y = 2x + 1.</p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-explore-2x1" class="diagram-canvas diagram-clickable" width="440" height="400"></canvas>
+                <p class="text-sm text-gray-400">Click on the line to see its points.</p>
+
+                <div class="flex items-center gap-3">
+                    <span class="body-text">What's the slope?</span>
+                    <input type="number" id="explore4-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                    <button id="explore4-check" class="check-btn">Check</button>
+                </div>
+                <div id="explore4-feedback" class="hidden"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 9: Summary -->
+    <section id="page-9" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #ede9fe);">
+        <div class="section-card">
+            <h2 class="text-3xl heading-primary mb-8 text-center">What makes a line a line?</h2>
+
+            <div class="side-by-side items-center">
+                <div>
+                    <p class="body-text" style="line-height: 2;">
+                        The same step, everywhere. Move 1 to the right, and y changes by the same amount — no matter where you start. That amount is the <strong>slope</strong>.
+                    </p>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-summary" class="diagram-canvas" width="520" height="440"></canvas>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="../index.html"
+                    class="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-bold no-underline shadow-lg transform hover:-translate-y-1">
+                    Back to Lessons
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="interactive.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

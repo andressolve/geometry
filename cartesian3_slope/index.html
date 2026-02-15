@@ -35,7 +35,7 @@
     <!-- Page 1: Building a Line -->
     <section id="page-1" class="page-section" style="background: #eef2ff;">
         <div class="section-card section-card-wide">
-            <h2 class="text-3xl heading-primary mb-4 text-center">Building a Line</h2>
+            <h2 class="text-3xl heading-primary mb-4 text-center">Moving Like a Knight</h2>
             <p class="body-text text-center mb-2">
                 Start at the origin. We'll build something one step at a time.
             </p>
@@ -131,7 +131,10 @@
             <div class="flex flex-col items-center gap-4">
                 <canvas id="canvas-build3" class="diagram-canvas" width="400" height="360"></canvas>
 
-                <button id="build3-start" class="step-btn">Build</button>
+                <div class="flex items-center gap-4">
+                    <button id="build3-step" class="step-btn">Step</button>
+                    <span id="build3-counter" class="text-sm text-gray-500">0 of 3</span>
+                </div>
 
                 <!-- Phase 2: Find the equation -->
                 <div id="phase2-eq" class="hidden w-full max-w-2xl">

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 15: Where Lines Meet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Page 0: Cover -->
+    <section id="page-0" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl heading-primary mb-4">Where Lines Meet</h1>
+            <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">Finding the crossing point.</p>
+            <p class="text-lg text-gray-400">Lesson XV</p>
+            <div class="mt-10 flex justify-center">
+                <canvas id="canvas-cover" class="diagram-canvas" width="400" height="300"></canvas>
+            </div>
+            <div class="mt-10 bounce">
+                <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 1: Two Lines, One Grid -->
+    <section id="page-1" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Two Lines, One Grid</h2>
+            <p class="body-text text-center mb-6">
+                Two lines. Different slopes &mdash; so they're not parallel. They cross somewhere. Where exactly?
+            </p>
+
+            <div class="flex flex-col items-center">
+                <canvas id="canvas-two-lines" class="diagram-canvas" width="440" height="400"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: Find the Crossing Point -->
+    <section id="page-2" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Find the Crossing Point</h2>
+            <p class="body-text text-center mb-2">
+                Click on the point where the two lines cross.
+            </p>
+            <p id="find-coord-readout" class="text-center text-sm text-gray-400 mb-4" style="min-height:1.5em;"></p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-find" class="diagram-canvas diagram-clickable" width="440" height="400"></canvas>
+
+                <div id="find-feedback" class="hidden max-w-md text-center"></div>
+
+                <div id="find-reveal" class="hidden text-center mt-2 max-w-lg">
+                    <p class="body-text">
+                        <strong class="intersection-dot">(2, 4)</strong>. That's where the two lines meet.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 3: Why That Point? -->
+    <section id="page-3" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Why That Point?</h2>
+
+            <div class="side-by-side items-center mb-6">
+                <div>
+                    <div class="flex flex-col gap-4 mb-6">
+                        <div class="verify-box verify-box-blue">
+                            <p class="body-text">
+                                Is (2, 4) on <em style="color:#6a82fb;">y = 2x</em>?
+                            </p>
+                            <p class="body-text mt-1">
+                                <strong>y = 2 &times; 2 = 4 &check;</strong>
+                            </p>
+                        </div>
+                        <div class="verify-box verify-box-green">
+                            <p class="body-text">
+                                Is (2, 4) on <em style="color:#10b981;">y = x + 2</em>?
+                            </p>
+                            <p class="body-text mt-1">
+                                <strong>y = 2 + 2 = 4 &check;</strong>
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="body-text mb-4">
+                        (2, 4) is the only point that lies on both lines. That's what makes it the crossing point.
+                    </p>
+
+                    <div class="definition-box">
+                        <p class="body-text text-center">
+                            The point where two lines cross is called their <strong>intersection</strong>.
+                            It's the one point whose coordinates satisfy both equations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-why" class="diagram-canvas" width="380" height="340"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 4: Finding It from Tables -->
+    <section id="page-4" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Finding It from Tables</h2>
+            <p class="body-text text-center mb-6">
+                Two new lines: <em style="color:#6a82fb;">y = 3x</em> and <em style="color:#10b981;">y = x + 4</em>. Let's find where they meet &mdash; without looking at the graph first.
+            </p>
+
+            <!-- Phase 1: Fill Tables -->
+            <div id="table-phase1" class="mb-8">
+                <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+                    <!-- Table 1: y = 3x -->
+                    <div class="flex flex-col items-center gap-3">
+                        <p class="body-text font-bold" style="color:#6a82fb;"><em>y = 3x</em></p>
+                        <table class="coord-table" id="table1">
+                            <thead>
+                                <tr><th><em>x</em></th><th><em>y</em></th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>0</td><td><input type="number" class="table-input" data-answer="0" id="t1-y0"></td></tr>
+                                <tr><td>1</td><td><input type="number" class="table-input" data-answer="3" id="t1-y1"></td></tr>
+                                <tr><td>2</td><td><input type="number" class="table-input" data-answer="6" id="t1-y2"></td></tr>
+                                <tr><td>3</td><td><input type="number" class="table-input" data-answer="9" id="t1-y3"></td></tr>
+                            </tbody>
+                        </table>
+                        <button id="table1-check" class="check-btn">Check</button>
+                        <div id="table1-feedback" class="hidden text-sm"></div>
+                    </div>
+
+                    <!-- Table 2: y = x + 4 -->
+                    <div class="flex flex-col items-center gap-3">
+                        <p class="body-text font-bold" style="color:#10b981;"><em>y = x + 4</em></p>
+                        <table class="coord-table" id="table2">
+                            <thead>
+                                <tr><th><em>x</em></th><th><em>y</em></th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>0</td><td><input type="number" class="table-input" data-answer="4" id="t2-y0"></td></tr>
+                                <tr><td>1</td><td><input type="number" class="table-input" data-answer="5" id="t2-y1"></td></tr>
+                                <tr><td>2</td><td><input type="number" class="table-input" data-answer="6" id="t2-y2"></td></tr>
+                                <tr><td>3</td><td><input type="number" class="table-input" data-answer="7" id="t2-y3"></td></tr>
+                            </tbody>
+                        </table>
+                        <button id="table2-check" class="check-btn">Check</button>
+                        <div id="table2-feedback" class="hidden text-sm"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2: Spot the Match -->
+            <div id="table-phase2" class="hidden mb-8">
+                <p class="body-text text-center mb-4">
+                    Look at both tables. Is there an <em>x</em> where both lines give the same <em>y</em>?
+                </p>
+                <p class="body-text text-center mb-4 text-sm text-gray-400">
+                    Click on the matching row in either table.
+                </p>
+
+                <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+                    <!-- Table 1 clickable -->
+                    <div class="flex flex-col items-center gap-3">
+                        <p class="body-text font-bold" style="color:#6a82fb;"><em>y = 3x</em></p>
+                        <table class="coord-table" id="match-table1">
+                            <thead>
+                                <tr><th><em>x</em></th><th><em>y</em></th></tr>
+                            </thead>
+                            <tbody>
+                                <tr class="clickable-row" data-x="0"><td>0</td><td>0</td></tr>
+                                <tr class="clickable-row" data-x="1"><td>1</td><td>3</td></tr>
+                                <tr class="clickable-row" data-x="2"><td>2</td><td>6</td></tr>
+                                <tr class="clickable-row" data-x="3"><td>3</td><td>9</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Table 2 clickable -->
+                    <div class="flex flex-col items-center gap-3">
+                        <p class="body-text font-bold" style="color:#10b981;"><em>y = x + 4</em></p>
+                        <table class="coord-table" id="match-table2">
+                            <thead>
+                                <tr><th><em>x</em></th><th><em>y</em></th></tr>
+                            </thead>
+                            <tbody>
+                                <tr class="clickable-row" data-x="0"><td>0</td><td>4</td></tr>
+                                <tr class="clickable-row" data-x="1"><td>1</td><td>5</td></tr>
+                                <tr class="clickable-row" data-x="2"><td>2</td><td>6</td></tr>
+                                <tr class="clickable-row" data-x="3"><td>3</td><td>7</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="match-feedback" class="hidden text-center mt-4"></div>
+            </div>
+
+            <!-- Phase 3: Confirm on Graph -->
+            <div id="table-phase3" class="hidden">
+                <div id="match-reveal" class="text-center mb-4">
+                    <p class="body-text">
+                        When <em>x</em> = 2, both equations give <em>y</em> = 6. The intersection is <strong class="intersection-dot">(2, 6)</strong>.
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center gap-4">
+                    <canvas id="canvas-confirm" class="diagram-canvas" width="440" height="400"></canvas>
+                    <p class="body-text text-center">
+                        There it is. The tables found it, and the graph confirms it.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 5: Exercises -->
+    <section id="page-5" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-8 text-center">Exercises</h2>
+
+            <div class="flex flex-col gap-8">
+
+                <!-- Exercise 1: Read the Intersection -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">1. Read the Intersection</h3>
+                    <div class="side-by-side items-center">
+                        <div class="centered-col">
+                            <canvas id="canvas-ex1" class="diagram-canvas" width="360" height="300"></canvas>
+                        </div>
+                        <div>
+                            <p class="body-text mb-3">
+                                Two lines: <em style="color:#6a82fb;">y = 2x + 1</em> and <em style="color:#10b981;">y = x + 3</em>.
+                            </p>
+                            <p class="body-text mb-3">Where do they cross?</p>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="body-text">(</span>
+                                <input type="number" id="ex1-x" class="table-input" placeholder="x">
+                                <span class="body-text">,</span>
+                                <input type="number" id="ex1-y" class="table-input" placeholder="y">
+                                <span class="body-text">)</span>
+                                <button id="ex1-check" class="check-btn">Check</button>
+                            </div>
+                            <div id="ex1-feedback" class="hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 2: Check the Point -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">2. Check the Point</h3>
+                    <p class="body-text mb-3">
+                        Two lines: <em>y = 3x</em> and <em>y = 2x + 2</em>. Someone says they cross at (3, 9).
+                    </p>
+
+                    <div class="flex flex-col gap-3">
+                        <!-- Part A -->
+                        <div>
+                            <p class="body-text mb-2">Is (3, 9) on <em>y = 3x</em>?</p>
+                            <div class="flex items-center gap-3 mb-1">
+                                <button id="ex2a-yes" class="check-btn" style="background:#9ca3af;">Yes</button>
+                                <button id="ex2a-no" class="check-btn" style="background:#9ca3af;">No</button>
+                            </div>
+                            <div id="ex2a-feedback" class="hidden"></div>
+                        </div>
+
+                        <!-- Part B -->
+                        <div>
+                            <p class="body-text mb-2">Is (3, 9) on <em>y = 2x + 2</em>?</p>
+                            <div class="flex items-center gap-3 mb-1">
+                                <button id="ex2b-yes" class="check-btn" style="background:#9ca3af;">Yes</button>
+                                <button id="ex2b-no" class="check-btn" style="background:#9ca3af;">No</button>
+                            </div>
+                            <div id="ex2b-feedback" class="hidden"></div>
+                        </div>
+
+                        <!-- Conclusion -->
+                        <div id="ex2-conclusion" class="hidden">
+                            <p class="body-text mb-3">
+                                (3, 9) is only on one of the lines &mdash; so it's not the intersection.
+                            </p>
+                            <p class="body-text mb-3">
+                                The real intersection is at (2, 6). Check: what is <em>y</em> in each equation when <em>x</em> = 2?
+                            </p>
+                            <div class="flex items-center gap-3 mb-2 flex-wrap">
+                                <span class="body-text"><em>y = 3x</em> &rarr; <em>y</em> =</span>
+                                <input type="number" id="ex2c-y1" class="table-input" placeholder="?">
+                                <span class="body-text ml-4"><em>y = 2x + 2</em> &rarr; <em>y</em> =</span>
+                                <input type="number" id="ex2c-y2" class="table-input" placeholder="?">
+                                <button id="ex2c-check" class="check-btn">Check</button>
+                            </div>
+                            <div id="ex2c-feedback" class="hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 3: Tables -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">3. Use the Tables</h3>
+                    <p class="body-text mb-4">
+                        Two lines: <em style="color:#6a82fb;">y = 2x</em> and <em style="color:#10b981;">y = x + 3</em>. Fill in both y columns.
+                    </p>
+
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <table class="coord-table" id="ex3-table">
+                            <thead>
+                                <tr>
+                                    <th><em>x</em></th>
+                                    <th style="color:#6a82fb;"><em>y = 2x</em></th>
+                                    <th style="color:#10b981;"><em>y = x + 3</em></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>0</td><td><input type="number" class="table-input" data-answer="0" id="ex3-a0"></td><td><input type="number" class="table-input" data-answer="3" id="ex3-b0"></td></tr>
+                                <tr><td>1</td><td><input type="number" class="table-input" data-answer="2" id="ex3-a1"></td><td><input type="number" class="table-input" data-answer="4" id="ex3-b1"></td></tr>
+                                <tr><td>2</td><td><input type="number" class="table-input" data-answer="4" id="ex3-a2"></td><td><input type="number" class="table-input" data-answer="5" id="ex3-b2"></td></tr>
+                                <tr><td>3</td><td><input type="number" class="table-input" data-answer="6" id="ex3-a3"></td><td><input type="number" class="table-input" data-answer="6" id="ex3-b3"></td></tr>
+                                <tr><td>4</td><td><input type="number" class="table-input" data-answer="8" id="ex3-a4"></td><td><input type="number" class="table-input" data-answer="7" id="ex3-b4"></td></tr>
+                            </tbody>
+                        </table>
+                        <button id="ex3-table-check" class="check-btn">Check Table</button>
+                        <div id="ex3-table-feedback" class="hidden text-sm"></div>
+                    </div>
+
+                    <div id="ex3-followup" class="hidden">
+                        <p class="body-text mb-3 text-center">At what point do the lines meet?</p>
+                        <div class="flex items-center gap-2 mb-2 justify-center">
+                            <span class="body-text">(</span>
+                            <input type="number" id="ex3-ix" class="table-input" placeholder="x">
+                            <span class="body-text">,</span>
+                            <input type="number" id="ex3-iy" class="table-input" placeholder="y">
+                            <span class="body-text">)</span>
+                            <button id="ex3-point-check" class="check-btn">Check</button>
+                        </div>
+                        <div id="ex3-point-feedback" class="hidden"></div>
+
+                        <div id="ex3-canvas-wrap" class="hidden flex flex-col items-center mt-4">
+                            <canvas id="canvas-ex3" class="diagram-canvas" width="360" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 4: Parallel or Crossing? -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">4. Parallel or Crossing?</h3>
+                    <p class="body-text mb-4">For each pair of lines, decide: parallel or crossing?</p>
+
+                    <div class="flex flex-col gap-4">
+                        <!-- Pair A -->
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <span class="body-text" style="min-width:220px;"><em>y = 2x</em> &nbsp;and&nbsp; <em>y = 2x + 3</em></span>
+                            <button id="ex4a-par" class="check-btn" style="background:#9ca3af;">Parallel</button>
+                            <button id="ex4a-cross" class="check-btn" style="background:#9ca3af;">Crossing</button>
+                            <span id="ex4a-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <div id="ex4a-followup" class="hidden ml-8"></div>
+
+                        <!-- Pair B -->
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <span class="body-text" style="min-width:220px;"><em>y = 3x</em> &nbsp;and&nbsp; <em>y = x + 4</em></span>
+                            <button id="ex4b-par" class="check-btn" style="background:#9ca3af;">Parallel</button>
+                            <button id="ex4b-cross" class="check-btn" style="background:#9ca3af;">Crossing</button>
+                            <span id="ex4b-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <div id="ex4b-followup" class="hidden ml-8">
+                            <p class="body-text mb-2 text-sm">Where do they cross?</p>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="body-text text-sm">(</span>
+                                <input type="number" id="ex4b-x" class="table-input" placeholder="x">
+                                <span class="body-text text-sm">,</span>
+                                <input type="number" id="ex4b-y" class="table-input" placeholder="y">
+                                <span class="body-text text-sm">)</span>
+                                <button id="ex4b-check" class="check-btn text-sm">Check</button>
+                            </div>
+                            <div id="ex4b-coord-feedback" class="hidden text-sm"></div>
+                        </div>
+
+                        <!-- Pair C -->
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <span class="body-text" style="min-width:220px;"><em>y = x</em> &nbsp;and&nbsp; <em>y = 2x</em></span>
+                            <button id="ex4c-par" class="check-btn" style="background:#9ca3af;">Parallel</button>
+                            <button id="ex4c-cross" class="check-btn" style="background:#9ca3af;">Crossing</button>
+                            <span id="ex4c-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <div id="ex4c-followup" class="hidden ml-8">
+                            <p class="body-text mb-2 text-sm">Where do they cross?</p>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="body-text text-sm">(</span>
+                                <input type="number" id="ex4c-x" class="table-input" placeholder="x">
+                                <span class="body-text text-sm">,</span>
+                                <input type="number" id="ex4c-y" class="table-input" placeholder="y">
+                                <span class="body-text text-sm">)</span>
+                                <button id="ex4c-check" class="check-btn text-sm">Check</button>
+                            </div>
+                            <div id="ex4c-coord-feedback" class="hidden text-sm"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 6: Summary -->
+    <section id="page-6" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #ede9fe);">
+        <div class="section-card">
+            <h2 class="text-3xl heading-primary mb-8 text-center">Where Lines Meet</h2>
+
+            <div class="side-by-side items-center">
+                <div>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        Lines with different slopes cross at exactly one point.
+                    </p>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        That point is called the <strong>intersection</strong>.
+                    </p>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        The intersection is the one point whose coordinates satisfy <strong>both</strong> equations.
+                    </p>
+                    <p class="body-text mb-6" style="line-height: 2;">
+                        You can find it by reading the graph, or by comparing tables of values.
+                    </p>
+
+                    <div class="definition-box mb-4">
+                        <p class="body-text text-center">
+                            Different slopes &rarr; one crossing point &rarr; the <strong>intersection</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-summary" class="diagram-canvas" width="520" height="440"></canvas>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="../index.html"
+                    class="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-bold no-underline shadow-lg transform hover:-translate-y-1">
+                    Back to Lessons
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="interactive.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 14: Parallel Lines</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Page 0: Cover -->
+    <section id="page-0" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl heading-primary mb-4">Parallel Lines</h1>
+            <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">Same slope, different start.</p>
+            <p class="text-lg text-gray-400">Lesson XIV</p>
+            <div class="mt-10 flex justify-center">
+                <canvas id="canvas-cover" class="diagram-canvas" width="400" height="300"></canvas>
+            </div>
+            <div class="mt-10 bounce">
+                <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 1: Build a Line -->
+    <section id="page-1" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Build a Line</h2>
+            <p class="body-text text-center mb-2">
+                Start at the origin. Each step goes 1 to the right and 2 up.
+            </p>
+            <p class="body-text text-center mb-6">
+                Click Step to build the line, one point at a time.
+            </p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-build1" class="diagram-canvas" width="440" height="400"></canvas>
+
+                <div class="flex items-center gap-4">
+                    <button id="build1-step-btn" class="step-btn">Step</button>
+                    <span id="build1-counter" class="text-sm text-gray-500">0 of 3</span>
+                </div>
+
+                <div id="build1-reveal" class="hidden text-center mt-4 max-w-lg">
+                    <p class="body-text">
+                        A line with slope 2.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: Same Step, New Start -->
+    <section id="page-2" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Same Step, New Start</h2>
+            <p class="body-text text-center mb-2">
+                Here's the line you just built, in light blue.
+            </p>
+            <p class="body-text text-center mb-6">
+                Now start at (0, 3) and take the same step: right 1, up 2.
+            </p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-build2" class="diagram-canvas" width="440" height="400"></canvas>
+
+                <div class="flex items-center gap-4">
+                    <button id="build2-step-btn" class="step-btn">Step</button>
+                    <span id="build2-counter" class="text-sm text-gray-500">0 of 3</span>
+                </div>
+
+                <div id="build2-reveal" class="hidden text-center mt-4 max-w-lg">
+                    <p class="body-text">
+                        Same step. Same slope. Different starting point.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 3: Do They Meet? -->
+    <section id="page-3" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">Do They Meet?</h2>
+            <p class="body-text text-center mb-6">
+                Both lines have slope 2. Will they ever meet?
+            </p>
+
+            <div class="flex flex-col items-center gap-4">
+                <canvas id="canvas-parallel" class="diagram-canvas" width="520" height="440"></canvas>
+
+                <div class="flex items-center gap-4">
+                    <button id="zoom-out-btn" class="step-btn">Zoom Out</button>
+                    <span id="zoom-counter" class="text-sm text-gray-500">Zoom level 1 of 4</span>
+                </div>
+
+                <div id="parallel-reveal" class="hidden text-center mt-4 max-w-xl">
+                    <div class="definition-box mb-4">
+                        <p class="body-text text-center">
+                            Lines that never meet are called <strong>parallel</strong>.
+                        </p>
+                    </div>
+                    <p class="body-text">
+                        These two lines are parallel. Same slope — same direction — they never cross.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 4: What If the Slope Is Different? -->
+    <section id="page-4" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">What If the Slope Is Different?</h2>
+
+            <div class="side-by-side items-center mb-6">
+                <div>
+                    <p class="body-text mb-4">
+                        Here are two lines with different slopes. One has slope 2, the other has slope 1.
+                    </p>
+                    <p class="body-text mb-4">
+                        Look at the step triangles — the blue line rises faster than the green one.
+                    </p>
+
+                    <div class="mt-4">
+                        <p class="body-text mb-3">Are these lines parallel?</p>
+                        <div class="flex items-center gap-3 mb-2">
+                            <button id="contrast-yes" class="check-btn" style="background:#9ca3af;">Yes</button>
+                            <button id="contrast-no" class="check-btn" style="background:#9ca3af;">No</button>
+                        </div>
+                        <div id="contrast-feedback" class="hidden"></div>
+
+                        <div id="contrast-summary" class="hidden mt-6">
+                            <div class="definition-box">
+                                <p class="body-text text-center">
+                                    Same slope → parallel. Different slopes → the lines cross.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-contrast" class="diagram-canvas" width="440" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 5: Exercises -->
+    <section id="page-5" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-8 text-center">Exercises</h2>
+
+            <div class="flex flex-col gap-8">
+
+                <!-- Exercise 1: Same Slope? -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">1. Same Slope?</h3>
+                    <div class="side-by-side items-center">
+                        <div class="centered-col">
+                            <canvas id="canvas-ex1" class="diagram-canvas" width="360" height="300"></canvas>
+                        </div>
+                        <div>
+                            <p class="body-text mb-3">Look at the step triangles on both lines.</p>
+                            <p class="body-text mb-3">Do these two lines have the same slope?</p>
+                            <div class="flex items-center gap-3 mb-2">
+                                <button id="ex1-yes" class="check-btn" style="background:#9ca3af;">Yes</button>
+                                <button id="ex1-no" class="check-btn" style="background:#9ca3af;">No</button>
+                            </div>
+                            <div id="ex1-feedback" class="hidden"></div>
+                            <div id="ex1-followup" class="hidden mt-4">
+                                <p class="body-text mb-3">Are they parallel?</p>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <button id="ex1b-yes" class="check-btn" style="background:#9ca3af;">Yes</button>
+                                    <button id="ex1b-no" class="check-btn" style="background:#9ca3af;">No</button>
+                                </div>
+                                <div id="ex1b-feedback" class="hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 2: Which Lines Are Parallel? -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">2. Which Lines Are Parallel?</h3>
+                    <div class="side-by-side items-center">
+                        <div class="centered-col">
+                            <canvas id="canvas-ex2" class="diagram-canvas" width="360" height="300"></canvas>
+                        </div>
+                        <div>
+                            <p class="body-text mb-2">Three lines on the grid:</p>
+                            <p class="body-text mb-1" style="color:#3b82f6;"><strong>A:</strong> y = 2x</p>
+                            <p class="body-text mb-1" style="color:#10b981;"><strong>B:</strong> y = x + 2</p>
+                            <p class="body-text mb-4" style="color:#f59e0b;"><strong>C:</strong> y = 2x + 4</p>
+                            <p class="body-text mb-3">Which pair is parallel?</p>
+                            <div class="flex flex-wrap items-center gap-3 mb-2">
+                                <button id="ex2-ab" class="check-btn" style="background:#9ca3af;">A and B</button>
+                                <button id="ex2-ac" class="check-btn" style="background:#9ca3af;">A and C</button>
+                                <button id="ex2-bc" class="check-btn" style="background:#9ca3af;">B and C</button>
+                            </div>
+                            <div id="ex2-feedback" class="hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 3: Make It Parallel -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">3. Make It Parallel</h3>
+                    <p class="body-text mb-3">
+                        You have the line y = 3x. You want to draw a line parallel to it.
+                    </p>
+                    <p class="body-text mb-3">What slope does the parallel line need?</p>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="body-text">Slope =</span>
+                        <input type="number" id="ex3-input" class="border border-gray-300 rounded p-2 w-16 text-center" placeholder="?">
+                        <button id="ex3-check" class="check-btn">Check</button>
+                    </div>
+                    <div id="ex3-feedback" class="hidden"></div>
+
+                    <div id="ex3-followup" class="hidden mt-4">
+                        <p class="body-text mb-3">Which of these is parallel to y = 3x?</p>
+                        <div class="flex flex-wrap items-center gap-3 mb-2">
+                            <button id="ex3-a" class="check-btn" style="background:#9ca3af;">y = 3x + 5</button>
+                            <button id="ex3-b" class="check-btn" style="background:#9ca3af;">y = 5x + 3</button>
+                            <button id="ex3-c" class="check-btn" style="background:#9ca3af;">y = x + 3</button>
+                        </div>
+                        <div id="ex3b-feedback" class="hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Exercise 4: Parallel or Crossing? -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">4. Parallel or Crossing?</h3>
+                    <p class="body-text mb-4">For each pair of lines, decide: parallel or crossing?</p>
+
+                    <div class="flex flex-col gap-4">
+                        <!-- Pair A -->
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <span class="body-text" style="min-width:220px;"><em>y = 2x</em> &nbsp;and&nbsp; <em>y = 2x + 5</em></span>
+                            <button id="ex4a-par" class="check-btn" style="background:#9ca3af;">Parallel</button>
+                            <button id="ex4a-cross" class="check-btn" style="background:#9ca3af;">Crossing</button>
+                            <span id="ex4a-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <!-- Pair B -->
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <span class="body-text" style="min-width:220px;"><em>y = 3x</em> &nbsp;and&nbsp; <em>y = x + 3</em></span>
+                            <button id="ex4b-par" class="check-btn" style="background:#9ca3af;">Parallel</button>
+                            <button id="ex4b-cross" class="check-btn" style="background:#9ca3af;">Crossing</button>
+                            <span id="ex4b-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <!-- Pair C -->
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <span class="body-text" style="min-width:220px;"><em>y = 4x + 1</em> &nbsp;and&nbsp; <em>y = 4x − 2</em></span>
+                            <button id="ex4c-par" class="check-btn" style="background:#9ca3af;">Parallel</button>
+                            <button id="ex4c-cross" class="check-btn" style="background:#9ca3af;">Crossing</button>
+                            <span id="ex4c-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <!-- Pair D -->
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <span class="body-text" style="min-width:220px;"><em>y = 2x + 1</em> &nbsp;and&nbsp; <em>y = 3x + 1</em></span>
+                            <button id="ex4d-par" class="check-btn" style="background:#9ca3af;">Parallel</button>
+                            <button id="ex4d-cross" class="check-btn" style="background:#9ca3af;">Crossing</button>
+                            <span id="ex4d-feedback" class="text-sm hidden"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 6: Summary -->
+    <section id="page-6" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #ede9fe);">
+        <div class="section-card">
+            <h2 class="text-3xl heading-primary mb-8 text-center">Parallel Lines</h2>
+
+            <div class="side-by-side items-center">
+                <div>
+                    <p class="body-text mb-6" style="line-height: 2;">
+                        Two lines are <strong>parallel</strong> when they have the same slope. They go in the same direction, rise at the same rate, and never cross.
+                    </p>
+
+                    <div class="definition-box mb-4">
+                        <p class="body-text text-center">
+                            Same slope → <strong>parallel</strong> → they never meet.
+                        </p>
+                    </div>
+
+                    <div class="definition-box mb-4">
+                        <p class="body-text text-center">
+                            Different slopes → <strong>not parallel</strong> → they cross.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-summary" class="diagram-canvas" width="520" height="440"></canvas>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="../index.html"
+                    class="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-bold no-underline shadow-lg transform hover:-translate-y-1">
+                    Back to Lessons
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="interactive.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

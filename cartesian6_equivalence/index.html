@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 16: x + y = 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Page 0: Cover -->
+    <section id="page-0" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl heading-primary mb-4" style="font-style: italic;">x + y = 1</h1>
+            <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">Which points pass the test?</p>
+            <p class="text-lg text-gray-400">Lesson XVI</p>
+            <div class="mt-16 bounce">
+                <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 1: Does It Pass? -->
+    <section id="page-1" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Does It Pass?</h2>
+
+            <p class="body-text text-center mb-4">
+                Here's a new equation. It looks different from the ones we've seen &mdash;
+                it doesn't start with "<em>y</em> = ..."
+            </p>
+
+            <p class="equation mb-6" style="font-size: 2.2rem;">x + y = 1</p>
+
+            <p class="body-text text-center mb-3">
+                Think of it as a test. Pick any point. Add its coordinates.
+            </p>
+            <p class="body-text text-center mb-8">
+                If you get 1, the point <strong>passes the test</strong>. If not, it doesn't.
+            </p>
+
+            <div class="side-by-side items-start">
+                <!-- Point test area -->
+                <div class="flex flex-col gap-3" id="point-test-area">
+                    <!-- Point 1: (0, 1) → Yes -->
+                    <div class="point-test-card" id="pt-card-0">
+                        <span class="body-text font-bold" style="min-width: 5rem;">(0, 1)</span>
+                        <span class="body-text">Does it pass?</span>
+                        <button class="yesno-btn pt-yes" data-index="0">Yes</button>
+                        <button class="yesno-btn pt-no" data-index="0">No</button>
+                        <span class="computation hidden" id="pt-result-0"></span>
+                    </div>
+
+                    <!-- Point 2: (3, 2) → No -->
+                    <div class="point-test-card hidden" id="pt-card-1">
+                        <span class="body-text font-bold" style="min-width: 5rem;">(3, 2)</span>
+                        <span class="body-text">Does it pass?</span>
+                        <button class="yesno-btn pt-yes" data-index="1">Yes</button>
+                        <button class="yesno-btn pt-no" data-index="1">No</button>
+                        <span class="computation hidden" id="pt-result-1"></span>
+                    </div>
+
+                    <!-- Point 3: (1, 1) → No -->
+                    <div class="point-test-card hidden" id="pt-card-2">
+                        <span class="body-text font-bold" style="min-width: 5rem;">(1, 1)</span>
+                        <span class="body-text">Does it pass?</span>
+                        <button class="yesno-btn pt-yes" data-index="2">Yes</button>
+                        <button class="yesno-btn pt-no" data-index="2">No</button>
+                        <span class="computation hidden" id="pt-result-2"></span>
+                    </div>
+
+                    <!-- Point 4: (1, 0) → Yes -->
+                    <div class="point-test-card hidden" id="pt-card-3">
+                        <span class="body-text font-bold" style="min-width: 5rem;">(1, 0)</span>
+                        <span class="body-text">Does it pass?</span>
+                        <button class="yesno-btn pt-yes" data-index="3">Yes</button>
+                        <button class="yesno-btn pt-no" data-index="3">No</button>
+                        <span class="computation hidden" id="pt-result-3"></span>
+                    </div>
+
+                    <!-- Reveal after all 4 -->
+                    <div id="pt-reveal" class="hidden mt-2">
+                        <p class="body-text">
+                            Two passed, two didn't. The points that pass are on the line.
+                            The ones that don't are off it.
+                        </p>
+                        <p class="body-text mt-2">Let's find more.</p>
+                    </div>
+                </div>
+
+                <!-- Canvas showing points -->
+                <div class="centered-col">
+                    <canvas id="canvas-point-test" class="diagram-canvas" width="400" height="340"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: The Points That Work -->
+    <section id="page-2" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-4 text-center">The Points That Work</h2>
+            <p class="body-text text-center mb-6">
+                We know (0, 1) and (1, 0) pass the test. Let's find more.
+                If <em>x</em> = 2, what value of <em>y</em> makes <em>x</em> + <em>y</em> = 1?
+            </p>
+
+            <div class="side-by-side items-start">
+                <!-- Table -->
+                <div class="flex flex-col items-center gap-3">
+                    <table class="coord-table" id="plot-table">
+                        <thead>
+                            <tr><th><em>x</em></th><th><em>y</em></th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>-1</td><td><input type="number" class="table-input" data-answer="2" id="plot-y-0"></td></tr>
+                            <tr><td>0</td><td><input type="number" class="table-input" data-answer="1" id="plot-y-1" value="1" disabled></td></tr>
+                            <tr><td>1</td><td><input type="number" class="table-input" data-answer="0" id="plot-y-2" value="0" disabled></td></tr>
+                            <tr><td>2</td><td><input type="number" class="table-input" data-answer="-1" id="plot-y-3"></td></tr>
+                            <tr><td>3</td><td><input type="number" class="table-input" data-answer="-2" id="plot-y-4"></td></tr>
+                        </tbody>
+                    </table>
+                    <button id="plot-table-check" class="check-btn">Check</button>
+                    <div id="plot-table-feedback" class="hidden text-sm"></div>
+                </div>
+
+                <!-- Canvas -->
+                <div class="centered-col">
+                    <canvas id="canvas-table-plot" class="diagram-canvas" width="420" height="380"></canvas>
+                </div>
+            </div>
+
+            <!-- Reveal after line animation -->
+            <div id="plot-reveal" class="hidden text-center mt-6">
+                <p class="body-text">
+                    They line up. It's a line &mdash; just like <em>y</em> = 2<em>x</em> and <em>y</em> = <em>x</em> + 1 were lines.
+                </p>
+                <p class="body-text mt-2">
+                    But this line is different. Look at which direction it goes.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 3: Downhill -->
+    <section id="page-3" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Downhill</h2>
+
+            <div class="side-by-side items-center">
+                <div>
+                    <p class="body-text mb-4">
+                        Every line we've seen so far has gone uphill &mdash; the further right, the higher up.
+                    </p>
+                    <p class="body-text mb-4">
+                        This one goes <em>downhill</em>. As <em>x</em> increases, <em>y</em> decreases.
+                    </p>
+                    <p class="body-text mb-4">
+                        How would a knight move along this line?
+                        Right 1 &mdash; but this time, <strong>down 1</strong>.
+                    </p>
+
+                    <p class="body-text mb-2">
+                        When the step went "right 1, up 2," the slope was 2.
+                        When it went "right 1, up 3," the slope was 3.
+                    </p>
+                    <p class="body-text mb-4">
+                        Now it goes "right 1, <strong>down</strong> 1." The slope is <strong>&minus;1</strong>.
+                    </p>
+
+                    <div class="definition-box mb-6">
+                        <p class="body-text text-center">
+                            A <strong>negative slope</strong> means the line goes downhill.
+                            Each step to the right goes down, not up.
+                        </p>
+                    </div>
+
+                    <p class="body-text mb-2">Look at the table:</p>
+
+                    <table class="coord-table mb-4" style="font-size: 0.95rem;">
+                        <thead>
+                            <tr><th><em>x</em></th><th><em>y</em></th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>-1</td><td>2</td></tr>
+                            <tr><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td></tr>
+                            <tr><td>2</td><td>-1</td></tr>
+                            <tr><td>3</td><td>-2</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="body-text">
+                        Each time <em>x</em> goes up by 1, <em>y</em> goes <strong>down</strong> by 1.
+                        That's what slope &minus;1 looks like in the numbers.
+                    </p>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-downhill" class="diagram-canvas" width="420" height="380"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 4: Rewriting the Equation -->
+    <section id="page-4" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Rewriting the Equation</h2>
+
+            <p class="body-text text-center mb-8">
+                Can we rewrite <em>x</em> + <em>y</em> = 1 so it looks more like <em>y</em> = ...?
+            </p>
+
+            <!-- Forward direction -->
+            <p class="body-text mb-3">
+                Take any point that passes the test <em>x</em> + <em>y</em> = 1.
+                That means its coordinates add up to 1:
+            </p>
+
+            <div class="rewrite-steps mb-4">
+                <div class="step-line" style="color: #6a82fb; font-size: 1.6rem;">
+                    x + y = 1
+                </div>
+                <div class="step-annotation mt-2 mb-1">
+                    Take <em>x</em> away from both sides:
+                </div>
+                <div class="step-line">
+                    x + y <span class="highlight">&minus; x</span> = 1 <span class="highlight">&minus; x</span>
+                </div>
+                <div class="step-annotation mb-1">
+                    On the left, <em>x</em> &minus; <em>x</em> is nothing. So:
+                </div>
+                <div class="step-line" style="color: #10b981; font-size: 1.6rem;">
+                    y = 1 &minus; x
+                </div>
+            </div>
+
+            <p class="body-text mb-10">
+                So the point also passes the test <em>y</em> = 1 &minus; <em>x</em>.
+                <strong>Every point on the line <em style="color:#6a82fb;">x + y = 1</em>
+                is also on the line <em style="color:#10b981;">y = 1 &minus; x</em>.</strong>
+            </p>
+
+            <!-- Backward direction -->
+            <p class="body-text mb-3">
+                Now go the other way. Take any point that passes the test <em>y</em> = 1 &minus; <em>x</em>:
+            </p>
+
+            <div class="rewrite-steps mb-4">
+                <div class="step-line" style="color: #10b981; font-size: 1.6rem;">
+                    y = 1 &minus; x
+                </div>
+                <div class="step-annotation mt-2 mb-1">
+                    Add <em>x</em> to both sides:
+                </div>
+                <div class="step-line">
+                    <span class="highlight">x +</span> y = <span class="highlight">x +</span> 1 &minus; x
+                </div>
+                <div class="step-annotation mb-1">
+                    On the right, <em>x</em> &minus; <em>x</em> is nothing. So:
+                </div>
+                <div class="step-line" style="color: #6a82fb; font-size: 1.6rem;">
+                    x + y = 1
+                </div>
+            </div>
+
+            <p class="body-text">
+                So the point also passes the test <em>x</em> + <em>y</em> = 1.
+                <strong>Every point on the line <em style="color:#10b981;">y = 1 &minus; x</em>
+                is also on the line <em style="color:#6a82fb;">x + y = 1</em>.</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- Page 5: Same Line -->
+    <section id="page-5" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Same Line</h2>
+
+            <p class="body-text text-center mb-3">
+                Both directions work.
+            </p>
+            <p class="body-text text-center mb-8">
+                Every point on one line is on the other. They are the same line.
+            </p>
+
+            <div class="definition-box mb-8">
+                <p class="body-text text-center">
+                    Two equations are <strong>equivalent</strong> if they describe exactly the same set of points &mdash; the same line.
+                </p>
+            </div>
+
+            <!-- Diagram + verification -->
+            <div class="side-by-side items-center mb-6">
+                <div class="centered-col">
+                    <canvas id="canvas-equivalence" class="diagram-canvas" width="420" height="380"></canvas>
+                </div>
+
+                <div>
+                    <p class="body-text mb-4">
+                        Let's check with the point <strong>(2, &minus;1)</strong>.
+                    </p>
+
+                    <div class="verify-box verify-box-blue mb-3">
+                        <p class="body-text">
+                            <em style="color:#6a82fb;">x + y = 1</em> &nbsp;&rarr;&nbsp;
+                            2 + (&minus;1) = <input type="number" id="verify-sum" class="table-input" style="width:2.5rem;" data-answer="1" placeholder="?">
+                        </p>
+                        <div id="verify-sum-feedback" class="hidden text-sm"></div>
+                    </div>
+
+                    <div class="verify-box verify-box-green mb-3" id="verify-phase2" style="opacity: 0.4;">
+                        <p class="body-text">
+                            <em style="color:#10b981;">y = 1 &minus; x</em> &nbsp;&rarr;&nbsp;
+                            1 &minus; 2 = <input type="number" id="verify-diff" class="table-input" style="width:2.5rem;" data-answer="-1" placeholder="?" disabled>
+                        </p>
+                        <div id="verify-diff-feedback" class="hidden text-sm"></div>
+                    </div>
+
+                    <div id="verify-conclusion" class="hidden">
+                        <p class="body-text">
+                            The point (2, &minus;1) is on <strong>both</strong> lines.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 6: Exercises -->
+    <section id="page-6" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-8 text-center">Exercises</h2>
+
+            <div class="flex flex-col gap-8">
+
+                <!-- Exercise 1: Test the Points -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">1. Test the Points</h3>
+                    <p class="body-text mb-4">
+                        A new equation: <strong><em>x</em> + <em>y</em> = 4</strong>.
+                        Which of these points pass the test?
+                    </p>
+                    <div class="flex flex-col gap-2">
+                        <!-- (1, 3) → Yes -->
+                        <div class="flex items-center gap-3">
+                            <span class="body-text" style="min-width:4rem;">(1, 3)</span>
+                            <button id="ex1a-yes" class="yesno-btn">Yes</button>
+                            <button id="ex1a-no" class="yesno-btn">No</button>
+                            <span id="ex1a-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <!-- (2, 1) → No -->
+                        <div class="flex items-center gap-3">
+                            <span class="body-text" style="min-width:4rem;">(2, 1)</span>
+                            <button id="ex1b-yes" class="yesno-btn">Yes</button>
+                            <button id="ex1b-no" class="yesno-btn">No</button>
+                            <span id="ex1b-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <!-- (0, 4) → Yes -->
+                        <div class="flex items-center gap-3">
+                            <span class="body-text" style="min-width:4rem;">(0, 4)</span>
+                            <button id="ex1c-yes" class="yesno-btn">Yes</button>
+                            <button id="ex1c-no" class="yesno-btn">No</button>
+                            <span id="ex1c-feedback" class="text-sm hidden"></span>
+                        </div>
+                        <!-- (3, 2) → No -->
+                        <div class="flex items-center gap-3">
+                            <span class="body-text" style="min-width:4rem;">(3, 2)</span>
+                            <button id="ex1d-yes" class="yesno-btn">Yes</button>
+                            <button id="ex1d-no" class="yesno-btn">No</button>
+                            <span id="ex1d-feedback" class="text-sm hidden"></span>
+                        </div>
+                    </div>
+                    <div id="ex1-conclusion" class="hidden mt-3">
+                        <p class="body-text">Two on the line, two off it.</p>
+                    </div>
+                </div>
+
+                <!-- Exercise 2: Find the Line -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">2. Find the Line</h3>
+                    <p class="body-text mb-4">
+                        <strong><em>x</em> + <em>y</em> = 5</strong>. Fill in the table and plot the points.
+                    </p>
+
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex flex-col items-center gap-3">
+                            <table class="coord-table" id="ex2-table">
+                                <thead>
+                                    <tr><th><em>x</em></th><th><em>y</em></th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>0</td><td><input type="number" class="table-input" data-answer="5" id="ex2-y0"></td></tr>
+                                    <tr><td>1</td><td><input type="number" class="table-input" data-answer="4" id="ex2-y1"></td></tr>
+                                    <tr><td>2</td><td><input type="number" class="table-input" data-answer="3" id="ex2-y2"></td></tr>
+                                    <tr><td>3</td><td><input type="number" class="table-input" data-answer="2" id="ex2-y3"></td></tr>
+                                    <tr><td>4</td><td><input type="number" class="table-input" data-answer="1" id="ex2-y4"></td></tr>
+                                    <tr><td>5</td><td><input type="number" class="table-input" data-answer="0" id="ex2-y5"></td></tr>
+                                </tbody>
+                            </table>
+                            <button id="ex2-table-check" class="check-btn">Check</button>
+                            <div id="ex2-table-feedback" class="hidden text-sm"></div>
+                        </div>
+
+                        <div class="centered-col" id="ex2-canvas-wrap" class="hidden">
+                            <canvas id="canvas-ex2" class="diagram-canvas hidden" width="360" height="300"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Follow-ups -->
+                    <div id="ex2-followup1" class="hidden mt-4">
+                        <p class="body-text mb-2">What's the slope?</p>
+                        <div class="flex items-center gap-2 mb-2">
+                            <input type="number" id="ex2-slope" class="table-input" placeholder="?">
+                            <button id="ex2-slope-check" class="check-btn">Check</button>
+                        </div>
+                        <div id="ex2-slope-feedback" class="hidden"></div>
+                    </div>
+
+                    <div id="ex2-followup2" class="hidden mt-4">
+                        <p class="body-text mb-2">
+                            Rewrite: <em>x</em> + <em>y</em> = 5 is the same as <em>y</em> =
+                            <input type="number" id="ex2-rewrite-c" class="table-input" placeholder="?"> &minus; <em>x</em>
+                        </p>
+                        <button id="ex2-rewrite-check" class="check-btn">Check</button>
+                        <div id="ex2-rewrite-feedback" class="hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Exercise 3: Same Line or Different Line? -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">3. Same Line or Different Line?</h3>
+                    <p class="body-text mb-4">For each pair of equations: same line, or different?</p>
+
+                    <div class="flex flex-col gap-4">
+                        <!-- Pair A: x + y = 3 and y = 3 - x → Same -->
+                        <div>
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <span class="body-text" style="min-width:280px;">
+                                    <em>x</em> + <em>y</em> = 3 &nbsp;and&nbsp; <em>y</em> = 3 &minus; <em>x</em>
+                                </span>
+                                <button id="ex3a-same" class="check-btn" style="background:#9ca3af;">Same</button>
+                                <button id="ex3a-diff" class="check-btn" style="background:#9ca3af;">Different</button>
+                            </div>
+                            <div id="ex3a-feedback" class="hidden text-sm ml-1"></div>
+                        </div>
+
+                        <!-- Pair B: x + y = 2 and y = 2 + x → Different! -->
+                        <div>
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <span class="body-text" style="min-width:280px;">
+                                    <em>x</em> + <em>y</em> = 2 &nbsp;and&nbsp; <em>y</em> = 2 + <em>x</em>
+                                </span>
+                                <button id="ex3b-same" class="check-btn" style="background:#9ca3af;">Same</button>
+                                <button id="ex3b-diff" class="check-btn" style="background:#9ca3af;">Different</button>
+                            </div>
+                            <div id="ex3b-feedback" class="hidden text-sm ml-1"></div>
+                        </div>
+
+                        <!-- Pair C: y = 4 - x and x + y = 4 → Same -->
+                        <div>
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <span class="body-text" style="min-width:280px;">
+                                    <em>y</em> = 4 &minus; <em>x</em> &nbsp;and&nbsp; <em>x</em> + <em>y</em> = 4
+                                </span>
+                                <button id="ex3c-same" class="check-btn" style="background:#9ca3af;">Same</button>
+                                <button id="ex3c-diff" class="check-btn" style="background:#9ca3af;">Different</button>
+                            </div>
+                            <div id="ex3c-feedback" class="hidden text-sm ml-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 4: The Other Direction -->
+                <div class="exercise-item">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">4. The Other Direction</h3>
+                    <p class="body-text mb-4">A line has equation <strong><em>y</em> = 7 &minus; <em>x</em></strong>.</p>
+
+                    <div class="flex flex-col gap-3">
+                        <div>
+                            <p class="body-text mb-2">What's the slope?</p>
+                            <div class="flex items-center gap-2 mb-1">
+                                <input type="number" id="ex4-slope" class="table-input" placeholder="?">
+                                <button id="ex4-slope-check" class="check-btn">Check</button>
+                            </div>
+                            <div id="ex4-slope-feedback" class="hidden"></div>
+                        </div>
+
+                        <div id="ex4-part2" class="hidden">
+                            <p class="body-text mb-2">
+                                Write another equation for the same line: <em>x</em> + <em>y</em> =
+                                <input type="number" id="ex4-constant" class="table-input" placeholder="?">
+                            </p>
+                            <button id="ex4-constant-check" class="check-btn">Check</button>
+                            <div id="ex4-constant-feedback" class="hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 7: Summary -->
+    <section id="page-7" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #ede9fe);">
+        <div class="section-card">
+            <h2 class="text-3xl heading-primary mb-8 text-center">x + y = 1</h2>
+
+            <div class="side-by-side items-center">
+                <div>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        An equation with <em>x</em> and <em>y</em> is a test: plug in a point, and it either passes or fails.
+                    </p>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        The points that pass the test <strong><em>x</em> + <em>y</em> = 1</strong> form a line &mdash; a line with slope <strong>&minus;1</strong>.
+                    </p>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        <strong>Negative slope</strong> means the line goes downhill: each step goes down instead of up.
+                    </p>
+                    <p class="body-text mb-6" style="line-height: 2;">
+                        <strong><em>x</em> + <em>y</em> = 1</strong> and <strong><em>y</em> = 1 &minus; <em>x</em></strong> describe the same set of points. They are <strong>equivalent equations</strong> &mdash; two names for the same line.
+                    </p>
+
+                    <div class="definition-box mb-4">
+                        <p class="body-text text-center">
+                            <strong>Equivalent equations</strong> describe the same set of points &mdash; the same line.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-summary" class="diagram-canvas" width="480" height="400"></canvas>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="../index.html"
+                    class="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-bold no-underline shadow-lg transform hover:-translate-y-1">
+                    Back to Lessons
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="interactive.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angles in a Circle</title>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: 'STIX Two Text', serif;
+            color: #333;
+        }
+
+        /* Scroll-snap */
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        .page {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 24px;
+        }
+
+        /* Page themes */
+        .page-explorer { background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%); }
+        .page-ex1 { background: #fafbfe; }
+        .page-ex2 { background: linear-gradient(135deg, #f8f9fc 0%, #eef1f8 100%); }
+        .page-ex3 { background: #fafbfe; }
+
+        /* Typography */
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 6px; }
+        h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+        .subtitle {
+            color: #888;
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        em { font-style: italic; }
+
+        /* Explorer canvas */
+        canvas {
+            display: block;
+            cursor: default;
+        }
+        #canvas {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .readout {
+            margin-top: 20px;
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+        .readout span.value { font-weight: 700; font-size: 1.5rem; }
+        .readout .at-c .value { color: rgb(59, 130, 246); }
+        .readout .at-o .value { color: rgb(239, 68, 68); }
+
+        .prompt {
+            margin-top: 16px;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: #555;
+        }
+
+        .scroll-hint {
+            margin-top: 28px;
+            color: #bbb;
+            font-size: 0.95rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .scroll-hint svg {
+            width: 20px; height: 20px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        /* Exercise layout */
+        .exercise-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 48px;
+            max-width: 800px;
+            width: 100%;
+        }
+        .exercise-diagram {
+            flex-shrink: 0;
+        }
+        .exercise-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .exercise-content p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .exercise-content p.exercise-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .input-row input {
+            font-family: 'STIX Two Text', serif;
+            font-size: 1.2rem;
+            width: 80px;
+            padding: 8px 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .input-row input:focus { border-color: #9ca3af; }
+        .input-row input.correct {
+            border-color: rgb(16, 185, 129);
+            background: rgba(16, 185, 129, 0.08);
+        }
+        .input-row input.wrong {
+            border-color: rgb(239, 68, 68);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        .input-row .deg { font-size: 1.2rem; color: #888; }
+        .input-row button {
+            font-family: 'STIX Two Text', serif;
+            font-size: 1rem;
+            padding: 8px 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .input-row button:hover {
+            border-color: #9ca3af;
+            background: #f9fafb;
+        }
+        .feedback {
+            font-size: 1rem;
+            margin-top: 12px;
+            min-height: 1.5em;
+        }
+        .feedback.correct { color: rgb(16, 185, 129); }
+        .feedback.wrong { color: rgb(239, 68, 68); }
+        .hint {
+            font-size: 0.92rem;
+            color: #aab;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        .reveal {
+            margin-top: 14px;
+            padding: 12px 16px;
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            line-height: 1.5;
+            display: none;
+        }
+        .reveal.show { display: block; }
+
+        /* Responsive: stack on narrow screens */
+        @media (max-width: 700px) {
+            .exercise-layout {
+                flex-direction: column;
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-container">
+
+        <!-- ==================== PAGE 1: Explorer ==================== -->
+        <section class="page page-explorer">
+            <h1>Angles in a Circle</h1>
+            <p class="subtitle">Drag A, B, or C around the circle.</p>
+            <canvas id="canvas" width="540" height="440"></canvas>
+            <div class="readout">
+                <div class="at-c">Angle at <em>C</em> : <span class="value" id="val-c">60°</span></div>
+                <div class="at-o">Angle at <em>O</em> : <span class="value" id="val-o">120°</span></div>
+            </div>
+            <p class="prompt">How are the two angles related?</p>
+            <div class="scroll-hint">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                <span>Scroll for exercises</span>
+            </div>
+        </section>
+
+        <!-- ==================== PAGE 2: Exercise 1 ==================== -->
+        <section class="page page-ex1">
+            <div class="exercise-layout">
+                <div class="exercise-diagram">
+                    <canvas id="ex1-canvas" width="340" height="300"></canvas>
+                </div>
+                <div class="exercise-content">
+                    <p class="exercise-label">Exercise 1</p>
+                    <h2>Find the angle at <em>C</em></h2>
+                    <p>
+                        The angle at the center <em>O</em> is <strong>100°</strong>.
+                    </p>
+                    <p>
+                        What is the angle at <em>C</em>?
+                    </p>
+                    <div class="input-row">
+                        <input type="text" id="ex1-input" placeholder="?" inputmode="numeric">
+                        <span class="deg">°</span>
+                        <button onclick="checkExercise('ex1', 50)">Check</button>
+                    </div>
+                    <div class="feedback" id="ex1-feedback"></div>
+                    <div class="hint">Scroll back up to verify with the tool.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PAGE 3: Exercise 2 ==================== -->
+        <section class="page page-ex2">
+            <div class="exercise-layout">
+                <div class="exercise-diagram">
+                    <canvas id="ex2-canvas" width="340" height="300"></canvas>
+                </div>
+                <div class="exercise-content">
+                    <p class="exercise-label">Exercise 2</p>
+                    <h2>Find the angle at <em>O</em></h2>
+                    <p>
+                        The angle at <em>C</em> is <strong>25°</strong>.
+                    </p>
+                    <p>
+                        What is the angle at the center <em>O</em>?
+                    </p>
+                    <div class="input-row">
+                        <input type="text" id="ex2-input" placeholder="?" inputmode="numeric">
+                        <span class="deg">°</span>
+                        <button onclick="checkExercise('ex2', 50)">Check</button>
+                    </div>
+                    <div class="feedback" id="ex2-feedback"></div>
+                    <div class="hint">Scroll back up to verify with the tool.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PAGE 4: Exercise 3 ==================== -->
+        <section class="page page-ex3">
+            <div class="exercise-layout">
+                <div class="exercise-diagram">
+                    <canvas id="ex3-canvas" width="340" height="300"></canvas>
+                </div>
+                <div class="exercise-content">
+                    <p class="exercise-label">Exercise 3</p>
+                    <h2>Find the angle at <em>O</em></h2>
+                    <p>
+                        The angle at <em>C</em> is <strong>90°</strong>.
+                    </p>
+                    <p>
+                        What is the angle at the center <em>O</em>?
+                    </p>
+                    <div class="input-row">
+                        <input type="text" id="ex3-input" placeholder="?" inputmode="numeric">
+                        <span class="deg">°</span>
+                        <button onclick="checkExercise('ex3', 180)">Check</button>
+                    </div>
+                    <div class="feedback" id="ex3-feedback"></div>
+                    <div class="hint">What does that tell you about A, O, and B?</div>
+                    <div class="reveal" id="ex3-reveal">
+                        180° means A, O, and B are in a straight line.
+                        So A and B are at opposite ends of a diameter.
+                        And the angle at <em>C</em> is exactly 90°.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+<script>
+// ============================================
+// Colors
+// ============================================
+const BLUE_FILL = 'rgba(59, 130, 246, 0.25)';
+const BLUE = 'rgb(59, 130, 246)';
+const RED_FILL = 'rgba(239, 68, 68, 0.25)';
+const RED = 'rgb(239, 68, 68)';
+const GREEN = 'rgb(16, 185, 129)';
+const GREEN_FILL = 'rgba(16, 185, 129, 0.25)';
+
+// ============================================
+// Geometry helpers
+// ============================================
+function toRad(d) { return d * Math.PI / 180; }
+function toDeg(r) { return r * 180 / Math.PI; }
+function ptOn(cx, cy, r, deg) {
+    const rad = toRad(deg);
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+function norm(a) {
+    while (a >= 180) a -= 360;
+    while (a < -180) a += 360;
+    return a;
+}
+function angDist(a, b) { return Math.abs(norm(a - b)); }
+function vertexAngle(v, p1, p2) {
+    const a1 = Math.atan2(p1.y - v.y, p1.x - v.x);
+    const a2 = Math.atan2(p2.y - v.y, p2.x - v.x);
+    let d = Math.abs(a2 - a1);
+    if (d > Math.PI) d = 2 * Math.PI - d;
+    return toDeg(d);
+}
+function isOnMajorArc(aA, aB, aC) {
+    let start = norm(aB);
+    let span = norm(aA - aB);
+    if (span < 0) span += 360;
+    if (span > 180) { start = norm(aA); span = 360 - span; }
+    let test = norm(aC - start);
+    if (test < 0) test += 360;
+    return test >= span + 5;
+}
+
+// ============================================
+// Drawing helpers
+// ============================================
+function setupCtx(canvas, w, h) {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    return ctx;
+}
+
+function drawCircle(ctx, cx, cy, r) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+}
+
+function drawSeg(ctx, p1, p2, color, w) {
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.strokeStyle = color || '#333';
+    ctx.lineWidth = w || 2;
+    ctx.stroke();
+}
+
+function drawSector(ctx, v, p1, p2, radius, fill, stroke) {
+    const a1 = Math.atan2(p1.y - v.y, p1.x - v.x);
+    const a2 = Math.atan2(p2.y - v.y, p2.x - v.x);
+    let diff = a2 - a1;
+    while (diff > Math.PI) diff -= 2 * Math.PI;
+    while (diff < -Math.PI) diff += 2 * Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(v.x, v.y);
+    ctx.lineTo(v.x + radius * Math.cos(a1), v.y + radius * Math.sin(a1));
+    ctx.arc(v.x, v.y, radius, a1, a2, diff < 0);
+    ctx.closePath();
+    ctx.fillStyle = fill;
+    ctx.fill();
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+}
+
+function drawDot(ctx, x, y, r) {
+    ctx.beginPath();
+    ctx.arc(x, y, r || 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#333';
+    ctx.fill();
+}
+
+function drawLabel(ctx, x, y, text, opts) {
+    opts = opts || {};
+    ctx.font = opts.font || 'italic 16px STIX Two Text, serif';
+    ctx.fillStyle = opts.color || '#333';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, x, y);
+}
+
+function outwardOffset(px, py, cx, cy, dist) {
+    const dx = px - cx, dy = py - cy;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    return { x: (dx / len) * dist, y: (dy / len) * dist };
+}
+
+// ============================================
+// Exercise diagrams
+// ============================================
+
+function drawExercise1() {
+    const c = document.getElementById('ex1-canvas');
+    const w = 340, h = 300;
+    const ctx = setupCtx(c, w, h);
+
+    const cx = 170, cy = 155, r = 115;
+
+    // Central angle = 100°. Place A and B symmetric around bottom.
+    const degA = 140, degB = 40;
+    const degC = -80;
+    const O_ = { x: cx, y: cy };
+    const A = ptOn(cx, cy, r, degA);
+    const B = ptOn(cx, cy, r, degB);
+    const C = ptOn(cx, cy, r, degC);
+
+    drawCircle(ctx, cx, cy, r);
+
+    // Lines
+    drawSeg(ctx, C, A);
+    drawSeg(ctx, C, B);
+    drawSeg(ctx, O_, A);
+    drawSeg(ctx, O_, B);
+
+    // Central angle sector (known: 100°)
+    drawSector(ctx, O_, A, B, 35, RED_FILL, RED);
+
+    // Inscribed angle sector (unknown: ?)
+    drawSector(ctx, C, A, B, 30, BLUE_FILL, BLUE);
+
+    // Points
+    drawDot(ctx, cx, cy);
+    drawDot(ctx, A.x, A.y);
+    drawDot(ctx, B.x, B.y);
+    drawDot(ctx, C.x, C.y);
+
+    // Labels
+    drawLabel(ctx, cx, cy + 20, 'O');
+    const oA = outwardOffset(A.x, A.y, cx, cy, 18);
+    drawLabel(ctx, A.x + oA.x, A.y + oA.y, 'A');
+    const oB = outwardOffset(B.x, B.y, cx, cy, 18);
+    drawLabel(ctx, B.x + oB.x, B.y + oB.y, 'B');
+    const oC = outwardOffset(C.x, C.y, cx, cy, 18);
+    drawLabel(ctx, C.x + oC.x, C.y + oC.y, 'C');
+
+    // Angle value at O: "100°" — placed along bisector into the sector
+    const bisector1 = toRad((degA + degB) / 2);
+    drawLabel(ctx, cx + Math.cos(bisector1) * 50, cy + Math.sin(bisector1) * 50, '100°',
+        { font: 'bold 15px STIX Two Text, serif', color: RED });
+
+    // "?" at C
+    const inward = outwardOffset(C.x, C.y, cx, cy, -42);
+    drawLabel(ctx, C.x + inward.x, C.y + inward.y, '?', { font: 'bold 18px STIX Two Text, serif', color: BLUE });
+}
+
+function drawExercise2() {
+    const c = document.getElementById('ex2-canvas');
+    const w = 340, h = 300;
+    const ctx = setupCtx(c, w, h);
+
+    const cx = 170, cy = 155, r = 115;
+
+    // Central angle = 50°. C angle = 25°.
+    const degA = 115, degB = 65;
+    const degC = -100;
+    const O_ = { x: cx, y: cy };
+    const A = ptOn(cx, cy, r, degA);
+    const B = ptOn(cx, cy, r, degB);
+    const C = ptOn(cx, cy, r, degC);
+
+    drawCircle(ctx, cx, cy, r);
+
+    drawSeg(ctx, C, A);
+    drawSeg(ctx, C, B);
+    drawSeg(ctx, O_, A);
+    drawSeg(ctx, O_, B);
+
+    // Central angle sector (unknown: ?)
+    drawSector(ctx, O_, A, B, 35, RED_FILL, RED);
+
+    // Inscribed angle sector (known: 25°)
+    drawSector(ctx, C, A, B, 30, BLUE_FILL, BLUE);
+
+    drawDot(ctx, cx, cy);
+    drawDot(ctx, A.x, A.y);
+    drawDot(ctx, B.x, B.y);
+    drawDot(ctx, C.x, C.y);
+
+    drawLabel(ctx, cx, cy + 20, 'O');
+    const oA = outwardOffset(A.x, A.y, cx, cy, 18);
+    drawLabel(ctx, A.x + oA.x, A.y + oA.y, 'A');
+    const oB = outwardOffset(B.x, B.y, cx, cy, 18);
+    drawLabel(ctx, B.x + oB.x, B.y + oB.y, 'B');
+    const oC = outwardOffset(C.x, C.y, cx, cy, 18);
+    drawLabel(ctx, C.x + oC.x, C.y + oC.y, 'C');
+
+    // "25°" at C
+    const inward = outwardOffset(C.x, C.y, cx, cy, -42);
+    drawLabel(ctx, C.x + inward.x, C.y + inward.y, '25°', { font: 'bold 15px STIX Two Text, serif', color: BLUE });
+
+    // "?" at O — placed along bisector into the sector
+    const bisector2 = toRad((degA + degB) / 2);
+    drawLabel(ctx, cx + Math.cos(bisector2) * 48, cy + Math.sin(bisector2) * 48, '?',
+        { font: 'bold 18px STIX Two Text, serif', color: RED });
+}
+
+function drawExercise3() {
+    const c = document.getElementById('ex3-canvas');
+    const w = 340, h = 300;
+    const ctx = setupCtx(c, w, h);
+
+    const cx = 170, cy = 155, r = 115;
+
+    // Central angle = 180° — A and B are a diameter.
+    const degA = 180, degB = 0;
+    const degC = -70;
+    const O_ = { x: cx, y: cy };
+    const A = ptOn(cx, cy, r, degA);
+    const B = ptOn(cx, cy, r, degB);
+    const C = ptOn(cx, cy, r, degC);
+
+    drawCircle(ctx, cx, cy, r);
+
+    // Draw the diameter A–B through O
+    drawSeg(ctx, A, B, '#333', 2);
+
+    // Chords from C
+    drawSeg(ctx, C, A);
+    drawSeg(ctx, C, B);
+
+    // Right angle marker at C instead of a sector
+    const len = 14;
+    // Vectors from C toward A and B, normalized
+    const dxA = A.x - C.x, dyA = A.y - C.y;
+    const lA = Math.sqrt(dxA * dxA + dyA * dyA);
+    const uAx = dxA / lA, uAy = dyA / lA;
+    const dxB = B.x - C.x, dyB = B.y - C.y;
+    const lB = Math.sqrt(dxB * dxB + dyB * dyB);
+    const uBx = dxB / lB, uBy = dyB / lB;
+
+    const corner1 = { x: C.x + uAx * len, y: C.y + uAy * len };
+    const corner2 = { x: C.x + uBx * len, y: C.y + uBy * len };
+    const corner3 = { x: C.x + (uAx + uBx) * len, y: C.y + (uAy + uBy) * len };
+
+    ctx.beginPath();
+    ctx.moveTo(corner1.x, corner1.y);
+    ctx.lineTo(corner3.x, corner3.y);
+    ctx.lineTo(corner2.x, corner2.y);
+    ctx.strokeStyle = BLUE;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Fill the right-angle square
+    ctx.beginPath();
+    ctx.moveTo(C.x, C.y);
+    ctx.lineTo(corner1.x, corner1.y);
+    ctx.lineTo(corner3.x, corner3.y);
+    ctx.lineTo(corner2.x, corner2.y);
+    ctx.closePath();
+    ctx.fillStyle = BLUE_FILL;
+    ctx.fill();
+
+    drawDot(ctx, cx, cy);
+    drawDot(ctx, A.x, A.y);
+    drawDot(ctx, B.x, B.y);
+    drawDot(ctx, C.x, C.y);
+
+    drawLabel(ctx, cx, cy + 20, 'O');
+    const oA = outwardOffset(A.x, A.y, cx, cy, 18);
+    drawLabel(ctx, A.x + oA.x, A.y + oA.y, 'A');
+    const oB = outwardOffset(B.x, B.y, cx, cy, 18);
+    drawLabel(ctx, B.x + oB.x, B.y + oB.y, 'B');
+    const oC = outwardOffset(C.x, C.y, cx, cy, 18);
+    drawLabel(ctx, C.x + oC.x, C.y + oC.y, 'C');
+
+    // "90°" at C
+    const inward = outwardOffset(C.x, C.y, cx, cy, -42);
+    drawLabel(ctx, C.x + inward.x, C.y + inward.y, '90°', { font: 'bold 15px STIX Two Text, serif', color: BLUE });
+
+    // "?" at O
+    drawLabel(ctx, cx, cy + 42, '?', { font: 'bold 18px STIX Two Text, serif', color: RED });
+}
+
+// ============================================
+// Exercises logic
+// ============================================
+function checkExercise(id, answer) {
+    const input = document.getElementById(id + '-input');
+    const feedback = document.getElementById(id + '-feedback');
+    const val = parseInt(input.value.trim(), 10);
+    if (isNaN(val)) return;
+    if (val === answer) {
+        input.classList.remove('wrong');
+        input.classList.add('correct');
+        input.disabled = true;
+        feedback.textContent = 'Correct!';
+        feedback.className = 'feedback correct';
+        // Show reveal if exists
+        const reveal = document.getElementById(id + '-reveal');
+        if (reveal) reveal.classList.add('show');
+    } else {
+        input.classList.remove('correct');
+        input.classList.add('wrong');
+        feedback.textContent = 'Not quite. Try again.';
+        feedback.className = 'feedback wrong';
+        setTimeout(() => input.classList.remove('wrong'), 600);
+    }
+}
+
+// Allow Enter key to submit
+document.querySelectorAll('.input-row input').forEach(input => {
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            input.parentElement.querySelector('button').click();
+        }
+    });
+});
+
+// ============================================
+// Interactive explorer
+// ============================================
+const canvas = document.getElementById('canvas');
+const W = 540, H = 440;
+const mainCtx = setupCtx(canvas, W, H);
+
+const Ocenter = { x: 270, y: 220 };
+const R = 170;
+const MIN_SEP = 15;
+
+let angleA = 150;
+let angleB = 30;
+let angleC = -90;
+let dragging = null;
+
+function drawDraggable(ctx, p, label, cx, cy) {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 13, 0, Math.PI * 2);
+    ctx.fillStyle = GREEN_FILL;
+    ctx.fill();
+    ctx.strokeStyle = GREEN;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    drawDot(ctx, p.x, p.y, 4);
+    const off = outwardOffset(p.x, p.y, cx, cy, 22);
+    drawLabel(ctx, p.x + off.x, p.y + off.y, label, { font: 'italic 17px STIX Two Text, serif' });
+}
+
+function render() {
+    mainCtx.clearRect(0, 0, W, H);
+    const A = ptOn(Ocenter.x, Ocenter.y, R, angleA);
+    const B = ptOn(Ocenter.x, Ocenter.y, R, angleB);
+    const C = ptOn(Ocenter.x, Ocenter.y, R, angleC);
+
+    drawCircle(mainCtx, Ocenter.x, Ocenter.y, R);
+
+    drawSeg(mainCtx, C, A);
+    drawSeg(mainCtx, C, B);
+    drawSeg(mainCtx, Ocenter, A);
+    drawSeg(mainCtx, Ocenter, B);
+
+    const cAng = vertexAngle(Ocenter, A, B);
+    const iAng = vertexAngle(C, A, B);
+    drawSector(mainCtx, Ocenter, A, B, 45, RED_FILL, RED);
+    drawSector(mainCtx, C, A, B, 38, BLUE_FILL, BLUE);
+
+    drawDot(mainCtx, Ocenter.x, Ocenter.y);
+    drawLabel(mainCtx, Ocenter.x, Ocenter.y + 20, 'O', { font: 'italic 17px STIX Two Text, serif' });
+
+    drawDraggable(mainCtx, A, 'A', Ocenter.x, Ocenter.y);
+    drawDraggable(mainCtx, B, 'B', Ocenter.x, Ocenter.y);
+    drawDraggable(mainCtx, C, 'C', Ocenter.x, Ocenter.y);
+
+    // Display angles: round central to integer, derive inscribed as exact half
+    const centralDisplay = Math.round(cAng);
+    const inscribedDisplay = centralDisplay / 2;
+    const inscribedText = Number.isInteger(inscribedDisplay)
+        ? inscribedDisplay + '\u00B0'
+        : inscribedDisplay.toFixed(1) + '\u00B0';
+
+    // Inscribed angle label
+    const ci = outwardOffset(C.x, C.y, Ocenter.x, Ocenter.y, -48);
+    drawLabel(mainCtx, C.x + ci.x, C.y + ci.y, inscribedText,
+        { font: 'bold 16px STIX Two Text, serif', color: BLUE });
+
+    // Central angle label — bisector of the central angle, inside the sector
+    const radA = toRad(angleA), radB = toRad(angleB);
+    let bisect = (radA + radB) / 2;
+    // Make sure bisector points into the minor arc side (toward A and B, not away)
+    const midCheck = { x: Math.cos(bisect), y: Math.sin(bisect) };
+    const midAB = { x: (A.x + B.x) / 2 - Ocenter.x, y: (A.y + B.y) / 2 - Ocenter.y };
+    if (midCheck.x * midAB.x + midCheck.y * midAB.y < 0) bisect += Math.PI;
+    drawLabel(mainCtx, Ocenter.x + Math.cos(bisect) * 55, Ocenter.y + Math.sin(bisect) * 55,
+        centralDisplay + '\u00B0', { font: 'bold 16px STIX Two Text, serif', color: RED });
+
+    // Hint
+    drawLabel(mainCtx, W / 2, H - 12, 'Drag A, B, or C',
+        { font: '13px STIX Two Text, serif', color: '#bbb' });
+
+    document.getElementById('val-c').textContent = inscribedText;
+    document.getElementById('val-o').textContent = centralDisplay + '\u00B0';
+}
+
+// ============================================
+// Interaction
+// ============================================
+function mousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    return { x: (e.clientX - rect.left) * (W / rect.width), y: (e.clientY - rect.top) * (H / rect.height) };
+}
+function touchPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches[0];
+    return { x: (t.clientX - rect.left) * (W / rect.width), y: (t.clientY - rect.top) * (H / rect.height) };
+}
+function near(pos, deg) {
+    const p = ptOn(Ocenter.x, Ocenter.y, R, deg);
+    const dx = pos.x - p.x, dy = pos.y - p.y;
+    return Math.sqrt(dx * dx + dy * dy) < 25;
+}
+function hitTest(pos) {
+    if (near(pos, angleC)) return 'C';
+    if (near(pos, angleA)) return 'A';
+    if (near(pos, angleB)) return 'B';
+    return null;
+}
+function handleDrag(pos) {
+    const a = toDeg(Math.atan2(pos.y - Ocenter.y, pos.x - Ocenter.x));
+    if (dragging === 'C') {
+        if (isOnMajorArc(angleA, angleB, a) && angDist(a, angleA) > MIN_SEP && angDist(a, angleB) > MIN_SEP) angleC = a;
+    } else if (dragging === 'A') {
+        if (isOnMajorArc(a, angleB, angleC) && angDist(a, angleB) > MIN_SEP && angDist(a, angleC) > MIN_SEP) angleA = a;
+    } else if (dragging === 'B') {
+        if (isOnMajorArc(angleA, a, angleC) && angDist(a, angleA) > MIN_SEP && angDist(a, angleC) > MIN_SEP) angleB = a;
+    }
+    render();
+}
+
+canvas.addEventListener('mousedown', (e) => { const h = hitTest(mousePos(e)); if (h) { dragging = h; canvas.style.cursor = 'grabbing'; } });
+canvas.addEventListener('mousemove', (e) => { const p = mousePos(e); if (dragging) handleDrag(p); else canvas.style.cursor = hitTest(p) ? 'grab' : 'default'; });
+canvas.addEventListener('mouseup', () => { dragging = null; canvas.style.cursor = 'default'; });
+canvas.addEventListener('mouseleave', () => { dragging = null; canvas.style.cursor = 'default'; });
+canvas.addEventListener('touchstart', (e) => { const h = hitTest(touchPos(e)); if (h) { dragging = h; e.preventDefault(); } }, { passive: false });
+canvas.addEventListener('touchmove', (e) => { if (dragging) { handleDrag(touchPos(e)); e.preventDefault(); } }, { passive: false });
+canvas.addEventListener('touchend', () => { dragging = null; });
+
+// ============================================
+// Init
+// ============================================
+render();
+drawExercise1();
+drawExercise2();
+drawExercise3();
+</script>
+</body>
+</html>

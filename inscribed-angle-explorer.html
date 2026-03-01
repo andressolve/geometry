@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscribed Angle Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'STIX Two Text', serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: #333;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #888;
+            font-style: italic;
+            margin-bottom: 24px;
+            font-size: 1.1rem;
+        }
+        canvas {
+            display: block;
+            cursor: default;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .readout {
+            margin-top: 20px;
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+        .readout span.value {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .readout .inscribed .value { color: rgb(59, 130, 246); }
+        .readout .central .value { color: rgb(239, 68, 68); }
+        .theorem-box {
+            margin-top: 16px;
+            padding: 12px 24px;
+            background: #f7f7f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.05rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inscribed Angle Explorer</h1>
+    <p class="subtitle">Drag A, B, or C around the circle.</p>
+    <canvas id="canvas" width="540" height="440"></canvas>
+    <div class="readout">
+        <div class="inscribed">Angle at <em>C</em>: <span class="value" id="inscribed-val">60°</span></div>
+        <div class="central">Angle at center: <span class="value" id="central-val">120°</span></div>
+    </div>
+    <div class="theorem-box">
+        The angle at <em>C</em> is always <strong>half</strong> the angle at the center.
+    </div>
+
+<script>
+// ============================================
+// Setup
+// ============================================
+const canvas = document.getElementById('canvas');
+const W = 540, H = 440;
+const dpr = window.devicePixelRatio || 1;
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+canvas.style.width = W + 'px';
+canvas.style.height = H + 'px';
+const ctx = canvas.getContext('2d');
+ctx.scale(dpr, dpr);
+
+const BLUE_FILL = 'rgba(59, 130, 246, 0.25)';
+const BLUE = 'rgb(59, 130, 246)';
+const RED_FILL = 'rgba(239, 68, 68, 0.25)';
+const RED = 'rgb(239, 68, 68)';
+
+const O = { x: 270, y: 220 };
+const R = 170;
+
+// State: angles in degrees on the circle
+let angleA = 150;
+let angleB = 30;
+let angleC = -90;
+let dragging = null; // 'A', 'B', 'C', or null
+
+// ============================================
+// Math helpers
+// ============================================
+function toRad(d) { return d * Math.PI / 180; }
+function toDeg(r) { return r * 180 / Math.PI; }
+function ptOn(deg) {
+    const r = toRad(deg);
+    return { x: O.x + R * Math.cos(r), y: O.y + R * Math.sin(r) };
+}
+function norm(a) {
+    while (a >= 180) a -= 360;
+    while (a < -180) a += 360;
+    return a;
+}
+function angDist(a, b) { return Math.abs(norm(a - b)); }
+function angleAtVertex(v, p1, p2) {
+    const a1 = Math.atan2(p1.y - v.y, p1.x - v.x);
+    const a2 = Math.atan2(p2.y - v.y, p2.x - v.x);
+    let d = Math.abs(a2 - a1);
+    if (d > Math.PI) d = 2 * Math.PI - d;
+    return toDeg(d);
+}
+
+// C must be on the major arc (the arc from A to B going the long way)
+function isOnMajorArc(aA, aB, aC) {
+    // Find the minor arc from A to B
+    let start = norm(aB);
+    let span = norm(aA - aB);
+    if (span < 0) span += 360;
+    if (span > 180) {
+        start = norm(aA);
+        span = 360 - span;
+    }
+    let test = norm(aC - start);
+    if (test < 0) test += 360;
+    return test >= span + 5;
+}
+
+const MIN_SEP = 15;
+
+// ============================================
+// Drawing
+// ============================================
+function drawSector(v, p1, p2, radius, fill, stroke) {
+    const a1 = Math.atan2(p1.y - v.y, p1.x - v.x);
+    const a2 = Math.atan2(p2.y - v.y, p2.x - v.x);
+    let diff = a2 - a1;
+    while (diff > Math.PI) diff -= 2 * Math.PI;
+    while (diff < -Math.PI) diff += 2 * Math.PI;
+    const ccw = diff < 0;
+
+    ctx.beginPath();
+    ctx.moveTo(v.x, v.y);
+    ctx.lineTo(v.x + radius * Math.cos(a1), v.y + radius * Math.sin(a1));
+    ctx.arc(v.x, v.y, radius, a1, a2, ccw);
+    ctx.closePath();
+    ctx.fillStyle = fill;
+    ctx.fill();
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+}
+
+function seg(p1, p2, color, w) {
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.strokeStyle = color || '#333';
+    ctx.lineWidth = w || 2;
+    ctx.stroke();
+}
+
+function drawDraggable(p, label) {
+    // Glow ring
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 13, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(16, 185, 129, 0.25)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgb(16, 185, 129)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Dot
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#333';
+    ctx.fill();
+    // Label outward from center
+    const dx = p.x - O.x, dy = p.y - O.y;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    const off = 22;
+    ctx.font = 'italic 17px STIX Two Text, serif';
+    ctx.fillStyle = '#333';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, p.x + (dx / len) * off, p.y + (dy / len) * off);
+}
+
+function render() {
+    ctx.clearRect(0, 0, W, H);
+
+    const A = ptOn(angleA);
+    const B = ptOn(angleB);
+    const C = ptOn(angleC);
+
+    // Circle
+    ctx.beginPath();
+    ctx.arc(O.x, O.y, R, 0, Math.PI * 2);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Chords from C
+    seg(C, A); seg(C, B);
+    // Radii from O
+    seg(O, A); seg(O, B);
+
+    // Angle sectors
+    const centralAng = angleAtVertex(O, A, B);
+    const inscribedAng = angleAtVertex(C, A, B);
+
+    drawSector(O, A, B, 45, RED_FILL, RED);
+    drawSector(C, A, B, 38, BLUE_FILL, BLUE);
+
+    // Center dot + label
+    ctx.beginPath();
+    ctx.arc(O.x, O.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#333';
+    ctx.fill();
+    ctx.font = 'italic 17px STIX Two Text, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('O', O.x, O.y + 20);
+
+    // Draggable points
+    drawDraggable(A, 'A');
+    drawDraggable(B, 'B');
+    drawDraggable(C, 'C');
+
+    // On-canvas angle labels
+    // Inscribed angle near C (pushed inward)
+    const cdx = O.x - C.x, cdy = O.y - C.y;
+    const clen = Math.sqrt(cdx * cdx + cdy * cdy) || 1;
+    ctx.font = 'bold 16px STIX Two Text, serif';
+    ctx.fillStyle = BLUE;
+    ctx.textAlign = 'center';
+    ctx.fillText(Math.round(inscribedAng) + '°', C.x + (cdx / clen) * 48, C.y + (cdy / clen) * 48);
+
+    // Central angle near O (pushed toward midpoint of A,B)
+    const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
+    const odx = mx - O.x, ody = my - O.y;
+    const olen = Math.sqrt(odx * odx + ody * ody) || 1;
+    ctx.fillStyle = RED;
+    ctx.fillText(Math.round(centralAng) + '°', O.x + (odx / olen) * 55, O.y + (ody / olen) * 55);
+
+    // Hint
+    ctx.font = '13px STIX Two Text, serif';
+    ctx.fillStyle = '#bbb';
+    ctx.fillText('Drag A, B, or C', W / 2, H - 12);
+
+    // Update readout
+    document.getElementById('inscribed-val').textContent = Math.round(inscribedAng) + '°';
+    document.getElementById('central-val').textContent = Math.round(centralAng) + '°';
+}
+
+// ============================================
+// Interaction
+// ============================================
+function mousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: (e.clientX - rect.left) * (W / rect.width),
+        y: (e.clientY - rect.top) * (H / rect.height)
+    };
+}
+function touchPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches[0];
+    return {
+        x: (t.clientX - rect.left) * (W / rect.width),
+        y: (t.clientY - rect.top) * (H / rect.height)
+    };
+}
+function near(pos, deg) {
+    const p = ptOn(deg);
+    const dx = pos.x - p.x, dy = pos.y - p.y;
+    return Math.sqrt(dx * dx + dy * dy) < 25;
+}
+function hitTest(pos) {
+    if (near(pos, angleC)) return 'C';
+    if (near(pos, angleA)) return 'A';
+    if (near(pos, angleB)) return 'B';
+    return null;
+}
+
+function handleDrag(pos) {
+    const a = toDeg(Math.atan2(pos.y - O.y, pos.x - O.x));
+    if (dragging === 'C') {
+        if (isOnMajorArc(angleA, angleB, a) && angDist(a, angleA) > MIN_SEP && angDist(a, angleB) > MIN_SEP)
+            angleC = a;
+    } else if (dragging === 'A') {
+        if (isOnMajorArc(a, angleB, angleC) && angDist(a, angleB) > MIN_SEP && angDist(a, angleC) > MIN_SEP)
+            angleA = a;
+    } else if (dragging === 'B') {
+        if (isOnMajorArc(angleA, a, angleC) && angDist(a, angleA) > MIN_SEP && angDist(a, angleC) > MIN_SEP)
+            angleB = a;
+    }
+    render();
+}
+
+canvas.addEventListener('mousedown', (e) => {
+    const hit = hitTest(mousePos(e));
+    if (hit) { dragging = hit; canvas.style.cursor = 'grabbing'; }
+});
+canvas.addEventListener('mousemove', (e) => {
+    const pos = mousePos(e);
+    if (dragging) { handleDrag(pos); }
+    else { canvas.style.cursor = hitTest(pos) ? 'grab' : 'default'; }
+});
+canvas.addEventListener('mouseup', () => { dragging = null; canvas.style.cursor = 'default'; });
+canvas.addEventListener('mouseleave', () => { dragging = null; canvas.style.cursor = 'default'; });
+
+canvas.addEventListener('touchstart', (e) => {
+    const hit = hitTest(touchPos(e));
+    if (hit) { dragging = hit; e.preventDefault(); }
+}, { passive: false });
+canvas.addEventListener('touchmove', (e) => {
+    if (dragging) { handleDrag(touchPos(e)); e.preventDefault(); }
+}, { passive: false });
+canvas.addEventListener('touchend', () => { dragging = null; });
+
+// Initial draw
+render();
+</script>
+</body>
+</html>

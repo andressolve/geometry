@@ -1,0 +1,392 @@
+/* ============================================
+   GEOMETRY LESSON 17: Two Lines, One Point
+   ============================================ */
+
+* {
+    font-family: 'STIX Two Text', serif;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #fafbff;
+    color: #333;
+}
+
+/* ============================================
+   PAGE SECTIONS
+   ============================================ */
+.page-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+}
+
+/* ============================================
+   SECTION CARDS
+   ============================================ */
+.section-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    max-width: 900px;
+    width: 100%;
+    padding: 2.5rem;
+}
+
+.section-card-wide {
+    max-width: 1000px;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+.heading-primary {
+    color: #6a82fb;
+    font-weight: 700;
+}
+
+.body-text {
+    color: #4b5563;
+    line-height: 1.8;
+}
+
+/* ============================================
+   DEFINITION / NOTATION BOXES
+   ============================================ */
+.definition-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.25rem;
+    background: #fafafa;
+}
+
+/* ============================================
+   CANVAS / DIAGRAMS
+   ============================================ */
+.diagram-canvas {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: white;
+    max-width: 100%;
+    display: block;
+}
+
+.diagram-clickable {
+    cursor: crosshair;
+}
+
+/* ============================================
+   NAVIGATION DOTS
+   ============================================ */
+.nav-dots {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+}
+
+.nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d1d5db;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.nav-dot:hover {
+    background: #9ca3af;
+}
+
+.nav-dot.active {
+    background: #6a82fb;
+    transform: scale(1.3);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.check-btn {
+    background: #6a82fb;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'STIX Two Text', serif;
+}
+
+.check-btn:hover { background: #5a72eb; }
+.check-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+.step-btn {
+    background: #6a82fb;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'STIX Two Text', serif;
+}
+
+.step-btn:hover { background: #5a72eb; transform: translateY(-1px); }
+.step-btn:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
+
+/* ============================================
+   FEEDBACK MESSAGES
+   ============================================ */
+.feedback {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-top: 0.75rem;
+}
+
+.feedback-correct {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid #10b981;
+    color: #065f46;
+}
+
+.feedback-incorrect {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid #ef4444;
+    color: #991b1b;
+}
+
+/* ============================================
+   EQUATION DISPLAY
+   ============================================ */
+.equation {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #6a82fb;
+    text-align: center;
+    padding: 0.5rem 0;
+    font-style: italic;
+}
+
+/* ============================================
+   EQUATION STACK (two equations stacked)
+   ============================================ */
+.equation-stack {
+    text-align: center;
+    padding: 1.25rem;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.equation-stack .eq-line {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-style: italic;
+    line-height: 2.4;
+}
+
+/* ============================================
+   ALGEBRA STEPS (progressive reveal)
+   ============================================ */
+.algebra-steps {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+}
+
+.algebra-step {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    margin-bottom: 0.5rem;
+}
+
+.algebra-step.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.algebra-step .step-line {
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #4b5563;
+    text-align: center;
+    line-height: 2.2;
+}
+
+.algebra-step .step-line .highlight {
+    color: #6a82fb;
+}
+
+.algebra-step .step-annotation {
+    font-size: 0.95rem;
+    font-style: normal;
+    font-weight: 400;
+    color: #9ca3af;
+    text-align: center;
+}
+
+/* ============================================
+   EQUATION REVEAL (big centered equation)
+   ============================================ */
+.equation-reveal {
+    font-size: 2rem;
+    font-weight: 700;
+    font-style: italic;
+    text-align: center;
+    padding: 1rem 0;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.equation-reveal.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ============================================
+   INLINE INPUT (guided practice)
+   ============================================ */
+.inline-input {
+    width: 3rem;
+    text-align: center;
+    border: 2px solid #d1d5db;
+    border-radius: 6px;
+    padding: 0.3rem;
+    font-family: 'STIX Two Text', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: white;
+}
+
+.inline-input:focus {
+    border-color: #6a82fb;
+    outline: none;
+}
+
+.inline-input.correct {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+}
+
+.inline-input.incorrect {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+}
+
+.inline-input:disabled {
+    background: #f3f4f6;
+}
+
+/* ============================================
+   TABLE INPUT FIELDS
+   ============================================ */
+.table-input {
+    width: 3rem;
+    text-align: center;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 0.3rem;
+    font-family: 'STIX Two Text', serif;
+    font-size: 1rem;
+}
+
+.table-input.correct {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+}
+
+.table-input.incorrect {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+}
+
+.table-input:disabled {
+    background: #f3f4f6;
+}
+
+/* ============================================
+   EXERCISE STYLES
+   ============================================ */
+.exercise-item {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+/* ============================================
+   CANVAS FADE-IN
+   ============================================ */
+.canvas-hidden {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.canvas-hidden.canvas-visible {
+    opacity: 1;
+}
+
+/* ============================================
+   LAYOUT HELPERS
+   ============================================ */
+.side-by-side {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.side-by-side > * {
+    flex: 1;
+    min-width: 0;
+}
+
+.centered-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 800px) {
+    .section-card { padding: 1.5rem; }
+    .section-card-wide { max-width: 100%; }
+    .nav-dots { right: 8px; }
+    .nav-dot { width: 8px; height: 8px; }
+    .equation { font-size: 1.4rem; }
+    .side-by-side { flex-direction: column; }
+    .algebra-steps { padding: 1rem; }
+    .equation-stack { padding: 1rem; }
+}

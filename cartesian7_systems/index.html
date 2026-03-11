@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 17: Two Lines, One Point</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Page 0: Cover -->
+    <section id="page-0" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl heading-primary mb-4">Two Lines, One Point</h1>
+            <p class="text-2xl md:text-3xl text-gray-500 italic mb-2">Solving for the crossing point.</p>
+            <p class="text-lg text-gray-400">Lesson XVII</p>
+            <div class="mt-12 mb-8">
+                <canvas id="canvas-cover" class="diagram-canvas mx-auto" width="400" height="260"></canvas>
+            </div>
+            <div class="bounce">
+                <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                <p class="text-sm text-gray-400 mt-2">Scroll to begin</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 1: A Point on Two Lines -->
+    <section id="page-1" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">A Point on Two Lines</h2>
+
+            <p class="body-text text-center mb-3">
+                Here are two lines:
+            </p>
+
+            <div class="equation-stack mb-4">
+                <div class="eq-line" style="color: #6a82fb;">y = x + 1</div>
+                <div class="eq-line" style="color: #10b981;">y = 2x</div>
+            </div>
+
+            <p class="body-text text-center mb-6">
+                They cross somewhere. <strong>Click on the crossing point.</strong>
+            </p>
+
+            <div class="side-by-side items-start">
+                <div class="centered-col">
+                    <canvas id="canvas-page1" class="diagram-canvas diagram-clickable" width="440" height="400"></canvas>
+                    <p class="text-sm text-gray-400 mt-2" id="p1-coord-readout">&nbsp;</p>
+                </div>
+
+                <div>
+                    <div id="p1-feedback" class="hidden text-sm mb-4"></div>
+
+                    <div id="p1-reveal" class="hidden">
+                        <p class="body-text mb-3">
+                            The crossing point is <strong style="color: #f97316;">(1, 2)</strong>.
+                        </p>
+
+                        <p class="body-text mb-2">Let's check. Does (1, 2) pass both tests?</p>
+
+                        <div style="background: rgba(106,130,251,0.05); border: 2px solid #6a82fb; border-radius: 12px; padding: 1rem 1.25rem;" class="mb-3">
+                            <p class="body-text">
+                                <em style="color:#6a82fb;">y = x + 1</em> &nbsp;&rarr;&nbsp;
+                                1 + 1 = <strong>2</strong> &nbsp; &#10003;
+                            </p>
+                        </div>
+
+                        <div style="background: rgba(16,185,129,0.05); border: 2px solid #10b981; border-radius: 12px; padding: 1rem 1.25rem;" class="mb-3">
+                            <p class="body-text">
+                                <em style="color:#10b981;">y = 2x</em> &nbsp;&rarr;&nbsp;
+                                2 &times; 1 = <strong>2</strong> &nbsp; &#10003;
+                            </p>
+                        </div>
+
+                        <p class="body-text">
+                            Both equations give <em>y</em> = 2 when <em>x</em> = 1.
+                        </p>
+                        <p class="body-text mt-2">
+                            That's what makes it the crossing point &mdash;
+                            it's on <em>both</em> lines at once.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: Same y -->
+    <section id="page-2" class="page-section">
+        <div class="section-card">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Same <em>y</em></h2>
+
+            <p class="body-text text-center mb-6">
+                At the crossing point, both lines have the same <em>y</em>.
+            </p>
+
+            <p class="body-text text-center mb-3">
+                The first line says:
+            </p>
+            <p class="equation mb-4" style="color: #6a82fb;">y = x + 1</p>
+
+            <p class="body-text text-center mb-3">
+                The second line says:
+            </p>
+            <p class="equation mb-6" style="color: #10b981;">y = 2x</p>
+
+            <p class="body-text text-center mb-3">
+                If they give the same <em>y</em>, then the two expressions must be equal:
+            </p>
+
+            <div class="equation-reveal visible" style="color: #f97316; font-size: 2.2rem; padding: 1rem 0;">
+                x + 1 = 2x
+            </div>
+
+            <p class="body-text text-center mt-6 mb-3">
+                This is one equation with one unknown.
+            </p>
+            <p class="body-text text-center">
+                We can solve it &mdash; no graph needed.
+            </p>
+        </div>
+    </section>
+
+    <!-- Page 3: Step by Step -->
+    <section id="page-3" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Step by Step</h2>
+
+            <p class="body-text text-center mb-6">
+                Let's solve <em style="color:#f97316;">x + 1 = 2x</em> one step at a time.
+            </p>
+
+            <div class="side-by-side items-start">
+                <div>
+                    <div class="algebra-steps" id="algebra-steps-container">
+                        <!-- Step 0: starting equation -->
+                        <div class="algebra-step visible" id="alg-step-0">
+                            <div class="step-line" style="color: #f97316; font-size: 1.5rem;">
+                                x + 1 = 2x
+                            </div>
+                        </div>
+
+                        <!-- Step 1: subtract x -->
+                        <div class="algebra-step" id="alg-step-1">
+                            <div class="step-annotation">Subtract <em>x</em> from both sides:</div>
+                            <div class="step-line">
+                                x + 1 <span class="highlight">&minus; x</span> = 2x <span class="highlight">&minus; x</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: simplify -->
+                        <div class="algebra-step" id="alg-step-2">
+                            <div class="step-annotation">On the left, <em>x</em> &minus; <em>x</em> is nothing. On the right, 2<em>x</em> &minus; <em>x</em> is <em>x</em>.</div>
+                            <div class="step-line" style="color: #6a82fb; font-size: 1.5rem;">
+                                1 = x
+                            </div>
+                        </div>
+
+                        <!-- Step 3: find y -->
+                        <div class="algebra-step" id="alg-step-3">
+                            <div class="step-annotation">Now we know <em>x</em> = 1. Plug it into either equation to find <em>y</em>:</div>
+                            <div class="step-line">
+                                y = 2x = 2(1) = <span style="color: #10b981; font-size: 1.5rem;">2</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: the answer -->
+                        <div class="algebra-step" id="alg-step-4">
+                            <div class="step-annotation">The crossing point is:</div>
+                            <div class="step-line" style="color: #f97316; font-size: 1.7rem;">
+                                (1, 2)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button id="alg-next-btn" class="step-btn">Next Step</button>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-page3" class="diagram-canvas" width="400" height="360"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 4: A New Pair -->
+    <section id="page-4" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">A New Pair</h2>
+
+            <p class="body-text text-center mb-3">
+                Try this pair:
+            </p>
+
+            <div class="equation-stack mb-6">
+                <div class="eq-line" style="color: #6a82fb;">y = x + 2</div>
+                <div class="eq-line" style="color: #10b981;">y = 3x &minus; 4</div>
+            </div>
+
+            <div class="side-by-side items-start">
+                <div>
+                    <p class="body-text mb-3">
+                        At the crossing point, both give the same <em>y</em>:
+                    </p>
+
+                    <div class="algebra-steps mb-4">
+                        <div class="algebra-step visible">
+                            <div class="step-line" style="color: #f97316; font-size: 1.3rem;">
+                                x + 2 = 3x &minus; 4
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="body-text mb-4">
+                        Subtract <em>x</em> from both sides: &nbsp; 2 = 2<em>x</em> &minus; 4
+                    </p>
+                    <p class="body-text mb-4">
+                        Add 4 to both sides: &nbsp; 6 = 2<em>x</em>
+                    </p>
+                    <p class="body-text mb-4">
+                        Divide both sides by 2:
+                    </p>
+
+                    <!-- Guided input: x -->
+                    <div class="flex items-center gap-3 mb-4" id="p4-x-row">
+                        <p class="body-text"><em>x</em> =</p>
+                        <input type="number" id="p4-x-input" class="inline-input" placeholder="?">
+                        <button id="p4-x-check" class="check-btn">Check</button>
+                        <span id="p4-x-feedback" class="text-sm hidden"></span>
+                    </div>
+
+                    <!-- Guided input: y (hidden until x correct) -->
+                    <div class="hidden" id="p4-y-row">
+                        <p class="body-text mb-2">
+                            Plug into <em style="color:#6a82fb;">y = x + 2</em>:
+                        </p>
+                        <div class="flex items-center gap-3 mb-4">
+                            <p class="body-text"><em>y</em> =</p>
+                            <input type="number" id="p4-y-input" class="inline-input" placeholder="?">
+                            <button id="p4-y-check" class="check-btn">Check</button>
+                            <span id="p4-y-feedback" class="text-sm hidden"></span>
+                        </div>
+                    </div>
+
+                    <!-- Guided input: coordinate (hidden until y correct) -->
+                    <div class="hidden" id="p4-coord-row">
+                        <p class="body-text mb-2">The crossing point is:</p>
+                        <div class="flex items-center gap-3 mb-2">
+                            <p class="body-text">(</p>
+                            <input type="number" id="p4-cx-input" class="inline-input" style="width:2.5rem;" placeholder="?">
+                            <p class="body-text">,</p>
+                            <input type="number" id="p4-cy-input" class="inline-input" style="width:2.5rem;" placeholder="?">
+                            <p class="body-text">)</p>
+                            <button id="p4-coord-check" class="check-btn">Check</button>
+                        </div>
+                        <span id="p4-coord-feedback" class="text-sm hidden"></span>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-page4" class="diagram-canvas" width="400" height="360"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 5: Without a Graph -->
+    <section id="page-5" class="page-section" style="background: #eef2ff;">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-6 text-center">Without a Graph</h2>
+
+            <p class="body-text text-center mb-3">
+                Here are two lines. This time, there's no graph to look at.
+            </p>
+
+            <div class="equation-stack mb-6">
+                <div class="eq-line" style="color: #6a82fb;">y = 2x + 1</div>
+                <div class="eq-line" style="color: #10b981;">y = 5x &minus; 5</div>
+            </div>
+
+            <p class="body-text text-center mb-3">
+                Set the two expressions equal:
+            </p>
+
+            <div class="algebra-steps mb-6" style="padding: 1rem 2rem;">
+                <div class="algebra-step visible">
+                    <div class="step-line" style="color: #f97316; font-size: 1.3rem;">
+                        2x + 1 = 5x &minus; 5
+                    </div>
+                </div>
+            </div>
+
+            <p class="body-text text-center mb-6">
+                Solve it. Where do the lines cross?
+            </p>
+
+            <div class="side-by-side items-start">
+                <div>
+                    <div class="flex items-center gap-3 mb-4" id="p5-x-row">
+                        <p class="body-text"><em>x</em> =</p>
+                        <input type="number" id="p5-x-input" class="inline-input" placeholder="?">
+                        <button id="p5-x-check" class="check-btn">Check</button>
+                        <span id="p5-x-feedback" class="text-sm hidden"></span>
+                    </div>
+
+                    <div class="hidden" id="p5-y-row">
+                        <div class="flex items-center gap-3 mb-4">
+                            <p class="body-text"><em>y</em> =</p>
+                            <input type="number" id="p5-y-input" class="inline-input" placeholder="?">
+                            <button id="p5-y-check" class="check-btn">Check</button>
+                            <span id="p5-y-feedback" class="text-sm hidden"></span>
+                        </div>
+                    </div>
+
+                    <div class="hidden" id="p5-coord-row">
+                        <p class="body-text mb-2">The crossing point is:</p>
+                        <div class="flex items-center gap-3 mb-2">
+                            <p class="body-text">(</p>
+                            <input type="number" id="p5-cx-input" class="inline-input" style="width:2.5rem;" placeholder="?">
+                            <p class="body-text">,</p>
+                            <input type="number" id="p5-cy-input" class="inline-input" style="width:2.5rem;" placeholder="?">
+                            <p class="body-text">)</p>
+                            <button id="p5-coord-check" class="check-btn">Check</button>
+                        </div>
+                        <span id="p5-coord-feedback" class="text-sm hidden"></span>
+                    </div>
+
+                    <div id="p5-reveal" class="hidden mt-4">
+                        <p class="body-text" style="color: #065f46;">
+                            You found it &mdash; with no graph at all.
+                        </p>
+                        <p class="body-text mt-2">
+                            The algebra alone tells you exactly where the lines meet.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-page5" class="diagram-canvas canvas-hidden" width="400" height="360"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 6: Exercises -->
+    <section id="page-6" class="page-section">
+        <div class="section-card section-card-wide">
+            <h2 class="text-3xl heading-primary mb-8 text-center">Exercises</h2>
+
+            <div class="flex flex-col gap-8">
+
+                <!-- Exercise 1: y = x + 4 and y = 2x + 1 → (3, 7) -->
+                <div class="exercise-item" id="ex1-container">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">1.</h3>
+                    <p class="body-text mb-3">
+                        Find the crossing point of
+                        <em style="color:#6a82fb;">y = x + 4</em> and
+                        <em style="color:#10b981;">y = 2x + 1</em>.
+                    </p>
+                    <div class="flex items-center gap-3 mb-2 flex-wrap">
+                        <p class="body-text">(</p>
+                        <input type="number" id="ex1-x" class="inline-input" style="width:2.5rem;" placeholder="x">
+                        <p class="body-text">,</p>
+                        <input type="number" id="ex1-y" class="inline-input" style="width:2.5rem;" placeholder="y">
+                        <p class="body-text">)</p>
+                        <button id="ex1-check" class="check-btn">Check</button>
+                    </div>
+                    <div id="ex1-feedback" class="hidden text-sm"></div>
+                    <div class="centered-col mt-3">
+                        <canvas id="canvas-ex1" class="diagram-canvas canvas-hidden" width="360" height="300"></canvas>
+                    </div>
+                </div>
+
+                <!-- Exercise 2: y = 3x and y = x + 6 → (3, 9) -->
+                <div class="exercise-item" id="ex2-container">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">2.</h3>
+                    <p class="body-text mb-3">
+                        Find the crossing point of
+                        <em style="color:#6a82fb;">y = 3x</em> and
+                        <em style="color:#10b981;">y = x + 6</em>.
+                    </p>
+                    <div class="flex items-center gap-3 mb-2 flex-wrap">
+                        <p class="body-text">(</p>
+                        <input type="number" id="ex2-x" class="inline-input" style="width:2.5rem;" placeholder="x">
+                        <p class="body-text">,</p>
+                        <input type="number" id="ex2-y" class="inline-input" style="width:2.5rem;" placeholder="y">
+                        <p class="body-text">)</p>
+                        <button id="ex2-check" class="check-btn">Check</button>
+                    </div>
+                    <div id="ex2-feedback" class="hidden text-sm"></div>
+                    <div class="centered-col mt-3">
+                        <canvas id="canvas-ex2" class="diagram-canvas canvas-hidden" width="360" height="300"></canvas>
+                    </div>
+                </div>
+
+                <!-- Exercise 3: y = 2x + 3 and y = 4x − 1 → (2, 7) -->
+                <div class="exercise-item" id="ex3-container">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">3.</h3>
+                    <p class="body-text mb-3">
+                        Find the crossing point of
+                        <em style="color:#6a82fb;">y = 2x + 3</em> and
+                        <em style="color:#10b981;">y = 4x &minus; 1</em>.
+                    </p>
+                    <div class="flex items-center gap-3 mb-2 flex-wrap">
+                        <p class="body-text">(</p>
+                        <input type="number" id="ex3-x" class="inline-input" style="width:2.5rem;" placeholder="x">
+                        <p class="body-text">,</p>
+                        <input type="number" id="ex3-y" class="inline-input" style="width:2.5rem;" placeholder="y">
+                        <p class="body-text">)</p>
+                        <button id="ex3-check" class="check-btn">Check</button>
+                    </div>
+                    <div id="ex3-feedback" class="hidden text-sm"></div>
+                    <div class="centered-col mt-3">
+                        <canvas id="canvas-ex3" class="diagram-canvas canvas-hidden" width="360" height="300"></canvas>
+                    </div>
+                </div>
+
+                <!-- Exercise 4: y = 3x and x + y = 8 → rewrite, then (2, 6) -->
+                <div class="exercise-item" id="ex4-container">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">4.</h3>
+                    <p class="body-text mb-3">
+                        Find the crossing point of
+                        <em style="color:#6a82fb;">y = 3x</em> and
+                        <em style="color:#10b981;">x + y = 8</em>.
+                    </p>
+                    <p class="body-text mb-3">
+                        The second equation isn't in <em>y</em> = ... form yet.
+                        Rewrite it first &mdash; just like we did in the last lesson.
+                    </p>
+
+                    <!-- Rewrite step -->
+                    <div class="flex items-center gap-2 mb-3 flex-wrap" id="ex4-rewrite-row">
+                        <p class="body-text"><em>x</em> + <em>y</em> = 8 &nbsp; is the same as &nbsp; <em>y</em> =</p>
+                        <input type="number" id="ex4-rewrite" class="inline-input" style="width:2.5rem;" placeholder="?">
+                        <p class="body-text">&minus; <em>x</em></p>
+                        <button id="ex4-rewrite-check" class="check-btn">Check</button>
+                        <span id="ex4-rewrite-feedback" class="text-sm hidden"></span>
+                    </div>
+
+                    <!-- Solve step (hidden until rewrite done) -->
+                    <div class="hidden" id="ex4-solve-row">
+                        <p class="body-text mb-3">
+                            Now set them equal: &nbsp;
+                            <em style="color:#f97316;">3x = 8 &minus; x</em>
+                        </p>
+                        <div class="flex items-center gap-3 mb-2 flex-wrap">
+                            <p class="body-text">(</p>
+                            <input type="number" id="ex4-x" class="inline-input" style="width:2.5rem;" placeholder="x">
+                            <p class="body-text">,</p>
+                            <input type="number" id="ex4-y" class="inline-input" style="width:2.5rem;" placeholder="y">
+                            <p class="body-text">)</p>
+                            <button id="ex4-check" class="check-btn">Check</button>
+                        </div>
+                        <div id="ex4-feedback" class="hidden text-sm"></div>
+                    </div>
+
+                    <div class="centered-col mt-3">
+                        <canvas id="canvas-ex4" class="diagram-canvas canvas-hidden" width="360" height="300"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 7: Summary -->
+    <section id="page-7" class="page-section" style="background: linear-gradient(135deg, #eef2ff, #ede9fe);">
+        <div class="section-card">
+            <h2 class="text-3xl heading-primary mb-8 text-center">Two Lines, One Point</h2>
+
+            <div class="side-by-side items-center">
+                <div>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        Two different lines (with different slopes) cross at exactly one point.
+                    </p>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        At that point, both equations give the same <em>y</em>.
+                        Set the two expressions equal, and you get one equation with one unknown.
+                    </p>
+                    <p class="body-text mb-4" style="line-height: 2;">
+                        Solve for <em>x</em>. Then plug back in to find <em>y</em>.
+                    </p>
+                    <p class="body-text mb-6" style="line-height: 2;">
+                        No graph needed &mdash; the algebra finds the exact crossing point.
+                    </p>
+
+                    <div class="definition-box mb-4">
+                        <p class="body-text text-center">
+                            To find where two lines cross: set the <em>y</em>-expressions equal, solve for <em>x</em>, then find <em>y</em>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="centered-col">
+                    <canvas id="canvas-summary" class="diagram-canvas" width="420" height="380"></canvas>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="../index.html"
+                    class="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-bold no-underline shadow-lg transform hover:-translate-y-1">
+                    Back to Lessons
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots"></nav>
+
+    <!-- Scripts (order matters) -->
+    <script src="geometry-utils.js"></script>
+    <script src="diagrams.js"></script>
+    <script src="interactive.js"></script>
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

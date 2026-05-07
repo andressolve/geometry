@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Area of a Triangle — for Sebastian</title>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #6a82fb;
+    --green: #10b981;
+    --orange: #f59e0b;
+    --coral: #f97316;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --rect: #94a3b8;
+    --bg: #fafafa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'STIX Two Text', 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .card.tinted { background: #eef2ff; }
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 0.5rem;
+  }
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 1.25rem;
+    text-align: center;
+  }
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: #374151;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 1.15rem;
+    margin-bottom: 2rem;
+  }
+  p { margin: 0 0 1rem; font-size: 1.1rem; }
+  p.center { text-align: center; }
+  .canvas-wrap { text-align: center; margin: 1.5rem 0; }
+  canvas {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+  }
+  .formula {
+    text-align: center;
+    font-size: 1.6rem;
+    color: var(--coral);
+    font-style: italic;
+    padding: 1rem;
+    background: rgba(249, 115, 22, 0.06);
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+  .definition {
+    background: #f3f4f6;
+    border-left: 4px solid var(--blue);
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 0.5rem 0;
+  }
+  input[type="number"] {
+    font-family: 'STIX Two Text', serif;
+    font-size: 1.1rem;
+    padding: 0.4rem 0.6rem;
+    width: 4.5rem;
+    border: 2px solid #d1d5db;
+    border-radius: 6px;
+    text-align: center;
+  }
+  input[type="number"]:focus {
+    outline: none;
+    border-color: var(--blue);
+  }
+  button {
+    font-family: 'STIX Two Text', serif;
+    font-size: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  button:hover { background: #5566e0; }
+  .feedback {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+  }
+  .feedback.ok { color: #059669; }
+  .feedback.no { color: #dc2626; }
+  .reveal {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(16, 185, 129, 0.06);
+    border-left: 4px solid var(--green);
+    border-radius: 8px;
+  }
+  .reveal.show { display: block; }
+  .ex-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  @media (max-width: 700px) {
+    .ex-grid { grid-template-columns: 1fr; }
+  }
+  .ex {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.25rem;
+    background: #fcfcfc;
+  }
+  .ex h3 { color: var(--blue); margin-bottom: 0.5rem; }
+  .progress {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--muted);
+    margin-top: 1rem;
+  }
+  .progress strong { color: var(--green); font-size: 1.5rem; }
+  .back {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--blue);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  em.b { color: var(--blue); font-style: normal; font-weight: 600; }
+  em.g { color: var(--green); font-style: normal; font-weight: 600; }
+  em.o { color: var(--coral); font-style: normal; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Cover -->
+  <div class="card" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+    <h1>Area of a Triangle</h1>
+    <p class="subtitle">For Sebastian — a small, careful walkthrough.</p>
+    <div class="canvas-wrap">
+      <canvas id="cover" width="420" height="260"></canvas>
+    </div>
+    <p class="center" style="color: var(--muted);">Every triangle is half of a rectangle. Let's see why.</p>
+  </div>
+
+  <!-- 1. Right triangle in rectangle -->
+  <div class="card">
+    <h2>Half a Rectangle</h2>
+    <p>Here is a rectangle. It is <em class="b">6</em> wide and <em class="b">4</em> tall.</p>
+    <p>A diagonal line cuts it into two equal triangles.</p>
+
+    <div class="canvas-wrap">
+      <canvas id="rect1" width="500" height="320"></canvas>
+    </div>
+
+    <p>The rectangle's area is <em class="b">6 × 4 = 24</em>.</p>
+    <p>The two triangles are the same size. So each triangle has area:</p>
+
+    <div class="formula">24 ÷ 2 = 12</div>
+
+    <p class="center">One triangle = half the rectangle.</p>
+  </div>
+
+  <!-- 2. Try a few halves -->
+  <div class="card tinted">
+    <h2>Try a Few</h2>
+    <p class="center">Each rectangle is split by a diagonal. Find the area of one triangle.</p>
+
+    <div class="ex-grid" style="margin-top: 1.5rem;">
+
+      <div class="ex">
+        <h3>A.</h3>
+        <div class="canvas-wrap"><canvas id="halfA" width="320" height="220"></canvas></div>
+        <p>Rectangle: 8 × 4.</p>
+        <div class="row">
+          Triangle area =
+          <input type="number" id="halfA-in">
+          <button onclick="checkAns('halfA', 16)">Check</button>
+          <span class="feedback" id="halfA-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>B.</h3>
+        <div class="canvas-wrap"><canvas id="halfB" width="320" height="220"></canvas></div>
+        <p>Rectangle: 10 × 6.</p>
+        <div class="row">
+          Triangle area =
+          <input type="number" id="halfB-in">
+          <button onclick="checkAns('halfB', 30)">Check</button>
+          <span class="feedback" id="halfB-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>C.</h3>
+        <div class="canvas-wrap"><canvas id="halfC" width="320" height="220"></canvas></div>
+        <p>Rectangle: 5 × 4.</p>
+        <div class="row">
+          Triangle area =
+          <input type="number" id="halfC-in">
+          <button onclick="checkAns('halfC', 10)">Check</button>
+          <span class="feedback" id="halfC-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>D.</h3>
+        <div class="canvas-wrap"><canvas id="halfD" width="320" height="220"></canvas></div>
+        <p>Rectangle: 12 × 3.</p>
+        <div class="row">
+          Triangle area =
+          <input type="number" id="halfD-in">
+          <button onclick="checkAns('halfD', 18)">Check</button>
+          <span class="feedback" id="halfD-fb"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="center" style="margin-top: 2rem;">
+      The pattern: take the two sides, multiply them, then divide by 2.
+    </p>
+  </div>
+
+  <!-- 3. Any triangle is half a rectangle -->
+  <div class="card">
+    <h2>Any Triangle</h2>
+    <p>What about a triangle that <em>isn't</em> a right triangle? Like this one:</p>
+
+    <div class="canvas-wrap">
+      <canvas id="anyTri" width="500" height="320"></canvas>
+    </div>
+
+    <p>We can still wrap it in a rectangle. The base is <em class="b">8</em>, the height is <em class="b">5</em>.</p>
+    <p>Drop a vertical line from the top point down to the base. This splits the triangle into two right triangles.</p>
+
+    <div class="canvas-wrap">
+      <canvas id="anyTriSplit" width="500" height="320"></canvas>
+    </div>
+
+    <p>Look at each half:</p>
+    <ul style="font-size: 1.1rem; line-height: 1.8;">
+      <li>The <em class="b">left</em> right triangle is half of the left rectangle.</li>
+      <li>The <em class="g">right</em> right triangle is half of the right rectangle.</li>
+    </ul>
+    <p>So the whole triangle is half of the whole rectangle.</p>
+
+    <div class="formula">Area = (base × height) ÷ 2</div>
+    <div class="formula">= (8 × 5) ÷ 2 = 40 ÷ 2 = <strong>20</strong></div>
+  </div>
+
+  <!-- 4. The formula -->
+  <div class="card tinted">
+    <h2>The Formula</h2>
+
+    <div class="definition">
+      <p style="margin: 0; font-size: 1.25rem; text-align: center;">
+        <strong>Area of a triangle</strong> &nbsp;=&nbsp; (base × height) ÷ 2
+      </p>
+    </div>
+
+    <p>Three things to remember:</p>
+    <ol style="font-size: 1.1rem; line-height: 1.9;">
+      <li><strong>Base</strong> — pick any side. Usually the bottom one.</li>
+      <li><strong>Height</strong> — the straight-up distance from the base to the opposite point. Always perpendicular to the base.</li>
+      <li><strong>Multiply, then divide by 2.</strong> Always divide by 2.</li>
+    </ol>
+
+    <div class="canvas-wrap">
+      <canvas id="bhDemo" width="500" height="280"></canvas>
+    </div>
+
+    <p class="center" style="color: var(--muted);">
+      The dashed line shows the height. It meets the base at a right angle.
+    </p>
+  </div>
+
+  <!-- 5. Worked example -->
+  <div class="card">
+    <h2>Worked Example</h2>
+    <p>Find the area of this triangle.</p>
+
+    <div class="canvas-wrap">
+      <canvas id="worked" width="460" height="280"></canvas>
+    </div>
+
+    <p>Step 1: Read the base. &nbsp; <em class="b">base = 6</em></p>
+    <p>Step 2: Read the height. &nbsp; <em class="g">height = 4</em></p>
+    <p>Step 3: Multiply. &nbsp; <em>6 × 4 = 24</em></p>
+    <p>Step 4: Divide by 2. &nbsp; <em class="o">24 ÷ 2 = 12</em></p>
+    <div class="formula">Area = 12</div>
+  </div>
+
+  <!-- 6. Exercises -->
+  <div class="card tinted">
+    <h2>Exercises</h2>
+    <p class="center">Find the area of each triangle. The base and height are labeled.</p>
+    <p class="progress">Score: <strong id="score">0</strong> / 12</p>
+
+    <div class="ex-grid" style="margin-top: 1.5rem;">
+
+      <div class="ex">
+        <h3>1.</h3>
+        <div class="canvas-wrap"><canvas id="e1" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e1-in">
+          <button onclick="checkEx('e1', 12)">Check</button>
+          <span class="feedback" id="e1-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>2.</h3>
+        <div class="canvas-wrap"><canvas id="e2" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e2-in">
+          <button onclick="checkEx('e2', 15)">Check</button>
+          <span class="feedback" id="e2-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>3.</h3>
+        <div class="canvas-wrap"><canvas id="e3" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e3-in">
+          <button onclick="checkEx('e3', 20)">Check</button>
+          <span class="feedback" id="e3-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>4.</h3>
+        <div class="canvas-wrap"><canvas id="e4" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e4-in">
+          <button onclick="checkEx('e4', 9)">Check</button>
+          <span class="feedback" id="e4-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>5.</h3>
+        <div class="canvas-wrap"><canvas id="e5" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e5-in">
+          <button onclick="checkEx('e5', 14)">Check</button>
+          <span class="feedback" id="e5-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>6.</h3>
+        <div class="canvas-wrap"><canvas id="e6" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e6-in">
+          <button onclick="checkEx('e6', 30)">Check</button>
+          <span class="feedback" id="e6-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>7.</h3>
+        <div class="canvas-wrap"><canvas id="e7" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e7-in">
+          <button onclick="checkEx('e7', 18)">Check</button>
+          <span class="feedback" id="e7-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>8.</h3>
+        <div class="canvas-wrap"><canvas id="e8" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e8-in">
+          <button onclick="checkEx('e8', 21)">Check</button>
+          <span class="feedback" id="e8-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>9.</h3>
+        <div class="canvas-wrap"><canvas id="e9" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e9-in">
+          <button onclick="checkEx('e9', 24)">Check</button>
+          <span class="feedback" id="e9-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>10.</h3>
+        <div class="canvas-wrap"><canvas id="e10" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e10-in">
+          <button onclick="checkEx('e10', 6)">Check</button>
+          <span class="feedback" id="e10-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>11.</h3>
+        <div class="canvas-wrap"><canvas id="e11" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e11-in">
+          <button onclick="checkEx('e11', 27)">Check</button>
+          <span class="feedback" id="e11-fb"></span>
+        </div>
+      </div>
+
+      <div class="ex">
+        <h3>12.</h3>
+        <div class="canvas-wrap"><canvas id="e12" width="300" height="220"></canvas></div>
+        <div class="row">
+          Area =
+          <input type="number" id="e12-in">
+          <button onclick="checkEx('e12', 35)">Check</button>
+          <span class="feedback" id="e12-fb"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="card" style="background: linear-gradient(135deg, #eef2ff, #ede9fe); text-align: center;">
+    <h2>To Remember</h2>
+    <div class="formula" style="font-size: 1.8rem;">Area = (base × height) ÷ 2</div>
+    <p>Every triangle fits inside a rectangle. The triangle takes up exactly half of it.</p>
+    <p>So: multiply base by height, then divide by 2.</p>
+    <a class="back" href="../index.html">Back to Lessons</a>
+  </div>
+
+</div>
+
+<script>
+// ---------- Drawing helpers ----------
+
+const RECT_STROKE = '#94a3b8';
+const RECT_FILL_LIGHT = 'rgba(148, 163, 184, 0.10)';
+const TRI_FILL = 'rgba(106, 130, 251, 0.30)';
+const TRI_FILL_2 = 'rgba(16, 185, 129, 0.30)';
+const TRI_STROKE = '#6a82fb';
+const TRI_STROKE_2 = '#10b981';
+const LABEL_COLOR = '#374151';
+const HEIGHT_COLOR = '#10b981';
+const BASE_COLOR = '#6a82fb';
+
+function setupCanvas(id) {
+  const c = document.getElementById(id);
+  if (!c) return null;
+  const ctx = c.getContext('2d');
+  // High-DPI
+  const ratio = window.devicePixelRatio || 1;
+  const w = c.width, h = c.height;
+  c.width = w * ratio;
+  c.height = h * ratio;
+  c.style.width = w + 'px';
+  c.style.height = h + 'px';
+  ctx.scale(ratio, ratio);
+  ctx.clearRect(0, 0, w, h);
+  return { ctx, w, h };
+}
+
+// Draw a rectangle of width W x height H (in math units)
+// inside a canvas, scaled to fit. Optionally show a triangle inside it.
+// opts: { showRect, splitDiagonal, triPoints (in unit coords from bottom-left), labels: {base, height} }
+function drawScene(id, W, H, opts = {}) {
+  const s = setupCanvas(id);
+  if (!s) return;
+  const { ctx, w, h } = s;
+
+  const margin = 50;
+  const availW = w - 2 * margin;
+  const availH = h - 2 * margin;
+  const scale = Math.min(availW / W, availH / H);
+  const drawW = W * scale;
+  const drawH = H * scale;
+  const ox = (w - drawW) / 2;
+  const oy = (h - drawH) / 2;
+
+  // Convert math (x from left, y from bottom) to canvas pixels
+  const toPx = (x, y) => [ox + x * scale, oy + (H - y) * scale];
+
+  // 1. Rectangle (dashed) if requested
+  if (opts.showRect !== false) {
+    ctx.save();
+    ctx.setLineDash([6, 4]);
+    ctx.strokeStyle = RECT_STROKE;
+    ctx.fillStyle = RECT_FILL_LIGHT;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.rect(ox, oy, drawW, drawH);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // 2. Triangle
+  if (opts.tri) {
+    const pts = opts.tri.map(([x, y]) => toPx(x, y));
+    ctx.save();
+    ctx.fillStyle = opts.triFill || TRI_FILL;
+    ctx.strokeStyle = opts.triStroke || TRI_STROKE;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // 3. Second triangle (for splits)
+  if (opts.tri2) {
+    const pts = opts.tri2.map(([x, y]) => toPx(x, y));
+    ctx.save();
+    ctx.fillStyle = TRI_FILL_2;
+    ctx.strokeStyle = TRI_STROKE_2;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // 4. Height line (dashed vertical from apex to base)
+  if (opts.height) {
+    const [hx, hy1, hy2] = opts.height; // x, top y, bottom y
+    const [x1, y1] = toPx(hx, hy1);
+    const [x2, y2] = toPx(hx, hy2);
+    ctx.save();
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = HEIGHT_COLOR;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.restore();
+
+    // Right angle marker
+    ctx.save();
+    ctx.strokeStyle = HEIGHT_COLOR;
+    ctx.lineWidth = 1.5;
+    const sz = 8;
+    ctx.beginPath();
+    // Square at base
+    ctx.moveTo(x2 + sz, y2);
+    ctx.lineTo(x2 + sz, y2 - sz);
+    ctx.lineTo(x2, y2 - sz);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // 5. Labels
+  ctx.save();
+  ctx.font = 'bold 18px "STIX Two Text", serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  if (opts.baseLabel) {
+    const { text, x, y } = opts.baseLabel;
+    const [px, py] = toPx(x, y);
+    ctx.fillStyle = BASE_COLOR;
+    ctx.fillText(text, px, py + 18);
+  }
+  if (opts.heightLabel) {
+    const { text, x, y } = opts.heightLabel;
+    const [px, py] = toPx(x, y);
+    ctx.fillStyle = HEIGHT_COLOR;
+    ctx.textAlign = 'right';
+    ctx.fillText(text, px - 8, py);
+  }
+  if (opts.heightLabelRight) {
+    const { text, x, y } = opts.heightLabelRight;
+    const [px, py] = toPx(x, y);
+    ctx.fillStyle = HEIGHT_COLOR;
+    ctx.textAlign = 'left';
+    ctx.fillText(text, px + 8, py);
+  }
+  if (opts.rectLabels) {
+    // width on top, height on left
+    const { wText, hText } = opts.rectLabels;
+    if (wText) {
+      const [px, py] = toPx(W / 2, H);
+      ctx.fillStyle = LABEL_COLOR;
+      ctx.textAlign = 'center';
+      ctx.fillText(wText, px, py - 15);
+    }
+    if (hText) {
+      const [px, py] = toPx(0, H / 2);
+      ctx.fillStyle = LABEL_COLOR;
+      ctx.textAlign = 'right';
+      ctx.fillText(hText, px - 12, py);
+    }
+  }
+  ctx.restore();
+}
+
+// ---------- Cover ----------
+drawScene('cover', 8, 5, {
+  showRect: true,
+  tri: [[0,0],[6,0],[2,5]],
+  height: [2, 5, 0],
+  rectLabels: { wText: '', hText: '' }
+});
+
+// ---------- Page 1: rect 6x4 with diagonal ----------
+drawScene('rect1', 6, 4, {
+  showRect: true,
+  tri: [[0,0],[6,0],[6,4]],
+  rectLabels: { wText: '6', hText: '4' }
+});
+
+// ---------- Page 2: halves ----------
+drawScene('halfA', 8, 4, {
+  showRect: true,
+  tri: [[0,0],[8,0],[8,4]],
+  rectLabels: { wText: '8', hText: '4' }
+});
+drawScene('halfB', 10, 6, {
+  showRect: true,
+  tri: [[0,0],[10,0],[0,6]],
+  rectLabels: { wText: '10', hText: '6' }
+});
+drawScene('halfC', 5, 4, {
+  showRect: true,
+  tri: [[0,0],[5,0],[5,4]],
+  rectLabels: { wText: '5', hText: '4' }
+});
+drawScene('halfD', 12, 3, {
+  showRect: true,
+  tri: [[0,0],[12,0],[0,3]],
+  rectLabels: { wText: '12', hText: '3' }
+});
+
+// ---------- Page 3: any triangle ----------
+drawScene('anyTri', 8, 5, {
+  showRect: true,
+  tri: [[0,0],[8,0],[3,5]],
+  rectLabels: { wText: '8', hText: '5' }
+});
+// Split version: two triangles + height line
+drawScene('anyTriSplit', 8, 5, {
+  showRect: true,
+  tri:  [[0,0],[3,0],[3,5]],
+  tri2: [[3,0],[8,0],[3,5]],
+  height: [3, 5, 0],
+  rectLabels: { wText: '8', hText: '5' }
+});
+
+// ---------- bh demo ----------
+drawScene('bhDemo', 7, 4, {
+  showRect: false,
+  tri: [[0,0],[7,0],[2.5,4]],
+  height: [2.5, 4, 0],
+  baseLabel: { text: 'base', x: 3.5, y: 0 },
+  heightLabel: { text: 'height', x: 2.5, y: 2 }
+});
+
+// ---------- worked example ----------
+drawScene('worked', 6, 4, {
+  showRect: false,
+  tri: [[0,0],[6,0],[2,4]],
+  height: [2, 4, 0],
+  baseLabel: { text: '6', x: 3, y: 0 },
+  heightLabel: { text: '4', x: 2, y: 2 }
+});
+
+// ---------- Exercises ----------
+// b * h / 2 — confirm answers match
+// 1. b=6 h=4 → 12
+drawScene('e1', 6, 4, { tri: [[0,0],[6,0],[2,4]], height: [2,4,0],
+  baseLabel: {text:'6', x:3, y:0}, heightLabel: {text:'4', x:2, y:2} });
+// 2. b=5 h=6 → 15
+drawScene('e2', 5, 6, { tri: [[0,0],[5,0],[1,6]], height: [1,6,0],
+  baseLabel: {text:'5', x:2.5, y:0}, heightLabel: {text:'6', x:1, y:3} });
+// 3. b=8 h=5 → 20
+drawScene('e3', 8, 5, { tri: [[0,0],[8,0],[5,5]], height: [5,5,0],
+  baseLabel: {text:'8', x:4, y:0}, heightLabel: {text:'5', x:5, y:2.5} });
+// 4. b=6 h=3 → 9 (right triangle)
+drawScene('e4', 6, 3, { tri: [[0,0],[6,0],[0,3]], height: [0,3,0],
+  baseLabel: {text:'6', x:3, y:0}, heightLabelRight: {text:'3', x:0, y:1.5} });
+// 5. b=7 h=4 → 14
+drawScene('e5', 7, 4, { tri: [[0,0],[7,0],[3,4]], height: [3,4,0],
+  baseLabel: {text:'7', x:3.5, y:0}, heightLabel: {text:'4', x:3, y:2} });
+// 6. b=10 h=6 → 30
+drawScene('e6', 10, 6, { tri: [[0,0],[10,0],[4,6]], height: [4,6,0],
+  baseLabel: {text:'10', x:5, y:0}, heightLabel: {text:'6', x:4, y:3} });
+// 7. b=9 h=4 → 18 (right triangle)
+drawScene('e7', 9, 4, { tri: [[0,0],[9,0],[9,4]], height: [9,4,0],
+  baseLabel: {text:'9', x:4.5, y:0}, heightLabelRight: {text:'4', x:9, y:2} });
+// 8. b=6 h=7 → 21
+drawScene('e8', 6, 7, { tri: [[0,0],[6,0],[4,7]], height: [4,7,0],
+  baseLabel: {text:'6', x:3, y:0}, heightLabel: {text:'7', x:4, y:3.5} });
+// 9. b=8 h=6 → 24
+drawScene('e9', 8, 6, { tri: [[0,0],[8,0],[2,6]], height: [2,6,0],
+  baseLabel: {text:'8', x:4, y:0}, heightLabel: {text:'6', x:2, y:3} });
+// 10. b=4 h=3 → 6 (right triangle)
+drawScene('e10', 4, 3, { tri: [[0,0],[4,0],[4,3]], height: [4,3,0],
+  baseLabel: {text:'4', x:2, y:0}, heightLabelRight: {text:'3', x:4, y:1.5} });
+// 11. b=9 h=6 → 27
+drawScene('e11', 9, 6, { tri: [[0,0],[9,0],[6,6]], height: [6,6,0],
+  baseLabel: {text:'9', x:4.5, y:0}, heightLabel: {text:'6', x:6, y:3} });
+// 12. b=10 h=7 → 35
+drawScene('e12', 10, 7, { tri: [[0,0],[10,0],[3,7]], height: [3,7,0],
+  baseLabel: {text:'10', x:5, y:0}, heightLabel: {text:'7', x:3, y:3.5} });
+
+// ---------- Answer checking ----------
+function checkAns(id, correct) {
+  const inp = document.getElementById(id + '-in');
+  const fb = document.getElementById(id + '-fb');
+  const val = parseFloat(inp.value);
+  if (isNaN(val)) {
+    fb.textContent = 'Type a number first.';
+    fb.className = 'feedback no';
+    return;
+  }
+  if (val === correct) {
+    fb.textContent = '✓ Correct!';
+    fb.className = 'feedback ok';
+  } else {
+    fb.textContent = '✗ Try again. Multiply the two sides, then divide by 2.';
+    fb.className = 'feedback no';
+  }
+}
+
+const exDone = new Set();
+function checkEx(id, correct) {
+  const inp = document.getElementById(id + '-in');
+  const fb = document.getElementById(id + '-fb');
+  const val = parseFloat(inp.value);
+  if (isNaN(val)) {
+    fb.textContent = 'Type a number first.';
+    fb.className = 'feedback no';
+    return;
+  }
+  if (val === correct) {
+    fb.textContent = '✓ Correct!';
+    fb.className = 'feedback ok';
+    if (!exDone.has(id)) {
+      exDone.add(id);
+      document.getElementById('score').textContent = exDone.size;
+    }
+  } else {
+    fb.textContent = '✗ Not quite. base × height ÷ 2.';
+    fb.className = 'feedback no';
+  }
+}
+</script>
+
+</body>
+</html>

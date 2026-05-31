@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lines: A Refresher</title>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #6a82fb;
+    --green: #10b981;
+    --orange: #f59e0b;
+    --coral: #f97316;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --grid: #e5e7eb;
+    --axis: #9ca3af;
+    --bg: #fafafa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'STIX Two Text', 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    line-height: 1.65;
+  }
+  .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.5rem; }
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .card.tinted { background: #eef2ff; }
+  h1 { font-size: 2.6rem; font-weight: 700; text-align: center; margin: 0 0 0.5rem; }
+  h2 { font-size: 1.85rem; font-weight: 700; margin: 0 0 1.25rem; text-align: center; }
+  h3 { font-size: 1.15rem; font-weight: 700; margin: 0 0 0.75rem; color: #374151; }
+  .subtitle { text-align: center; color: var(--muted); font-style: italic; font-size: 1.2rem; margin-bottom: 1.5rem; }
+  p { margin: 0 0 1rem; font-size: 1.12rem; }
+  p.center { text-align: center; }
+  .canvas-wrap { text-align: center; margin: 1.5rem 0; }
+  canvas { background: white; border: 1px solid #e5e7eb; border-radius: 8px; max-width: 100%; height: auto; }
+  .controls { text-align: center; margin: 1rem 0; }
+  .eq { font-style: italic; font-size: 1.15rem; }
+  .definition {
+    background: #f3f4f6; border-left: 4px solid var(--blue);
+    padding: 1rem 1.25rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.15rem;
+  }
+  .twocol { display: flex; gap: 2rem; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .twocol > div { flex: 1 1 280px; text-align: center; }
+  .vs { color: var(--muted); font-style: italic; }
+  .coord-table { border-collapse: separate; border-spacing: 0; border: 2px solid #c7d2fe; border-radius: 12px; overflow: hidden; background: #eef2ff; }
+  .coord-table th { background: #dbeafe; padding: 0.5rem 1.6rem; font-weight: 700; color: var(--blue); font-style: italic; font-size: 1.15rem; border-bottom: 2px solid #c7d2fe; }
+  .coord-table th:first-child, .coord-table td:first-child { border-right: 1px solid #c7d2fe; }
+  .coord-table td { padding: 0.4rem 1.6rem; text-align: center; color: #4b5563; border-bottom: 1px solid #ddd6fe; font-size: 1.1rem; }
+  .coord-table tr:last-child td { border-bottom: none; }
+  .pairing { display: flex; align-items: stretch; justify-content: center; gap: 1.25rem; margin: 1.5rem 0 0.5rem; flex-wrap: wrap; }
+  .pairing .box { flex: 1 1 220px; max-width: 320px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; }
+  .pairing .box .lab { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.4rem; }
+  .pairing .box .big { font-size: 1.7rem; font-weight: 700; color: #374151; font-style: italic; }
+  .pairing .box .big em.b { font-style: italic; }
+  .row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin: 0.6rem 0; }
+  input[type="number"] {
+    font-family: 'STIX Two Text', serif; font-size: 1.1rem; padding: 0.4rem 0.6rem;
+    width: 4.5rem; border: 2px solid #d1d5db; border-radius: 6px; text-align: center;
+  }
+  input[type="number"]:focus { outline: none; border-color: var(--blue); }
+  button {
+    font-family: 'STIX Two Text', serif; font-size: 1rem; padding: 0.45rem 1.1rem;
+    background: var(--blue); color: white; border: none; border-radius: 6px; cursor: pointer; transition: background 0.15s;
+  }
+  button:hover { background: #5566e0; }
+  button.ghost { background: #e5e7eb; color: #374151; }
+  button.ghost:hover { background: #d1d5db; }
+  button.choice { background: white; color: var(--ink); border: 2px solid #d1d5db; margin-right: 0.5rem; }
+  button.choice:hover { border-color: var(--blue); background: #f5f7ff; }
+  .feedback { font-size: 1rem; font-weight: 600; margin-left: 0.5rem; }
+  .feedback.ok { color: #059669; }
+  .feedback.no { color: #dc2626; }
+  .reveal { display: none; margin-top: 1rem; padding: 1rem 1.25rem; background: rgba(16,185,129,0.06); border-left: 4px solid var(--green); border-radius: 8px; }
+  .reveal.show { display: block; }
+  .ex { border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1.5rem; background: #fcfcfc; margin-bottom: 1.25rem; }
+  .ex .eq { font-size: 1.25rem; display: block; margin-bottom: 0.75rem; }
+  .progress { text-align: center; font-size: 1.15rem; color: var(--muted); margin-top: 1rem; }
+  .progress strong { color: var(--green); font-size: 1.4rem; }
+  .back { display: inline-block; margin-top: 1.5rem; padding: 0.75rem 1.5rem; background: var(--blue); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; }
+  em.b { color: var(--blue); font-style: normal; font-weight: 700; }
+  em.g { color: var(--green); font-style: normal; font-weight: 700; }
+  em.o { color: var(--coral); font-style: normal; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Cover -->
+  <div class="card" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+    <h1>Lines: A Refresher</h1>
+    <p class="subtitle">Slope, two ways — and when lines run side by side.</p>
+    <div class="canvas-wrap"><canvas id="cover" width="480" height="300"></canvas></div>
+    <p class="center" style="color: var(--muted);">Let's wake up what you already know about lines.</p>
+  </div>
+
+  <!-- 1. The knight walks -->
+  <div class="card">
+    <h2>The Knight Walks the Line</h2>
+    <p>Remember the knight? Start at the origin. Every move is the same:
+       <em class="b">right 1, up 2</em>.</p>
+    <p>Click <strong>Step</strong> and watch where the knight lands.</p>
+    <div class="canvas-wrap"><canvas id="walk" width="500" height="360"></canvas></div>
+    <div class="controls">
+      <button onclick="walkStep()">Step</button>
+      <button class="ghost" onclick="walkReset()">Reset</button>
+    </div>
+    <div id="walk-reveal" class="reveal">
+      <p style="margin:0;">The same move, over and over, makes a <strong>line</strong>.</p>
+      <p style="margin:0.5rem 0 0;">That <em class="b">up 2</em> in the move has a name: the <strong>slope</strong>.
+         It tells you how fast the line climbs.</p>
+    </div>
+  </div>
+
+  <!-- 2. Same line as equation -->
+  <div class="card tinted">
+    <h2>The Same Line, as an Equation</h2>
+    <p class="center">Here's the line the knight built. Look at the points it landed on.</p>
+    <div class="twocol" style="align-items:center;">
+      <div style="flex:0 1 auto;">
+        <table class="coord-table" style="margin:0 auto;">
+          <thead><tr><th>x</th><th>y</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>2</td></tr>
+            <tr><td>2</td><td>4</td></tr>
+            <tr><td>3</td><td>6</td></tr>
+            <tr><td>4</td><td>8</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 1 auto;">
+        <canvas id="d-eqline" width="300" height="300"></canvas>
+      </div>
+    </div>
+
+    <p class="center" style="margin-top:1.5rem;">Every point follows the same rule: <strong>y is 2 times x</strong>.</p>
+    <p class="center eq" style="font-size:1.9rem; color:var(--blue); margin:0.25rem 0 0.5rem;">y = 2x</p>
+
+    <div class="pairing">
+      <div class="box">
+        <div class="lab">The knight's move</div>
+        <div class="big">right 1, up&nbsp;<em class="b">2</em></div>
+      </div>
+      <div class="box">
+        <div class="lab">The equation</div>
+        <div class="big">y = <em class="b">2</em>x</div>
+      </div>
+    </div>
+    <p class="center" style="color:var(--muted); margin-top:0.75rem;">
+      The up-step and the number in front of x are the <strong>same number</strong>: 2.</p>
+  </div>
+
+  <!-- 3. Two points of view -->
+  <div class="card">
+    <h2>Two Points of View</h2>
+    <p>Every line can be written <span class="eq">y = <em class="b">m</em>x + <em class="o">b</em></span>.</p>
+    <p><em class="b">m</em> is the <strong>slope</strong> — the knight's up-step.<br>
+       <em class="o">b</em> is where the knight <strong>starts</strong>, on the y-axis.</p>
+
+    <h3 style="margin-top:2rem;">Same climb, different start</h3>
+    <p>The line <span class="eq">y = 2x + <em class="o">3</em></span> climbs just like <span class="eq">y = 2x</span> —
+       right 1, up 2 — but the knight begins at <em class="o">(0, 3)</em>.</p>
+    <div class="canvas-wrap"><canvas id="d-shift" width="500" height="360"></canvas></div>
+
+    <h3 style="margin-top:2rem;">What if the knight goes down?</h3>
+    <p>For <span class="eq">y = −x + 5</span>, each move is <em class="b">right 1, down 1</em>.
+       The line <em>falls</em>. Its slope is <em class="b">−1</em>.</p>
+    <div class="canvas-wrap"><canvas id="d-neg" width="500" height="360"></canvas></div>
+    <div class="definition">
+      A <strong>positive</strong> slope climbs. A <strong>negative</strong> slope falls.
+      Either way, the slope is the number in front of x.
+    </div>
+  </div>
+
+  <!-- 4. Read the slope -->
+  <div class="card tinted">
+    <h2>Read the Slope</h2>
+    <p class="center">What's the slope of each line?</p>
+
+    <div class="ex">
+      <span class="eq">y = 3x + 1</span>
+      <div class="row">slope =
+        <input type="number" id="s1-in">
+        <button onclick="checkSlope('s1', 3)">Check</button>
+        <span class="feedback" id="s1-fb"></span>
+      </div>
+    </div>
+    <div class="ex">
+      <span class="eq">y = x − 4</span>
+      <div class="row">slope =
+        <input type="number" id="s2-in">
+        <button onclick="checkSlope('s2', 1)">Check</button>
+        <span class="feedback" id="s2-fb"></span>
+      </div>
+    </div>
+    <div class="ex">
+      <span class="eq">y = 5x</span>
+      <div class="row">slope =
+        <input type="number" id="s3-in">
+        <button onclick="checkSlope('s3', 5)">Check</button>
+        <span class="feedback" id="s3-fb"></span>
+      </div>
+    </div>
+    <div class="ex">
+      <span class="eq">y = −2x + 6</span>
+      <div class="row">slope =
+        <input type="number" id="s4-in">
+        <button onclick="checkSlope('s4', -2)">Check</button>
+        <span class="feedback" id="s4-fb"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Same slope, parallel -->
+  <div class="card">
+    <h2>Same Slope, Parallel</h2>
+    <p>These two lines have the <strong>same slope</strong> — both climb right 1, up 1.
+       One just starts higher than the other.</p>
+    <div class="canvas-wrap"><canvas id="d-par" width="500" height="360"></canvas></div>
+    <p>No matter how far you extend them, they never touch.</p>
+    <div class="definition">
+      Lines that never meet are called <strong>parallel</strong>.
+      Two lines are parallel when they have the <strong>same slope</strong>.
+    </div>
+
+    <h3 style="margin-top:2rem;">Different slopes cross</h3>
+    <p>If the slopes are different, one line is steeper. Sooner or later it catches the other,
+       and they <em class="o">cross</em>.</p>
+    <div class="canvas-wrap"><canvas id="d-cross" width="500" height="360"></canvas></div>
+  </div>
+
+  <!-- 6. Parallel or not -->
+  <div class="card tinted">
+    <h2>Parallel or Not?</h2>
+    <p class="center">For each pair, will the lines run side by side forever, or cross?</p>
+    <p class="progress">Score: <strong id="pscore">0</strong> / 5</p>
+
+    <div class="ex">
+      <span class="eq">y = 2x + 1 &nbsp;&nbsp;and&nbsp;&nbsp; y = 2x − 3</span>
+      <div class="row">
+        <button class="choice" onclick="checkPar('p1', true)">Parallel</button>
+        <button class="choice" onclick="checkPar('p1', false)">Not parallel</button>
+        <span class="feedback" id="p1-fb"></span>
+      </div>
+    </div>
+    <div class="ex">
+      <span class="eq">y = 3x &nbsp;&nbsp;and&nbsp;&nbsp; y = x + 4</span>
+      <div class="row">
+        <button class="choice" onclick="checkPar('p2', true)">Parallel</button>
+        <button class="choice" onclick="checkPar('p2', false)">Not parallel</button>
+        <span class="feedback" id="p2-fb"></span>
+      </div>
+    </div>
+    <div class="ex">
+      <span class="eq">y = x + 2 &nbsp;&nbsp;and&nbsp;&nbsp; y = x − 5</span>
+      <div class="row">
+        <button class="choice" onclick="checkPar('p3', true)">Parallel</button>
+        <button class="choice" onclick="checkPar('p3', false)">Not parallel</button>
+        <span class="feedback" id="p3-fb"></span>
+      </div>
+    </div>
+    <div class="ex">
+      <span class="eq">y = −x + 1 &nbsp;&nbsp;and&nbsp;&nbsp; y = −x + 4</span>
+      <div class="row">
+        <button class="choice" onclick="checkPar('p4', true)">Parallel</button>
+        <button class="choice" onclick="checkPar('p4', false)">Not parallel</button>
+        <span class="feedback" id="p4-fb"></span>
+      </div>
+    </div>
+    <div class="ex">
+      <span class="eq">y = 2x + 1 &nbsp;&nbsp;and&nbsp;&nbsp; y = 5x − 5</span>
+      <div class="row">
+        <button class="choice" onclick="checkPar('p5', true)">Parallel</button>
+        <button class="choice" onclick="checkPar('p5', false)">Not parallel</button>
+        <span class="feedback" id="p5-fb"></span>
+      </div>
+    </div>
+    <p class="center" id="bridge" style="display:none; margin-top:1.5rem; color:var(--ink);">
+      That last pair has different slopes — so they cross at exactly one point.
+      <br><strong>Finding that point is the next lesson: Two Lines, One Point.</strong></p>
+  </div>
+
+  <!-- Summary -->
+  <div class="card" style="background: linear-gradient(135deg, #eef2ff, #ede9fe); text-align:center;">
+    <h2>To Remember</h2>
+    <p><strong>Slope, two ways:</strong></p>
+    <p class="eq" style="font-size:1.2rem;">the knight's move (right 1, up the slope)<br>
+       = the number in front of x in &nbsp; y = mx + b</p>
+    <div class="definition" style="text-align:left;">
+      <p style="margin:0 0 0.5rem;"><strong>Same slope</strong> → the lines are <strong>parallel</strong>. They never meet.</p>
+      <p style="margin:0;"><strong>Different slopes</strong> → the lines <strong>cross</strong> at exactly one point.</p>
+    </div>
+    <p>Next up: <em>Two Lines, One Point</em> — finding exactly where two lines cross.</p>
+    <a class="back" href="../index.html">Back to Lessons</a>
+  </div>
+
+</div>
+
+<script>
+// ---------- Canvas setup ----------
+// One uniform scale for x and y, so every grid cell is a true 1x1 square.
+// Each canvas is sized to its view at PPU pixels per unit (+ padding).
+const _cv = {};
+const PPU = 36;   // pixels per unit — same for x and y => square cells
+const PAD = 24;
+
+// view = {xMin,xMax,yMin,yMax}
+function grid(id, view) {
+  const c = document.getElementById(id);
+  let ctx, w, h;
+  if (!_cv[id]) {
+    w = Math.round((view.xMax - view.xMin) * PPU) + 2 * PAD;
+    h = Math.round((view.yMax - view.yMin) * PPU) + 2 * PAD;
+    const ratio = window.devicePixelRatio || 1;
+    c.width = w * ratio; c.height = h * ratio;
+    c.style.width = w + 'px'; c.style.height = h + 'px';
+    ctx = c.getContext('2d');
+    ctx.scale(ratio, ratio);
+    _cv[id] = { ctx, w, h };
+  } else {
+    ({ ctx, w, h } = _cv[id]);
+  }
+  ctx.clearRect(0, 0, w, h);
+
+  const s = PPU;
+  const toPx = (x, y) => [PAD + (x - view.xMin) * s, h - PAD - (y - view.yMin) * s];
+
+  // grid lines (square cells)
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#e8eaf0';
+  for (let x = Math.ceil(view.xMin); x <= Math.floor(view.xMax); x++) {
+    const [px] = toPx(x, 0);
+    ctx.beginPath(); ctx.moveTo(px, PAD); ctx.lineTo(px, h - PAD); ctx.stroke();
+  }
+  for (let y = Math.ceil(view.yMin); y <= Math.floor(view.yMax); y++) {
+    const [, py] = toPx(0, y);
+    ctx.beginPath(); ctx.moveTo(PAD, py); ctx.lineTo(w - PAD, py); ctx.stroke();
+  }
+  // axes
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#9ca3af';
+  if (view.yMin <= 0 && view.yMax >= 0) {
+    const [, yax] = toPx(0, 0);
+    ctx.beginPath(); ctx.moveTo(PAD, yax); ctx.lineTo(w - PAD, yax); ctx.stroke();
+  }
+  if (view.xMin <= 0 && view.xMax >= 0) {
+    const [xax] = toPx(0, 0);
+    ctx.beginPath(); ctx.moveTo(xax, PAD); ctx.lineTo(xax, h - PAD); ctx.stroke();
+  }
+  return { ctx, w, h, view, toPx, s, pad: PAD };
+}
+
+function drawLine(g, m, b, color) {
+  const { ctx, view, toPx } = g;
+  ctx.save();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = color;
+  const [x1, y1] = toPx(view.xMin, m * view.xMin + b);
+  const [x2, y2] = toPx(view.xMax, m * view.xMax + b);
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  ctx.restore();
+}
+
+function drawPoint(g, x, y, color, r = 5) {
+  const { ctx, toPx } = g;
+  const [px, py] = toPx(x, y);
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.arc(px, py, r, 0, 2 * Math.PI); ctx.fill();
+  ctx.restore();
+}
+
+// L-shaped step from (x0,y0): right 1, then up/down m
+function drawStep(g, x0, y0, m, color) {
+  const { ctx, toPx } = g;
+  ctx.save();
+  ctx.setLineDash([5, 4]);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = color;
+  const [ax, ay] = toPx(x0, y0);
+  const [bx, by] = toPx(x0 + 1, y0);
+  const [cx, cy] = toPx(x0 + 1, y0 + m);
+  ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.lineTo(cx, cy); ctx.stroke();
+  ctx.restore();
+
+  ctx.save();
+  ctx.font = '600 14px "STIX Two Text", serif';
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  ctx.fillText('1', (ax + bx) / 2, ay + 16);
+  ctx.textAlign = 'left';
+  const label = m >= 0 ? 'up ' + m : 'down ' + (-m);
+  ctx.fillText(label, bx + 6, (by + cy) / 2);
+  ctx.restore();
+}
+
+// ---------- Cover: three parallel-ish lines ----------
+(function () {
+  const g = grid('cover', { xMin: -1, xMax: 6, yMin: -1, yMax: 8 });
+  drawLine(g, 1, 0, '#6a82fb');
+  drawLine(g, 1, 2, '#10b981');
+  drawLine(g, 2, 1, '#f59e0b');
+})();
+
+// ---------- Card 1: knight walk ----------
+let walkN = 0;
+const WALK_VIEW = { xMin: -0.5, xMax: 5, yMin: -0.5, yMax: 9 };
+function drawWalk() {
+  const g = grid('walk', WALK_VIEW);
+  // points placed so far
+  for (let i = 0; i <= walkN; i++) drawPoint(g, i, 2 * i, '#6a82fb', 5);
+  // step path leading to the most recent point
+  if (walkN > 0) drawStep(g, walkN - 1, 2 * (walkN - 1), 2, '#94a3b8');
+  // the knight (current position) in coral
+  drawPoint(g, walkN, 2 * walkN, '#f97316', 8);
+  // full line once enough steps
+  if (walkN >= 4) drawLine(g, 2, 0, '#6a82fb');
+}
+function walkStep() {
+  if (walkN < 4) walkN++;
+  drawWalk();
+  if (walkN >= 4) document.getElementById('walk-reveal').classList.add('show');
+}
+function walkReset() {
+  walkN = 0;
+  drawWalk();
+  document.getElementById('walk-reveal').classList.remove('show');
+}
+drawWalk();
+
+// ---------- Card 2: the built line y=2x with its points + one step ----------
+(function () {
+  const g = grid('d-eqline', { xMin: -0.5, xMax: 4, yMin: -0.5, yMax: 8 });
+  drawLine(g, 2, 0, '#6a82fb');
+  drawStep(g, 1, 2, 2, '#94a3b8');
+  for (let i = 0; i <= 4; i++) drawPoint(g, i, 2 * i, '#6a82fb', 5);
+})();
+
+// ---------- Card 3: shift diagram (y=2x and y=2x+3) ----------
+(function () {
+  const g = grid('d-shift', { xMin: -1, xMax: 5, yMin: -1, yMax: 11 });
+  drawLine(g, 2, 0, '#94a3b8');
+  drawLine(g, 2, 3, '#6a82fb');
+  drawStep(g, 0, 3, 2, '#6a82fb');
+  drawPoint(g, 0, 0, '#94a3b8', 5);
+  drawPoint(g, 0, 3, '#f97316', 6);
+})();
+
+// ---------- Card 3: negative slope (y = -x + 5) ----------
+(function () {
+  const g = grid('d-neg', { xMin: -1, xMax: 6, yMin: -1, yMax: 7 });
+  drawLine(g, -1, 5, '#6a82fb');
+  drawStep(g, 1, 4, -1, '#6a82fb');
+  drawPoint(g, 0, 5, '#f97316', 6);
+})();
+
+// ---------- Card 5: parallel (y=x+1 and y=x+4) ----------
+(function () {
+  const g = grid('d-par', { xMin: -1, xMax: 6, yMin: -1, yMax: 9 });
+  drawLine(g, 1, 1, '#6a82fb');
+  drawLine(g, 1, 4, '#10b981');
+  drawStep(g, 1, 2, 1, '#6a82fb');
+  drawStep(g, 1, 5, 1, '#10b981');
+})();
+
+// ---------- Card 5: crossing (y=2x and y=x+1) ----------
+(function () {
+  const g = grid('d-cross', { xMin: -1, xMax: 5, yMin: -1, yMax: 9 });
+  drawLine(g, 2, 0, '#6a82fb');
+  drawLine(g, 1, 1, '#10b981');
+  drawPoint(g, 1, 2, '#f97316', 7);
+})();
+
+// ---------- Card 4: slope checks ----------
+function checkSlope(id, correct) {
+  const inp = document.getElementById(id + '-in');
+  const fb = document.getElementById(id + '-fb');
+  const val = parseFloat(inp.value);
+  if (isNaN(val)) { fb.textContent = 'Type a number first.'; fb.className = 'feedback no'; return; }
+  if (val === correct) {
+    fb.textContent = '✓ Yes — slope ' + correct + '.';
+    fb.className = 'feedback ok';
+  } else {
+    fb.textContent = '✗ Look at the number in front of x.';
+    fb.className = 'feedback no';
+  }
+}
+
+// ---------- Card 6: parallel checks ----------
+const parDone = new Set();
+function checkPar(id, isParallel) {
+  // correct answer encoded per button via the value passed; we compare to truth table
+  const truth = { p1: true, p2: false, p3: true, p4: true, p5: false };
+  const fb = document.getElementById(id + '-fb');
+  const correct = (isParallel === truth[id]);
+  if (correct) {
+    fb.textContent = truth[id] ? '✓ Same slope — parallel.' : '✓ Different slopes — they cross.';
+    fb.className = 'feedback ok';
+    if (!parDone.has(id)) {
+      parDone.add(id);
+      document.getElementById('pscore').textContent = parDone.size;
+    }
+    if (id === 'p5') document.getElementById('bridge').style.display = 'block';
+  } else {
+    fb.textContent = '✗ Not quite — look again at how steep each line is.';
+    fb.className = 'feedback no';
+  }
+}
+</script>
+</body>
+</html>
